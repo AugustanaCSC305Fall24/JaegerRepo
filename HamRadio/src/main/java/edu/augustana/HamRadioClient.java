@@ -8,6 +8,8 @@ public class HamRadioClient implements HamRadioClientInterface {
     private Socket socket;
     private DataInputStream inputHandler;
     private DataOutputStream outputHandler;
+    private double minFrequency;
+    private double maxFrequency;
     private double transmitFrequency;
     private double receiveFrequency;
     private double bandwidth;
@@ -64,13 +66,41 @@ public class HamRadioClient implements HamRadioClientInterface {
     public void setReceivingFrequency(double freq) {
         this.receiveFrequency = freq;
     }
+
+    public double getReceivingFrequency() {
+        return this.receiveFrequency;
+    }
+
+    public void setMinFrequency(double freq) {
+        this.minFrequency = freq;
+    }
+
+    public double getMinFrequency() {
+        return this.minFrequency;
+    }
+
+    public void setMaxFrequency(double freq) {
+        this.maxFrequency = freq;
+    }
+
+    public double getMaxFrequency() {
+        return this.maxFrequency;
+    }
     
     public void filerBandWidth(double bandWidth) {
         this.bandwidth = bandWidth;
     }
+
+    public double getBandWidth() {
+        return this.bandwidth;
+    }
     
     public void setTransmitFrequency(double freq) {
         this.transmitFrequency = freq;
+    }
+
+    public double getTransmitFrequency() {
+        return this.transmitFrequency;
     }
     
     public void closeConnection() {
