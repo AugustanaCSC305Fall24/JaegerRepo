@@ -16,6 +16,7 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    private HamRadioClientInterface radioClient = new HamRadioClient();
 
     @Override
     public void start(Stage stage) throws IOException {
