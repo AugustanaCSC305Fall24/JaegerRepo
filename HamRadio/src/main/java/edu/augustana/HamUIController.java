@@ -55,6 +55,8 @@ public class HamUIController {
     @FXML
     private TextArea displayTextArea;
 
+    @FXML private Slider volumeSlider;
+
     HamRadioClientInterface client = new HamRadioClient();
 
     private final double minTune = 0.1;
@@ -67,6 +69,8 @@ public class HamUIController {
 
     @FXML
     public void initialize() {
+        double customizedVolume = volumeSlider.getValue();
+        client.setVolume(customizedVolume);
         dotButton.setOnAction(event -> client.playTone(1500, 100));  // DOT: 100 ms
         dashButton.setOnAction(event -> client.playTone(1500, 300)); // DASH: 300 ms
         rangeComboBox.getItems().addAll("HF", "VHF", "UHF");
@@ -137,5 +141,9 @@ public class HamUIController {
         client.setMaxFrequency(max);
         client.setReceivingFrequency((client.getMaxFrequency() + client.getMinFrequency())/2);
     }
+
+
+
+
 
 }

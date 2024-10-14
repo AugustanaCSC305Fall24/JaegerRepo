@@ -50,6 +50,12 @@ public interface HamRadioClientInterface {
     //play the sound from dot and dash button
     void playTone(double frequency, int duration);
 
+    //volume getter
+    double getVolume();
+
+    //volume setter
+    void setVolume(double volume);
+
     // close WebSocket connection
     void closeConnection();
 }

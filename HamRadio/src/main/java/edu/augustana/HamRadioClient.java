@@ -18,6 +18,7 @@ public class  HamRadioClient implements HamRadioClientInterface {
     private double receiveFrequency;
     private double bandwidth;
     private double playbackspeed;
+    private double volume;
 
     public void connectToServer(String serverIp,int serverPort) throws IOException {
         this.socket = new Socket(serverIp, serverPort);
@@ -120,7 +121,7 @@ public class  HamRadioClient implements HamRadioClientInterface {
 
     public void playTone(double frequency, int duration) {
         try {
-            float sampleRate = 1000;
+            float sampleRate = 42000;
             byte[] buf = new byte[1];
             AudioFormat af = new AudioFormat(sampleRate, 8, 1, true, false);
             SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
@@ -128,7 +129,7 @@ public class  HamRadioClient implements HamRadioClientInterface {
             sdl.start();
             for (int i = 0; i < duration * (float) sampleRate / 1000; i++) {
                 double angle = i / (sampleRate / frequency) * 2.0 * Math.PI;
-                buf[0] = (byte) (Math.sin(angle) * 127.0);
+                buf[0] = (byte) (Math.sin(angle) * 2* volume);
                 sdl.write(buf, 0, 1);
             }
             sdl.drain();
@@ -137,6 +138,14 @@ public class  HamRadioClient implements HamRadioClientInterface {
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         }
+    }
+
+    public double getVolume() {
+        return this.volume;
+    }
+
+    public void setVolume(double volume) {
+        this.volume = volume;
     }
 
     public void closeConnection() {
