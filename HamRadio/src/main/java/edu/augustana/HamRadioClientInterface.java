@@ -41,6 +41,12 @@ public interface HamRadioClientInterface {
     //get transmitting frequency
     double getTransmitFrequency();
 
+    //set the playback speed
+    void setPlaybackSpeed(double speed);
+
+    //get the playback speed
+    double getPlaybackSpeed();
+
     // close WebSocket connection
     void closeConnection();
 }

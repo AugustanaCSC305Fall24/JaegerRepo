@@ -13,6 +13,7 @@ public class  HamRadioClient implements HamRadioClientInterface {
     private double transmitFrequency;
     private double receiveFrequency;
     private double bandwidth;
+    private double playbackspeed;
 
     public void connectToServer(String serverIp,int serverPort) throws IOException {
         this.socket = new Socket(serverIp, serverPort);
@@ -101,6 +102,14 @@ public class  HamRadioClient implements HamRadioClientInterface {
 
     public double getTransmitFrequency() {
         return this.transmitFrequency;
+    }
+
+    public void setPlaybackSpeed(double speed) {
+        this.playbackspeed = speed;
+    }
+
+    public double getPlaybackSpeed() {
+        return this.playbackspeed;
     }
     
     public void closeConnection() {
