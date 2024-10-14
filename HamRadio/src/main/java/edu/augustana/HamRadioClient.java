@@ -121,7 +121,7 @@ public class  HamRadioClient implements HamRadioClientInterface {
 
     public void playTone(double frequency, int duration) {
         try {
-            float sampleRate = 42000;
+            float sampleRate = 44100;
             byte[] buf = new byte[1];
             AudioFormat af = new AudioFormat(sampleRate, 8, 1, true, false);
             SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
@@ -129,7 +129,9 @@ public class  HamRadioClient implements HamRadioClientInterface {
             sdl.start();
             for (int i = 0; i < duration * (float) sampleRate / 1000; i++) {
                 double angle = i / (sampleRate / frequency) * 2.0 * Math.PI;
+
                 buf[0] = (byte) (Math.sin(angle) * 127 * volume/100);
+
                 sdl.write(buf, 0, 1);
             }
             sdl.drain();
