@@ -4,7 +4,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class HamRadioClient implements HamRadioClientInterface {
+public class  HamRadioClient implements HamRadioClientInterface {
     private Socket socket;
     private DataInputStream inputHandler;
     private DataOutputStream outputHandler;
