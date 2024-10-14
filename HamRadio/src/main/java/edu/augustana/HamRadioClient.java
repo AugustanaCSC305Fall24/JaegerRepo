@@ -129,7 +129,9 @@ public class  HamRadioClient implements HamRadioClientInterface {
             sdl.start();
             for (int i = 0; i < duration * (float) sampleRate / 1000; i++) {
                 double angle = i / (sampleRate / frequency) * 2.0 * Math.PI;
-                buf[0] = (byte) (Math.sin(angle) * 2 * volume);
+
+                buf[0] = (byte) (Math.sin(angle) * 127 * volume/100);
+
                 sdl.write(buf, 0, 1);
             }
             sdl.drain();
