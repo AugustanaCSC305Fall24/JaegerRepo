@@ -1,7 +1,10 @@
 package edu.augustana;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -57,6 +60,15 @@ public class HamUIController {
 
     @FXML private Slider volumeSlider;
 
+    @FXML
+    private Button speedDownButton;
+
+    @FXML
+    private Button speedUpButton;
+
+
+    private String userOutput = "";
+
     HamRadioClientInterface client = new HamRadioClient();
 
     private final double minTune = 0.1;
@@ -69,25 +81,39 @@ public class HamUIController {
 
     @FXML
     public void initialize() {
-        dotButton.setOnAction(event -> client.playTone(1500, 100));  // DOT: 100 ms
-        dashButton.setOnAction(event -> client.playTone(1500, 300)); // DASH: 300 ms
+         // DOT: 100 ms
+         // DASH: 300 ms
         rangeComboBox.getItems().addAll("HF", "VHF", "UHF");
-        rangeComboBox.getSelectionModel().select(0);
+        //rangeComboBox.getSelectionModel().select(0);
 
-        if(rangeComboBox.getSelectionModel().getSelectedItem().equals("HF")){
-            bandComboBox.getItems().addAll("160m", "80m", "40m");
-            bandComboBox.getSelectionModel().select(0);
-        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("VHF")){
-            bandComboBox.getItems().addAll("6m", "2m");
-            bandComboBox.getSelectionModel().select(0);
-        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("UHF")){
-            bandComboBox.getItems().addAll("70cm", "33cm", "23cm");
-            bandComboBox.getSelectionModel().select(0);
-        }
+//        if(rangeComboBox.getSelectionModel().getSelectedItem().equals("HF")){
+//            bandComboBox.getItems().addAll("160m", "80m", "40m");
+//            bandComboBox.getSelectionModel().select(0);
+//        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("VHF")){
+//            bandComboBox.getItems().addAll("6m", "2m");
+//            bandComboBox.getSelectionModel().select(0);
+//        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("UHF")){
+//            bandComboBox.getItems().addAll("70cm", "33cm", "23cm");
+//            bandComboBox.getSelectionModel().select(0);
+//        }
     }
 
     @FXML
     private void startButton(){
+        if(rangeComboBox.getSelectionModel().getSelectedItem().equals("HF")){
+            bandComboBox.getItems().clear();
+            bandComboBox.getItems().addAll("160m", "80m", "40m");
+            bandComboBox.getSelectionModel().select(0);
+        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("VHF")){
+            bandComboBox.getItems().clear();
+            bandComboBox.getItems().addAll("6m", "2m");
+            bandComboBox.getSelectionModel().select(0);
+        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("UHF")){
+            bandComboBox.getItems().clear();
+            bandComboBox.getItems().addAll("70cm", "33cm", "23cm");
+            bandComboBox.getSelectionModel().select(0);
+        }
+
         String band = bandComboBox.getSelectionModel().getSelectedItem();
         if (band.equals("160m")){
             initialize_frequency(1.8,2.0);
@@ -144,6 +170,54 @@ public class HamUIController {
                 + "If you want to change channel," +"\n" + "please adjust the band and hit 'Start' ");
     }
 
+    @FXML
+    private void dashAction() {
+        client.playTone(1500, 300);
+        userOutput += "- ";
+        displayTextArea.setText("You typed: " + userOutput);
+    }
+
+    @FXML
+    public void dotAction() {
+        client.playTone(1500, 100);
+        userOutput += ". ";
+        displayTextArea.setText("You typed: " + userOutput);
+
+    }
+
+    @FXML
+    public void spaceAction(ActionEvent event) {
+        userOutput += "  ";
+        displayTextArea.setText("You typed: " + userOutput);
+    }
+
+    @FXML
+    public void splashAction(ActionEvent event) {
+        userOutput += " / ";
+        displayTextArea.setText("You typed: " + userOutput);
+
+    }
+
+    @FXML
+    public void speedDownAction() {
+        client.setPlaybackSpeed(client.getPlaybackSpeed() - 0.1);
+        displayTextArea.setText("You typed: " + userOutput + "\n" + "Playback Speed: " + client.getPlaybackSpeed());
+
+    }
+
+    @FXML
+    public void speedUpAction() {
+        client.setPlaybackSpeed(client.getPlaybackSpeed() + 0.1);
+        displayTextArea.setText("You typed: " + userOutput + "\n" + "Playback Speed: " + client.getPlaybackSpeed());
+
+    }
+
+    @FXML
+    public void playBackAction(){
+        MorseCodePlayer player = new MorseCodePlayer(client.getPlaybackSpeed());
+        player.playMorseCode(userOutput);
+        displayTextArea.setText("You typed: " + userOutput + "\n" + "Playback Speed: " + client.getPlaybackSpeed());
+    }
 
 
 

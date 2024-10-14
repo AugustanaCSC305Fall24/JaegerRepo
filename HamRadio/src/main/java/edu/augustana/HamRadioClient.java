@@ -17,7 +17,7 @@ public class  HamRadioClient implements HamRadioClientInterface {
     private double transmitFrequency;
     private double receiveFrequency;
     private double bandwidth;
-    private double playbackspeed;
+    private double playbackspeed = 1.0;
     private double volume;
 
     public void connectToServer(String serverIp,int serverPort) throws IOException {
