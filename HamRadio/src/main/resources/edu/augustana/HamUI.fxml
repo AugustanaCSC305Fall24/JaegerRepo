@@ -35,9 +35,9 @@
          <font>
             <Font size="11.5" />
          </font></Button>
-    <Button fx:id="trainingBtn" layoutX="32.0" layoutY="387.0" prefWidth="100" text="TRAINING" />
-    <Button fx:id="moreBtn" layoutX="32.0" layoutY="420.0" prefWidth="100" text="MORE" />
-    <TextField layoutX="203.0" layoutY="323.0" prefHeight="110.0" prefWidth="289.0" promptText="Insert your desired transmitting frequency:" />
+    <Button fx:id="morseToTextButton" layoutX="32.0" layoutY="387.0" onAction="#morseToTextAction" prefWidth="100" text="MORSE &gt; TEXT" />
+    <Button fx:id="textToMorseButton" layoutX="32.0" layoutY="420.0" onAction="#textToMorseAction" prefWidth="100" text="TEXT &gt; MORSE" />
+    <TextField fx:id="translateTextField" layoutX="203.0" layoutY="323.0" prefHeight="110.0" prefWidth="289.0" promptText="Insert your desired transmitting frequency:" />
       <Slider fx:id="volumeSlider" layoutX="542.0" layoutY="85.0" max="100" min="0" orientation="VERTICAL" prefHeight="202.0" prefWidth="50.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="25.0" />
       <ComboBox fx:id="bandComboBox" layoutX="93.0" layoutY="100.0" prefHeight="25.0" prefWidth="100.0" />
       <Label layoutX="128.0" layoutY="80.0" text="Band">

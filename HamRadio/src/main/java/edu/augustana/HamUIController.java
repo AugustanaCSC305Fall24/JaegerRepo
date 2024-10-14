@@ -1,15 +1,11 @@
 package edu.augustana;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Scanner;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.shape.Circle;
 
 public class HamUIController {
@@ -65,6 +61,15 @@ public class HamUIController {
 
     @FXML
     private Button speedUpButton;
+
+    @FXML
+    private Button morseToTextButton;
+
+    @FXML
+    private Button textToMorseButton;
+
+    @FXML
+    private TextField translateTextField;
 
 
     private String userOutput = "";
@@ -217,6 +222,23 @@ public class HamUIController {
         MorseCodePlayer player = new MorseCodePlayer(client.getPlaybackSpeed());
         player.playMorseCode(userOutput);
         displayTextArea.setText("You typed: " + userOutput + "\n" + "Playback Speed: " + client.getPlaybackSpeed());
+    }
+
+    @FXML
+    public void morseToTextAction() {
+        String morseToText = MorseCodeTranslator.morseToText(userOutput);
+        translateTextField.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
+
+    }
+
+    @FXML
+    public void textToMorseAction() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Type English to be translated: ");
+        String textToBeTranslated = scanner.nextLine();
+        String textToMorse = MorseCodeTranslator.textToMorse(textToBeTranslated);
+        translateTextField.setText("You typed: " + textToBeTranslated + "\n"
+                + "Translated as: " + textToMorse);
     }
 
 

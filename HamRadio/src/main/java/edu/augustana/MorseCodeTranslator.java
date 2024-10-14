@@ -21,7 +21,7 @@ public class MorseCodeTranslator {
         }
     }
 
-    public String morseToText(String morseCode) {
+    public static String morseToText(String morseCode) {
         StringBuilder text = new StringBuilder();
         String[] words = morseCode.split("   ");
         for (String word : words) {
@@ -37,7 +37,7 @@ public class MorseCodeTranslator {
         return text.toString().trim();
     }
 
-    public String textToMorse(String text) {
+    public static String textToMorse(String text) {
         StringBuilder morse = new StringBuilder();
         for (char c : text.toUpperCase().toCharArray()) {
             String morseChar = CHAR_TO_MORSE.get(c);
