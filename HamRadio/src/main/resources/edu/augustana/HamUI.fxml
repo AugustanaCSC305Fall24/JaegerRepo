@@ -8,8 +8,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane prefHeight="480" prefWidth="640" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-
+<AnchorPane prefHeight="480" prefWidth="640" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.HamUIController">
+<children>
     <!-- Top Label for Simulation Mode -->
     <Label layoutX="200" layoutY="20" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="SIMULATION MODE" textFill="#466854" />
 
@@ -46,13 +46,15 @@
 
     <!-- Large Knob -->
     <Circle fx:id="recordBtn" fill="#466854" layoutX="523.0" layoutY="297.0" radius="55.0" />
-   <TextArea layoutX="203.0" layoutY="65.0" prefHeight="232.0" prefWidth="221.0" />
+    <TextArea layoutX="203.0" layoutY="65.0" prefHeight="232.0" prefWidth="221.0" />
 
     <!-- Bottom Buttons -->
-    <Button fx:id="returnBtn" layoutX="32.0" layoutY="327.0" prefWidth="100" text="RETURN" />
+    <Button fx:id="returnBtn" layoutX="32.0" layoutY="327.0" onAction="#switchToWelcomeScreen" prefWidth="100" text="RETURN" />
     <Button fx:id="helpBtn" layoutX="32.0" layoutY="350.0" prefWidth="100" text="HELP" />
     <Button fx:id="trainingBtn" layoutX="32.0" layoutY="375.0" prefWidth="100" text="TRAINING" />
     <Button fx:id="moreBtn" layoutX="32.0" layoutY="400.0" prefWidth="100" text="MORE" />
-   <TextField layoutX="203.0" layoutY="323.0" prefHeight="80.0" prefWidth="221.0" />
+    <TextField layoutX="203.0" layoutY="323.0" prefHeight="80.0" prefWidth="221.0" />
+
+</children>
 
 </AnchorPane>
