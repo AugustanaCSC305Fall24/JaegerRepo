@@ -19,6 +19,14 @@ public class  HamRadioClient implements HamRadioClientInterface {
 
         // Thread to receive signal from server
         new Thread(new ReceiveSignalThread()).start();
+        //String firstMorseCode = ".. . . ..";
+        //sendCWSignal(firstMorseCode);
+    }
+
+    public void startClientForDemo() {
+        while (true) {
+            //
+        }
     }
     
     //Thread to handle signals from server
@@ -34,6 +42,7 @@ public class  HamRadioClient implements HamRadioClientInterface {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                System.out.print(e.getMessage());
             }
         }
     }
@@ -46,7 +55,8 @@ public class  HamRadioClient implements HamRadioClientInterface {
     }
     
     public void receiveAndProcessSignal(byte[] signal) {
-        //parseFromCWSignalToMorse
+        //parseFromCWSignalToMorsep
+
         //code to filering and shit...
         //play sound that morse
     }

@@ -1,59 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="480" prefWidth="640" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.HamUIController">
 <children>
     <!-- Top Label for Simulation Mode -->
-    <Label layoutX="200" layoutY="20" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="SIMULATION MODE" textFill="#466854" />
-
-    <!-- RF PWR and Volume knobs -->
-    <Label layoutX="39.0" layoutY="80.0" text="RF PWR" />
-    <Circle fill="#79a189" layoutX="59.0" layoutY="124.0" radius="24.0" />
-    <Button layoutX="30" layoutY="160" prefWidth="20" text="-" />
-    <Button ellipsisString="+" layoutX="60.0" layoutY="160.0" prefWidth="20" text="+" />
-
-    <Label layoutX="130" layoutY="80" text="VOLUME" />
-    <Circle fill="#79a189" layoutX="159.0" layoutY="124.0" radius="24.0" />
-    <Button fx:id="volumeDownBtn" layoutX="135.0" layoutY="160.0" prefWidth="20" text="-" />
-    <Button fx:id="volumeUpBtn" ellipsisString="+" layoutX="163.0" layoutY="160.0" prefWidth="20" text="+" />
+    <Label layoutX="234.0" layoutY="21.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="SIMULATION MODE" textFill="#466854" />
+    <Button layoutX="117.0" layoutY="155.0" prefWidth="20" text="-" />
+    <Button ellipsisString="+" layoutX="145.0" layoutY="155.0" prefWidth="20" text="+" />
 
     <!-- 4 Buttons below the knobs -->
-    <Button layoutX="30" layoutY="200" prefHeight="20" prefWidth="60" style="-fx-background-color: #466854;" textFill="#466854" />
-    <Button layoutX="130" layoutY="200" prefHeight="20" prefWidth="60" style="-fx-background-color: #466854;" />
-    <Button layoutX="30" layoutY="230" prefHeight="20" prefWidth="60" style="-fx-background-color: #466854;" textFill="#466854" />
-    <Button layoutX="130" layoutY="230" prefHeight="20" prefWidth="60" style="-fx-background-color: #466854;" />
+    <Button layoutX="22.0" layoutY="168.0" prefHeight="20" prefWidth="60" style="-fx-background-color: #466854;" text="UHF" textFill="WHITE" />
+    <Button layoutX="22.0" layoutY="135.0" prefHeight="20" prefWidth="60" style="-fx-background-color: #466854;" text="VHF" textFill="WHITE" />
+    <Button layoutX="22.0" layoutY="100.0" prefHeight="20" prefWidth="60" style="-fx-background-color: #466854;" text="HF" textFill="WHITE" />
 
     <!-- Right-side controls -->
-    <Label layoutX="428.0" layoutY="80.0" text="CH" />
-    <Slider fx:id="chanelSlider" layoutX="423.0" layoutY="94.0" max="100" min="0" orientation="VERTICAL" prefHeight="132.0" prefWidth="25.0" value="50" />
+    <Label layoutX="34.0" layoutY="80.0" text="Range">
+         <font>
+            <Font name="Leelawadee UI Bold" size="12.0" />
+         </font></Label>
 
-    <Label layoutX="470" layoutY="80" text="MIC &gt; RF" />
-    <Circle fill="#79a189" layoutX="495.0" layoutY="124.0" radius="24.0" />
-    <Button layoutX="470" layoutY="160" prefWidth="20" text="-" />
-    <Button ellipsisString="+" layoutX="498.0" layoutY="160.0" prefWidth="20" text="+" />
-
-    <Label layoutX="547.0" layoutY="80.0" text="CLARIFIER" />
-    <Circle fill="#79a189" layoutX="574.0" layoutY="124.0" radius="24.0" />
-    <Button fx:id="clarifierDown" layoutX="550.0" layoutY="160.0" prefWidth="20" text="-" />
-    <Button fx:id="clarifierUp" ellipsisString="+" layoutX="578.0" layoutY="160.0" prefWidth="20" text="+" />
-
-    <!-- Large Knob -->
-    <Circle fx:id="recordBtn" fill="#466854" layoutX="523.0" layoutY="297.0" radius="55.0" />
-    <TextArea layoutX="203.0" layoutY="65.0" prefHeight="232.0" prefWidth="221.0" />
+    <Label layoutX="530.0" layoutY="65.0" text="VOLUME">
+         <font>
+            <Font name="Leelawadee UI Bold" size="12.0" />
+         </font></Label>
+    <TextArea layoutX="203.0" layoutY="65.0" prefHeight="232.0" prefWidth="289.0" text="Your Frequency: &#10;&#10;Your Message: ...---...&#10;&#10;English Translation: SOS &#10;&#10;" />
 
     <!-- Bottom Buttons -->
-    <Button fx:id="returnBtn" layoutX="32.0" layoutY="327.0" onAction="#switchToWelcomeScreen" prefWidth="100" text="RETURN" />
+    <Button fx:id="returnBtn" layoutX="32.0" layoutY="325.0" onAction="#switchToWelcomeScreen" prefWidth="100" style="-fx-background-color: #466854;" text="STOP" textFill="WHITE" />
     <Button fx:id="helpBtn" layoutX="32.0" layoutY="350.0" prefWidth="100" text="HELP" />
-    <Button fx:id="trainingBtn" layoutX="32.0" layoutY="375.0" prefWidth="100" text="TRAINING" />
-    <Button fx:id="moreBtn" layoutX="32.0" layoutY="400.0" prefWidth="100" text="MORE" />
-    <TextField layoutX="203.0" layoutY="323.0" prefHeight="80.0" prefWidth="221.0" />
+    <Button fx:id="trainingBtn" layoutX="32.0" layoutY="378.0" prefWidth="100" text="TRAINING" />
+    <Button fx:id="moreBtn" layoutX="32.0" layoutY="408.0" prefWidth="100" text="MORE" />
+    <TextField layoutX="203.0" layoutY="323.0" prefHeight="110.0" prefWidth="289.0" text="Type your input: ..." />
+      <Slider fx:id="volumeSlider" layoutX="542.0" layoutY="85.0" max="100" min="0" orientation="VERTICAL" prefHeight="202.0" prefWidth="50.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="25.0" />
+      <ComboBox layoutX="93.0" layoutY="100.0" prefHeight="25.0" prefWidth="100.0" />
+      <Label layoutX="128.0" layoutY="80.0" text="Band">
+         <font>
+            <Font name="Leelawadee UI Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="123.0" layoutY="135.0" text="Tuning">
+         <font>
+            <Font name="Leelawadee UI Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button layoutX="517.0" layoutY="352.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="DOT" textFill="WHITE" />
+      <Button layoutX="517.0" layoutY="390.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="DASH" textFill="WHITE" />
+      <Button layoutX="32.0" layoutY="291.0" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="START" textFill="WHITE" />
+      <RadioButton layoutX="524.0" layoutY="424.0" mnemonicParsing="false" text="Push to Talk" />
+      <Button layoutX="517.0" layoutY="307.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #466850;" text="SPACE" textFill="WHITE" />
 
 </children>
 
