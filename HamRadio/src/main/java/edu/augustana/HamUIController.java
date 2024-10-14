@@ -108,8 +108,7 @@ public class HamUIController {
         } else if (band.equals("23cm")){
             initialize_frequency(124.0, 130.0);
         }
-        displayTextArea.setText("Your frequency: " + client.getReceivingFrequency() + "\n"
-        + "If you want to change channel, please adjust the band and hit 'Start' ");
+        displayFrequencyTextArea();
     }
 
     @FXML
@@ -120,8 +119,7 @@ public class HamUIController {
         } else {
             client.setReceivingFrequency(client.getReceivingFrequency() + this.maxTune);
         }
-        displayTextArea.setText("Your frequency: " + client.getReceivingFrequency() + "\n"
-                + "If you want to change channel, please adjust the band and hit 'Start' ");
+        displayFrequencyTextArea();
     }
 
     @FXML
@@ -132,14 +130,18 @@ public class HamUIController {
         } else {
             client.setReceivingFrequency(client.getReceivingFrequency() - this.maxTune);
         }
-        displayTextArea.setText("Your frequency: " + client.getReceivingFrequency() + "\n"
-                + "If you want to change channel, please adjust the band and hit 'Start' ");
+        displayFrequencyTextArea();
     }
 
     private void initialize_frequency(double min, double max){
         client.setMinFrequency(min);
         client.setMaxFrequency(max);
         client.setReceivingFrequency((client.getMaxFrequency() + client.getMinFrequency())/2);
+    }
+
+    public void displayFrequencyTextArea(){
+        displayTextArea.setText("Your frequency: " + client.getReceivingFrequency() + "MHz \n"
+                + "If you want to change channel," +"\n" + "please adjust the band and hit 'Start' ");
     }
 
 
