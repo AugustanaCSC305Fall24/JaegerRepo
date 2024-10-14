@@ -47,6 +47,9 @@ public interface HamRadioClientInterface {
     //get the playback speed
     double getPlaybackSpeed();
 
+    //play the sound from dot and dash button
+    void playTone(double frequency, int duration);
+
     // close WebSocket connection
     void closeConnection();
 }

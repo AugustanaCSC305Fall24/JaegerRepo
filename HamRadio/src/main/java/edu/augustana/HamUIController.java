@@ -2,7 +2,6 @@ package edu.augustana;
 
 import java.io.IOException;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
@@ -39,11 +38,30 @@ public class HamUIController {
     @FXML
     private Button volumeUpBtn;
 
+    @FXML
+    private Button dotButton;
+
+    @FXML
+    private Button dashButton;
+
+    private HamRadioClient hamRadioClient;
+
+    public HamUIController() {
+        hamRadioClient = new HamRadioClient();
+    }
 
     @FXML
     private void switchToWelcomeScreen() throws IOException {
         App.setRoot("WelcomeScreen");
     }
+
+    @FXML
+    public void initialize() {
+        dotButton.setOnAction(event -> hamRadioClient.playTone(1500, 100));  // DOT: 100 ms
+        dashButton.setOnAction(event -> hamRadioClient.playTone(1500, 300)); // DASH: 300 ms
+    }
+
+
 
 
 

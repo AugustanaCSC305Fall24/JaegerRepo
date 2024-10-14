@@ -1,4 +1,8 @@
 package edu.augustana;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -62,6 +66,7 @@ public class  HamRadioClient implements HamRadioClientInterface {
 
         //code to filering and shit...
         //play sound that morse
+
     }
 
     public void setReceivingFrequency(double freq) {
@@ -111,7 +116,29 @@ public class  HamRadioClient implements HamRadioClientInterface {
     public double getPlaybackSpeed() {
         return this.playbackspeed;
     }
-    
+
+
+    public void playTone(double frequency, int duration) {
+        try {
+            float sampleRate = 1000;
+            byte[] buf = new byte[1];
+            AudioFormat af = new AudioFormat(sampleRate, 8, 1, true, false);
+            SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
+            sdl.open(af);
+            sdl.start();
+            for (int i = 0; i < duration * (float) sampleRate / 1000; i++) {
+                double angle = i / (sampleRate / frequency) * 2.0 * Math.PI;
+                buf[0] = (byte) (Math.sin(angle) * 127.0);
+                sdl.write(buf, 0, 1);
+            }
+            sdl.drain();
+            sdl.stop();
+            sdl.close();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void closeConnection() {
 
     }
