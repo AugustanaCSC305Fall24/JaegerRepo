@@ -31,8 +31,11 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         launch();
+        HamRadioClient client = new HamRadioClient();
+        //client.connectToServer("localhost", 8080);
+        client.startClientForDemo();
     }
 
 }
