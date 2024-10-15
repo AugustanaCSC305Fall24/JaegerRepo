@@ -23,7 +23,7 @@ public class MorseCodeTranslator {
 
     public static String morseToText(String morseCode) {
         StringBuilder text = new StringBuilder();
-        String[] words = morseCode.split("   ");
+        String[] words = morseCode.split(" / "); // Use " / " as the word separator in Morse code
         for (String word : words) {
             String[] letters = word.split(" ");
             for (String letter : letters) {
@@ -32,7 +32,7 @@ public class MorseCodeTranslator {
                     text.append(ch);
                 }
             }
-//            text.append(" ");
+            text.append(" "); // Add space between words
         }
         return text.toString().trim();
     }
@@ -40,11 +40,13 @@ public class MorseCodeTranslator {
     public static String textToMorse(String text) {
         StringBuilder morse = new StringBuilder();
         for (char c : text.toUpperCase().toCharArray()) {
-            String morseChar = CHAR_TO_MORSE.get(c);
-            if (morseChar != null) {
-                morse.append(morseChar).append(" ");
-            } else if (c == ' ') {
-                morse.append("  ");
+            if (c == ' ') {
+                morse.append(" / "); // Use " / " to represent a space between words
+            } else {
+                String morseChar = CHAR_TO_MORSE.get(c);
+                if (morseChar != null) {
+                    morse.append(morseChar).append(" ");
+                }
             }
         }
         return morse.toString().trim();
