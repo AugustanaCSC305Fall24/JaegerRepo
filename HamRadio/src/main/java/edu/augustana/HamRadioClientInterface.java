@@ -56,6 +56,7 @@ public interface HamRadioClientInterface {
     //volume setter
     void setVolume(double volume);
 
+
     // close WebSocket connection
     void closeConnection();
 }
