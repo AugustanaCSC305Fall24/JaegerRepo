@@ -1,4 +1,4 @@
 # JaegerRepo
 Team Jaeger's Educational HAM Radio Simulator
 
-Member in: Hoang Trieu
+Resource: https://lcwo.net/
