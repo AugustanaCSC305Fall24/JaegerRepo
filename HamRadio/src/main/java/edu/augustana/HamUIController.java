@@ -292,11 +292,11 @@ public class HamUIController {
             new Alert(Alert.AlertType.INFORMATION, message).show();
             return;
         }
-        MorseCodePlayer player = new MorseCodePlayer(client.getPlaybackSpeed(), client);
-        player.playMorseCode(userOutput);
-
-        displayTextArea.setText("Start play back!\n" + displayTextString() + "\nYou are transmitting: " + userOutput);
-
+        if (Math.abs(client.getReceivingFrequency() - client.getTransmitFrequency()) <= client.getBandWidth() / 2) {
+            MorseCodePlayer player = new MorseCodePlayer(client.getPlaybackSpeed(), client);
+            player.playMorseCode(userOutput);
+            displayTextArea.setText("Start play back!\n" + displayTextString() + "\nYou are transmitting: " + userOutput);
+        }
     }
 
     @FXML
