@@ -134,8 +134,9 @@ public class HamUIController {
             displayTextArea.setText(displayTextString() + "\nYou are transmitting: "+ userOutput);
         } else {
             displayTextArea.setText("Your received frequency: " + client.getReceivingFrequency() + "MHz \n" +
-                    "Your transmit frequency: " + client.getTransmitFrequency() + "MHz \n"
-                    + "Please hit Start to transmit and" + " receive CW signal" + "\n");
+                    "Your transmit frequency: " + client.getTransmitFrequency() + "MHz\n" +
+                     "Frequency Bandwidth: " + client.getBandWidth()
+                    + "\nPlease hit Start to transmit and" + " receive CW signal" + "\n");
         }
 
     }
@@ -244,12 +245,11 @@ public class HamUIController {
                 "Your transmit frequency: " + client.getTransmitFrequency() + "MHz \n"+
                 "Radio Status: Connected. You can start transmitting right now." +
                 "\n" + "Radio Volume: " + client.getVolume() +
-                "\n" + "Radio Playback Speed: " + client.getPlaybackSpeed();
+                "\n" + "Radio Playback Speed: " + client.getPlaybackSpeed() +
+                "\n" + "Frequency Bandwidth: " + client.getBandWidth();
 
         return radioStatus;
     }
-
-
 
     @FXML
     private void dashAction() {
@@ -347,6 +347,44 @@ public class HamUIController {
             MorseCodePlayer player = new MorseCodePlayer(client.getPlaybackSpeed(), client);
             player.playMorseCode(userOutput);
             displayTextArea.setText("Start play back!\n" + displayTextString() + "\nYou are transmitting: " + userOutput);
+        }
+    }
+
+    @FXML
+    public void bandwidthUpAction(){
+        String range = rangeComboBox.getSelectionModel().getSelectedItem();
+        if (range.equals("HF")) {
+            client.filerBandWidth(client.getBandWidth() + this.minTune);
+        } else {
+            client.filerBandWidth(client.getBandWidth() + this.maxTune);
+        }
+
+        if(!isStartClicked){
+            displayTextArea.setText("Your received frequency: " + client.getReceivingFrequency() + "MHz \n" +
+                    "Your transmit frequency: " + client.getTransmitFrequency() + "MHz \n" +
+                    "Your bandwidth: " + client.getBandWidth() + "MHz \n"
+                    + "Please hit Start to transmit and" + " receive CW signal" + "\n");
+        } else {
+            displayTextArea.setText("Your bandwidth changed to \n" + displayTextString() + "\nYou are transmitting: " + userOutput);
+        }
+    }
+
+    @FXML
+    public void bandwidthDownAction(){
+        String range = rangeComboBox.getSelectionModel().getSelectedItem();
+        if (range.equals("HF")) {
+            client.filerBandWidth(client.getBandWidth() - this.minTune);
+        } else {
+            client.filerBandWidth(client.getBandWidth() - this.maxTune);
+        }
+
+        if(!isStartClicked){
+            displayTextArea.setText("Your received frequency: " + client.getReceivingFrequency() + "MHz \n" +
+                    "Your transmit frequency: " + client.getTransmitFrequency() + "MHz \n" +
+                    "Your bandwidth: " + client.getBandWidth() + "MHz \n"
+                    + "Please hit Start to transmit and" + " receive CW signal" + "\n");
+        } else {
+            displayTextArea.setText("Your bandwidth changed to \n" + displayTextString() + "\nYou are transmitting: " + userOutput);
         }
     }
 
