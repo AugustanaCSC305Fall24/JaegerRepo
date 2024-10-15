@@ -130,7 +130,7 @@ public class HamUIController {
             initialize_frequency(124.0, 130.0);
         }
 
-        displayFrequencyTextArea();
+        displayTextArea.setText(displayTextString());
     }
 
     @FXML
@@ -140,14 +140,13 @@ public class HamUIController {
             new Alert(Alert.AlertType.INFORMATION, message).show();
         }
         isStartClicked = true;
-        translateTextField.setText("Radio Status: Connected. You can start transmitting right now. \n" +
-                "\n" + "Radio Volume: " + client.getVolume() +
-                "\n" + "Radio Playback Speed: " + client.getPlaybackSpeed());
+        displayTextArea.setText(displayTextString());
     }
 
     @FXML private void volumeSliderAction(){
         double customizedVolume = volumeSlider.getValue();
         client.setVolume(customizedVolume);
+        displayTextArea.setText(displayTextString());
     }
 
     @FXML
@@ -158,7 +157,7 @@ public class HamUIController {
         } else {
             client.setReceivingFrequency(client.getReceivingFrequency() + this.maxTune);
         }
-        displayFrequencyTextArea();
+        displayTextArea.setText(displayTextString());
     }
 
     @FXML
@@ -169,19 +168,25 @@ public class HamUIController {
         } else {
             client.setReceivingFrequency(client.getReceivingFrequency() - this.maxTune);
         }
-        displayFrequencyTextArea();
+        displayTextArea.setText(displayTextString());
     }
-
     private void initialize_frequency(double min, double max) {
         client.setMinFrequency(min);
         client.setMaxFrequency(max);
         client.setReceivingFrequency((client.getMaxFrequency() + client.getMinFrequency()) / 2);
     }
 
-    public void displayFrequencyTextArea() {
+    public String displayTextString() {
+        String radioStatus = "\n" + "Radio Status: Connected. You can start transmitting right now." +
+                "\n" + "Radio Volume: " + client.getVolume() +
+                "\n" + "Radio Playback Speed: " + client.getPlaybackSpeed();
         displayTextArea.setText("Your frequency: " + client.getReceivingFrequency() + "MHz \n"
-                + "Please hit Start to transmit and" + "receive CW signal");
+                + "Please hit Start to transmit and" + "receive CW signal" + "\n \n" + radioStatus) ;
+
+        return radioStatus;
     }
+
+
 
     @FXML
     private void dashAction() {
@@ -192,7 +197,7 @@ public class HamUIController {
 
         client.playTone(1500, 300);
         userOutput += "- ";
-        displayTextArea.setText("You typed: " + userOutput);
+        displayTextArea.setText("You typed: " + userOutput + displayTextString());
     }
 
     @FXML
@@ -204,7 +209,7 @@ public class HamUIController {
 
         client.playTone(1500, 100);
         userOutput += ". ";
-        displayTextArea.setText("You typed: " + userOutput);
+        displayTextArea.setText("You typed: " + userOutput + displayTextString());
     }
 
     private void showAlert() {
@@ -222,7 +227,7 @@ public class HamUIController {
             return;
         }
         userOutput += "  ";
-        displayTextArea.setText("You typed: " + userOutput);
+        displayTextArea.setText("You typed: " + userOutput + displayTextString());
     }
 
     @FXML
@@ -232,26 +237,26 @@ public class HamUIController {
             return;
         }
         userOutput += " / ";
-        displayTextArea.setText("You typed: " + userOutput);
+        displayTextArea.setText("You typed: " + userOutput + displayTextString());
     }
 
     @FXML
     public void speedDownAction() {
         client.setPlaybackSpeed(client.getPlaybackSpeed() - 0.1);
-        displayTextArea.setText("You typed: " + userOutput + "\n" + "Playback Speed: " + client.getPlaybackSpeed());
+        displayTextArea.setText("You typed: " + userOutput + displayTextString());
     }
 
     @FXML
     public void speedUpAction() {
         client.setPlaybackSpeed(client.getPlaybackSpeed() + 0.1);
-        displayTextArea.setText("You typed: " + userOutput + "\n" + "Playback Speed: " + client.getPlaybackSpeed());
+        displayTextArea.setText("You typed: " + userOutput + displayTextString());
     }
 
     @FXML
     public void playBackAction() {
         MorseCodePlayer player = new MorseCodePlayer(client.getPlaybackSpeed());
         player.playMorseCode(userOutput);
-        displayTextArea.setText("You typed: " + userOutput + "\n" + "Playback Speed: " + client.getPlaybackSpeed());
+        displayTextArea.setText("You typed: " + userOutput + "\n" + displayTextString());
     }
 
     @FXML
