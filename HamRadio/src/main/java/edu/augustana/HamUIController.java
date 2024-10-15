@@ -254,7 +254,7 @@ public class HamUIController {
 
     @FXML
     public void playBackAction() {
-        MorseCodePlayer player = new MorseCodePlayer(client.getPlaybackSpeed());
+        MorseCodePlayer player = new MorseCodePlayer(client.getPlaybackSpeed(), client);
         player.playMorseCode(userOutput);
         displayTextArea.setText("You typed: " + userOutput + "\n" + displayTextString());
     }

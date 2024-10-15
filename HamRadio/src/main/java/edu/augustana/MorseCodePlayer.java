@@ -2,7 +2,7 @@ package edu.augustana;
 
 import javax.sound.sampled.*;
 
-public class MorseCodePlayer extends HamUIController{
+public class MorseCodePlayer{
     private static final int BASE_DOT_DURATION = 100;
     private static final int BASE_DASH_DURATION = 300;
     private static final int BASE_ELEMENT_PAUSE = 100;
@@ -11,9 +11,12 @@ public class MorseCodePlayer extends HamUIController{
     private static final int FREQUENCY = 800;
 
     private double speedFactor;
+    private HamRadioClientInterface client;
 
-    public MorseCodePlayer(double speedFactor) {
+    public MorseCodePlayer(double speedFactor, HamRadioClientInterface client) {
+
         this.speedFactor = speedFactor;
+        this.client = client;
     }
 
     public void setSpeedFactor(double speedFactor) {
