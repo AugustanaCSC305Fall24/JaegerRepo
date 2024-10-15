@@ -32,7 +32,7 @@ public class MorseCodeTranslator {
                     text.append(ch);
                 }
             }
-            text.append(" ");
+//            text.append(" ");
         }
         return text.toString().trim();
     }

@@ -74,6 +74,7 @@ public class HamUIController {
     private TextField translateTextField;
 
     private String userOutput = "";
+    private String cleanMorse = "";
 
     HamRadioClientInterface client = new HamRadioClient();
 
@@ -258,6 +259,7 @@ public class HamUIController {
         }
 
         client.playTone(1500, 300); //bug: frequency se luon la 1500 Hz regardless
+        cleanMorse += "-";
         userOutput += "- ";
         displayTextArea.setText(displayTextString() + "\nYou are transmitting: " + userOutput);
     }
@@ -270,6 +272,7 @@ public class HamUIController {
         }
 
         client.playTone(1500, 100); //bug: frequency se luon la 1500 Hz regardless
+        cleanMorse += ".";
         userOutput += ". ";
         displayTextArea.setText(displayTextString() + "\nYou are transmitting: " +userOutput);
     }
@@ -289,6 +292,7 @@ public class HamUIController {
             return;
         }
         userOutput += "  ";
+        cleanMorse += " ";
         displayTextArea.setText(displayTextString() +"\nYou are transmitting: " + userOutput);
     }
 
@@ -299,6 +303,7 @@ public class HamUIController {
             return;
         }
         userOutput += " / ";
+        cleanMorse += " / ";
         displayTextArea.setText(displayTextString() +"\nYou are transmitting: " + userOutput);
     }
 
@@ -351,7 +356,7 @@ public class HamUIController {
             String message = "Please hit Start and type in before Playback!";
             new Alert(Alert.AlertType.INFORMATION, message).show();
         }
-        String morseToText = MorseCodeTranslator.morseToText(userOutput);
+        String morseToText = MorseCodeTranslator.morseToText(cleanMorse);
         translateTextField.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
     }
 
