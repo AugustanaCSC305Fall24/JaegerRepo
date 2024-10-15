@@ -195,7 +195,7 @@ public class HamUIController {
             return;
         }
 
-        client.playTone(1500, 300);
+        client.playTone(1500, 300); //bug: frequency se luon la 1500 Hz regardless
         userOutput += "- ";
         displayTextArea.setText("You typed: " + userOutput + displayTextString());
     }
@@ -207,7 +207,7 @@ public class HamUIController {
             return;
         }
 
-        client.playTone(1500, 100);
+        client.playTone(1500, 100); //bug: frequency se luon la 1500 Hz regardless
         userOutput += ". ";
         displayTextArea.setText("You typed: " + userOutput + displayTextString());
     }
