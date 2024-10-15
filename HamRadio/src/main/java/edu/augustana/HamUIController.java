@@ -151,7 +151,7 @@ public class HamUIController {
         displayTextArea.setText(displayTextString() + "\nYou are transmitting: " + userOutput);
     }
 
-    @FXML private void volumeSliderAction(){
+    @FXML public void volumeSliderAction(){
         double customizedVolume = volumeSlider.getValue();
         client.setVolume(customizedVolume);
         if (!isStartClicked){
