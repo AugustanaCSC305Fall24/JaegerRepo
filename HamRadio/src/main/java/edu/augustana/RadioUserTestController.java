@@ -25,10 +25,6 @@ public class RadioUserTestController extends HamUIController{
     @FXML
     private Slider volumeSlider;
 
-    public RadioUserTestController(HamRadioClientInterface client){
-        this.client = client;
-    }
-
     @FXML
     public void speedDownAction() {
         super.speedDownAction();
@@ -44,7 +40,11 @@ public class RadioUserTestController extends HamUIController{
         super.volumeSliderAction();
     }
 
-    private void switchToWelcomeScreen() throws IOException {
-        App.setRoot("WelcomeScreen");
+    @FXML public void initialize(){
+        setClient(this.client);
+    }
+
+    @FXML private void switchToHamUI() throws IOException {
+        App.setRoot("HamUI");
     }
 }

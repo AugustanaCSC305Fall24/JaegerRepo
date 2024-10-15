@@ -76,7 +76,7 @@ public class HamUIController {
     private String userOutput = "";
     private String cleanMorse = "";
 
-    HamRadioClientInterface client = new HamRadioClient();
+    HamRadioClientInterface client;
 
     private final double minTune = 0.1;
     private final double maxTune = 1.0;
@@ -92,8 +92,17 @@ public class HamUIController {
 
     @FXML
     public void initialize() {
+        this.client = new HamRadioClient();
         rangeComboBox.getItems().addAll("HF", "VHF", "UHF");
         client.setVolume(volumeSlider.getValue());
+    }
+
+    public HamRadioClientInterface getClient(){
+        return this.client;
+    }
+
+    public void setClient(HamRadioClientInterface client){
+        this.client = client;
     }
 
     @FXML private void selectRangeAction(){
@@ -408,8 +417,13 @@ public class HamUIController {
         System.out.print("Type English to be translated: ");
         String textToBeTranslated = scanner.nextLine();
         String textToMorse = MorseCodeTranslator.textToMorse(textToBeTranslated);
+        userOutput = textToMorse;
         translateTextField.setText("You typed: " + textToBeTranslated + "\n"
                 + "Translated as: " + textToMorse);
+    }
+
+    @FXML private void createTestUser() throws IOException {
+        App.setRoot("RadioUserTest");
     }
 
 }
