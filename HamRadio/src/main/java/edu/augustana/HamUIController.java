@@ -129,8 +129,13 @@ public class HamUIController {
         } else if (band.equals("23cm")) {
             initialize_frequency(124.0, 130.0);
         }
+        if(isStartClicked){
+            displayTextArea.setText(displayTextString() + "\nYou are transmitting: "+ userOutput);
+        } else {
+            displayTextArea.setText("Your frequency: " + client.getReceivingFrequency() + "MHz \n"
+                    + "Please hit Start to transmit and" + " receive CW signal" + "\n");
+        }
 
-        displayTextArea.setText(displayTextString());
     }
 
     @FXML
@@ -140,13 +145,19 @@ public class HamUIController {
             new Alert(Alert.AlertType.INFORMATION, message).show();
         }
         isStartClicked = true;
-        displayTextArea.setText(displayTextString());
+        displayTextArea.setText(displayTextString() + "\nYou are transmitting: " + userOutput);
     }
 
     @FXML private void volumeSliderAction(){
         double customizedVolume = volumeSlider.getValue();
         client.setVolume(customizedVolume);
-        displayTextArea.setText(displayTextString());
+        if (!isStartClicked){
+            displayTextArea.setText("Your volume changed to " + client.getVolume() + "!\n" + "Your frequency: " + client.getReceivingFrequency() + "MHz \n"
+                    + "Please hit Start to transmit and" + " receive CW signal" + "\n");
+
+        } else {
+            displayTextArea.setText("Your volume changed!\n" + displayTextString() + "\nYou are transmitting: "+ userOutput);
+        }
     }
 
     @FXML
@@ -157,7 +168,13 @@ public class HamUIController {
         } else {
             client.setReceivingFrequency(client.getReceivingFrequency() + this.maxTune);
         }
-        displayTextArea.setText(displayTextString());
+        if(!isStartClicked){
+            displayTextArea.setText("Your frequency: " + client.getReceivingFrequency() + "MHz \n"
+                    + "Please hit Start to transmit and" + " receive CW signal" + "\n");
+
+        } else {
+            displayTextArea.setText("Your frequency changed!\n" + displayTextString() + "\nYou are transmitting: "+ userOutput);
+        }
     }
 
     @FXML
@@ -168,7 +185,12 @@ public class HamUIController {
         } else {
             client.setReceivingFrequency(client.getReceivingFrequency() - this.maxTune);
         }
-        displayTextArea.setText(displayTextString());
+        if(!isStartClicked){
+            displayTextArea.setText("Your frequency: " + client.getReceivingFrequency() + "MHz \n"
+                    + "Please hit Start to transmit and" + " receive CW signal" + "\n");
+        } else {
+            displayTextArea.setText("Your frequency changed!\n" + displayTextString() + "\nYou are transmitting: " + userOutput);
+        }
     }
     private void initialize_frequency(double min, double max) {
         client.setMinFrequency(min);
@@ -177,11 +199,10 @@ public class HamUIController {
     }
 
     public String displayTextString() {
-        String radioStatus = "\n" + "Radio Status: Connected. You can start transmitting right now." +
+        String radioStatus = "Your frequency: " + client.getReceivingFrequency() + "MHz \n" +
+                "Radio Status: Connected. You can start transmitting right now." +
                 "\n" + "Radio Volume: " + client.getVolume() +
                 "\n" + "Radio Playback Speed: " + client.getPlaybackSpeed();
-        displayTextArea.setText("Your frequency: " + client.getReceivingFrequency() + "MHz \n"
-                + "Please hit Start to transmit and" + "receive CW signal" + "\n \n" + radioStatus) ;
 
         return radioStatus;
     }
@@ -197,7 +218,7 @@ public class HamUIController {
 
         client.playTone(1500, 300);
         userOutput += "- ";
-        displayTextArea.setText("You typed: " + userOutput + displayTextString());
+        displayTextArea.setText(displayTextString() + "\nYou are transmitting: " + userOutput);
     }
 
     @FXML
@@ -209,7 +230,7 @@ public class HamUIController {
 
         client.playTone(1500, 100);
         userOutput += ". ";
-        displayTextArea.setText("You typed: " + userOutput + displayTextString());
+        displayTextArea.setText(displayTextString() + "\nYou are transmitting: " +userOutput);
     }
 
     private void showAlert() {
@@ -227,7 +248,7 @@ public class HamUIController {
             return;
         }
         userOutput += "  ";
-        displayTextArea.setText("You typed: " + userOutput + displayTextString());
+        displayTextArea.setText(displayTextString() +"\nYou are transmitting: " + userOutput);
     }
 
     @FXML
@@ -237,36 +258,63 @@ public class HamUIController {
             return;
         }
         userOutput += " / ";
-        displayTextArea.setText("You typed: " + userOutput + displayTextString());
+        displayTextArea.setText(displayTextString() +"\nYou are transmitting: " + userOutput);
     }
 
     @FXML
     public void speedDownAction() {
         client.setPlaybackSpeed(client.getPlaybackSpeed() - 0.1);
-        displayTextArea.setText("You typed: " + userOutput + displayTextString());
+        if(!isStartClicked){
+            displayTextArea.setText("Your playback speed changed to " + client.getPlaybackSpeed() + "\nYour frequency: " + client.getReceivingFrequency() + "MHz \n"
+                    + "Please hit Start to transmit and" + " receive CW signal" + "\n");
+        } else {
+            displayTextArea.setText("Your Playback Speed changed to " + client.getPlaybackSpeed() + "\n" + displayTextString() +
+                    "\nYou are transmitting: " + userOutput);
+        }
     }
 
     @FXML
     public void speedUpAction() {
         client.setPlaybackSpeed(client.getPlaybackSpeed() + 0.1);
-        displayTextArea.setText("You typed: " + userOutput + displayTextString());
+        if(!isStartClicked){
+            displayTextArea.setText("Your playback speed changed to " + client.getPlaybackSpeed() + "\nYour frequency: " + client.getReceivingFrequency() + "MHz \n"
+                    + "Please hit Start to transmit and" + " receive CW signal" + "\n");
+        } else {
+            displayTextArea.setText("Your Playback Speed changed to " + client.getPlaybackSpeed() + "\n" + displayTextString() +
+                    "\nYou are transmitting: " + userOutput);
+        }
     }
 
     @FXML
     public void playBackAction() {
+        if (!isStartClicked){
+            String message = "Please hit Start and type in before Playback!";
+            new Alert(Alert.AlertType.INFORMATION, message).show();
+            return;
+        }
         MorseCodePlayer player = new MorseCodePlayer(client.getPlaybackSpeed(), client);
         player.playMorseCode(userOutput);
-        displayTextArea.setText("You typed: " + userOutput + "\n" + displayTextString());
+
+        displayTextArea.setText("Start play back!\n" + displayTextString() + "\nYou are transmitting: " + userOutput);
+
     }
 
     @FXML
     public void morseToTextAction() {
+        if (!isBandSelected){
+            String message = "Please hit Start and type in before Playback!";
+            new Alert(Alert.AlertType.INFORMATION, message).show();
+        }
         String morseToText = MorseCodeTranslator.morseToText(userOutput);
         translateTextField.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
     }
 
     @FXML
     public void textToMorseAction() {
+        if (!isBandSelected){
+            String message = "Please hit Start and type in before Playback!";
+            new Alert(Alert.AlertType.INFORMATION, message).show();
+        }
         Scanner scanner = new Scanner(System.in);
         System.out.print("Type English to be translated: ");
         String textToBeTranslated = scanner.nextLine();
