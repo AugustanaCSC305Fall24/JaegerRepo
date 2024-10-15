@@ -6,6 +6,7 @@ import java.util.Scanner;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.shape.Circle;
 
 public class HamUIController {
@@ -54,7 +55,8 @@ public class HamUIController {
     @FXML
     private TextArea displayTextArea;
 
-    @FXML private Slider volumeSlider;
+    @FXML
+    private Slider volumeSlider;
 
     @FXML
     private Button speedDownButton;
@@ -71,13 +73,16 @@ public class HamUIController {
     @FXML
     private TextField translateTextField;
 
-
     private String userOutput = "";
 
     HamRadioClientInterface client = new HamRadioClient();
 
     private final double minTune = 0.1;
     private final double maxTune = 1.0;
+
+    // To track if 'Start' button has been pressed
+    private boolean isStartClicked = false;
+    private boolean isBandSelected = false;
 
     @FXML
     private void switchToWelcomeScreen() throws IOException {
@@ -86,66 +91,69 @@ public class HamUIController {
 
     @FXML
     public void initialize() {
-         // DOT: 100 ms
-         // DASH: 300 ms
         rangeComboBox.getItems().addAll("HF", "VHF", "UHF");
-        //rangeComboBox.getSelectionModel().select(0);
-
-//        if(rangeComboBox.getSelectionModel().getSelectedItem().equals("HF")){
-//            bandComboBox.getItems().addAll("160m", "80m", "40m");
-//            bandComboBox.getSelectionModel().select(0);
-//        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("VHF")){
-//            bandComboBox.getItems().addAll("6m", "2m");
-//            bandComboBox.getSelectionModel().select(0);
-//        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("UHF")){
-//            bandComboBox.getItems().addAll("70cm", "33cm", "23cm");
-//            bandComboBox.getSelectionModel().select(0);
-//        }
+        client.setVolume(volumeSlider.getValue());
     }
 
-    @FXML
-    private void startButton(){
-        if(rangeComboBox.getSelectionModel().getSelectedItem().equals("HF")){
+    @FXML private void selectRangeAction(){
+        isBandSelected = true;
+        if (rangeComboBox.getSelectionModel().getSelectedItem().equals("HF")) {
             bandComboBox.getItems().clear();
             bandComboBox.getItems().addAll("160m", "80m", "40m");
             bandComboBox.getSelectionModel().select(0);
-        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("VHF")){
+        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("VHF")) {
             bandComboBox.getItems().clear();
             bandComboBox.getItems().addAll("6m", "2m");
             bandComboBox.getSelectionModel().select(0);
-        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("UHF")){
+        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("UHF")) {
             bandComboBox.getItems().clear();
             bandComboBox.getItems().addAll("70cm", "33cm", "23cm");
             bandComboBox.getSelectionModel().select(0);
         }
 
         String band = bandComboBox.getSelectionModel().getSelectedItem();
-        if (band.equals("160m")){
-            initialize_frequency(1.8,2.0);
-        } else if (band.equals("80m")){
-            initialize_frequency(3.5,4.0);
-        } else if (band.equals("40m")){
+        if (band.equals("160m")) {
+            initialize_frequency(1.8, 2.0);
+        } else if (band.equals("80m")) {
+            initialize_frequency(3.5, 4.0);
+        } else if (band.equals("40m")) {
             initialize_frequency(7.0, 7.3);
-        } else if (band.equals("6m")){
+        } else if (band.equals("6m")) {
             initialize_frequency(50.0, 54.0);
-        } else if (band.equals("2m")){
+        } else if (band.equals("2m")) {
             initialize_frequency(144.0, 148.0);
-        } else if (band.equals("70cm")){
+        } else if (band.equals("70cm")) {
             initialize_frequency(420.0, 450.0);
-        } else if (band.equals("33cm")){
+        } else if (band.equals("33cm")) {
             initialize_frequency(902.0, 928.0);
-        } else if (band.equals("23cm")){
+        } else if (band.equals("23cm")) {
             initialize_frequency(124.0, 130.0);
         }
+
         displayFrequencyTextArea();
+    }
+
+    @FXML
+    private void startButton() {
+        if (!isBandSelected){
+            String message = "Please select a frequency range and band before starting to transmit!";
+            new Alert(Alert.AlertType.INFORMATION, message).show();
+        }
+        isStartClicked = true;
+        translateTextField.setText("Radio Status: Connected. You can start transmitting right now. \n" +
+                "\n" + "Radio Volume: " + client.getVolume() +
+                "\n" + "Radio Playback Speed: " + client.getPlaybackSpeed());
+    }
+
+    @FXML private void volumeSliderAction(){
         double customizedVolume = volumeSlider.getValue();
         client.setVolume(customizedVolume);
     }
 
     @FXML
-    private void tuneUpButton(){
+    private void tuneUpButton() {
         String range = rangeComboBox.getSelectionModel().getSelectedItem();
-        if (range.equals("HF")){
+        if (range.equals("HF")) {
             client.setReceivingFrequency(client.getReceivingFrequency() + this.minTune);
         } else {
             client.setReceivingFrequency(client.getReceivingFrequency() + this.maxTune);
@@ -154,9 +162,9 @@ public class HamUIController {
     }
 
     @FXML
-    private void tuneDownButton(){
+    private void tuneDownButton() {
         String range = rangeComboBox.getSelectionModel().getSelectedItem();
-        if (range.equals("HF")){
+        if (range.equals("HF")) {
             client.setReceivingFrequency(client.getReceivingFrequency() - this.minTune);
         } else {
             client.setReceivingFrequency(client.getReceivingFrequency() - this.maxTune);
@@ -164,19 +172,24 @@ public class HamUIController {
         displayFrequencyTextArea();
     }
 
-    private void initialize_frequency(double min, double max){
+    private void initialize_frequency(double min, double max) {
         client.setMinFrequency(min);
         client.setMaxFrequency(max);
-        client.setReceivingFrequency((client.getMaxFrequency() + client.getMinFrequency())/2);
+        client.setReceivingFrequency((client.getMaxFrequency() + client.getMinFrequency()) / 2);
     }
 
-    public void displayFrequencyTextArea(){
+    public void displayFrequencyTextArea() {
         displayTextArea.setText("Your frequency: " + client.getReceivingFrequency() + "MHz \n"
-                + "If you want to change channel," +"\n" + "please adjust the band and hit 'Start' ");
+                + "Please hit Start to transmit and" + "receive CW signal");
     }
 
     @FXML
     private void dashAction() {
+        if (!isStartClicked) {
+            showAlert();
+            return;
+        }
+
         client.playTone(1500, 300);
         userOutput += "- ";
         displayTextArea.setText("You typed: " + userOutput);
@@ -184,41 +197,58 @@ public class HamUIController {
 
     @FXML
     public void dotAction() {
+        if (!isStartClicked) {
+            showAlert();
+            return;
+        }
+
         client.playTone(1500, 100);
         userOutput += ". ";
         displayTextArea.setText("You typed: " + userOutput);
+    }
 
+    private void showAlert() {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Action Required");
+        alert.setHeaderText("Please select the band and frequency first");
+        alert.setContentText("You must hit the 'Start' button, select the band, and set the frequency before using dot or dash.");
+        alert.showAndWait();
     }
 
     @FXML
     public void spaceAction(ActionEvent event) {
+        if (!isStartClicked) {
+            showAlert();
+            return;
+        }
         userOutput += "  ";
         displayTextArea.setText("You typed: " + userOutput);
     }
 
     @FXML
     public void splashAction(ActionEvent event) {
+        if (!isStartClicked) {
+            showAlert();
+            return;
+        }
         userOutput += " / ";
         displayTextArea.setText("You typed: " + userOutput);
-
     }
 
     @FXML
     public void speedDownAction() {
         client.setPlaybackSpeed(client.getPlaybackSpeed() - 0.1);
         displayTextArea.setText("You typed: " + userOutput + "\n" + "Playback Speed: " + client.getPlaybackSpeed());
-
     }
 
     @FXML
     public void speedUpAction() {
         client.setPlaybackSpeed(client.getPlaybackSpeed() + 0.1);
         displayTextArea.setText("You typed: " + userOutput + "\n" + "Playback Speed: " + client.getPlaybackSpeed());
-
     }
 
     @FXML
-    public void playBackAction(){
+    public void playBackAction() {
         MorseCodePlayer player = new MorseCodePlayer(client.getPlaybackSpeed());
         player.playMorseCode(userOutput);
         displayTextArea.setText("You typed: " + userOutput + "\n" + "Playback Speed: " + client.getPlaybackSpeed());
@@ -228,7 +258,6 @@ public class HamUIController {
     public void morseToTextAction() {
         String morseToText = MorseCodeTranslator.morseToText(userOutput);
         translateTextField.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
-
     }
 
     @FXML
@@ -240,8 +269,5 @@ public class HamUIController {
         translateTextField.setText("You typed: " + textToBeTranslated + "\n"
                 + "Translated as: " + textToMorse);
     }
-
-
-
 
 }
