@@ -8,7 +8,7 @@ public class MorseCodePlayer{
     private static final int BASE_ELEMENT_PAUSE = 100;
     private static final int BASE_LETTER_PAUSE = 300;
     private static final int BASE_WORD_PAUSE = 700;
-    private static final int FREQUENCY = 800;
+    private static final int FREQUENCY = 800; // bug vcl
 
     private double speedFactor;
     private HamRadioClientInterface client;
@@ -46,9 +46,9 @@ public class MorseCodePlayer{
     private void playLetter(String letter) {
         for (char element : letter.toCharArray()) {
             if (element == '.') {
-                playTone(FREQUENCY, adjustDuration(BASE_DOT_DURATION));
+                playTone(client.getTransmitFrequency(), adjustDuration(BASE_DOT_DURATION));
             } else if (element == '-') {
-                playTone(FREQUENCY, adjustDuration(BASE_DASH_DURATION));
+                playTone(client.getTransmitFrequency(), adjustDuration(BASE_DASH_DURATION));
             } else {
                 throw new IllegalArgumentException("Invalid Morse code character: " + element);
             }

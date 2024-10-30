@@ -1,16 +1,14 @@
 package edu.augustana;
 
+import javax.sound.sampled.LineUnavailableException;
 import java.io.IOException;
 
 public interface HamRadioClientInterface {
     // connect to server
     void connectToServer(String serverIp, int serverPort) throws IOException;
 
-    // Send CW as byte buffer
-    void sendCWSignal(String morseCode) throws IOException;
-
     // Recieve and handle signals from server
-    void receiveAndProcessSignal(byte[] signal);
+    void receiveAndProcessSignal(byte[] signal) throws LineUnavailableException;
 
     //set the min frequency
     void setMinFrequency(double freq);
@@ -47,16 +45,18 @@ public interface HamRadioClientInterface {
     //get the playback speed
     double getPlaybackSpeed();
 
-    //play the sound from dot and dash button
-    void playTone(double frequency, int duration);
-
     //volume getter
     double getVolume();
 
     //volume setter
     void setVolume(double volume);
 
+    void sendDot() throws IOException, LineUnavailableException;
+
+    void sendDash() throws IOException, LineUnavailableException;
 
     // close WebSocket connection
     void closeConnection();
+
+    void playTone(double frequency, int duration);
 }

@@ -4,6 +4,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class  HamRadioClient implements HamRadioClientInterface {
     private Socket socket;
@@ -26,25 +29,35 @@ public class  HamRadioClient implements HamRadioClientInterface {
         // Thread to receive signal from server
         new Thread(new ReceiveSignalThread()).start();
         //String firstMorseCode = ".. . . ..";
-        //sendCWSignal(firstMorseCode);
+        sendCWSignal();
     }
 
-    public void startClientForDemo() {
-        while (true) {
-            //
-        }
-    }
-    
     //Thread to handle signals from server
     class ReceiveSignalThread implements Runnable {
+        private volatile boolean running = true;
+
+        public void stop() {
+            running = false;
+        }
+
         @Override
         public void run() {
             try {
-                while (true) {
+                int loop = 1;
+                while (running) {
+                    System.out.println(loop);
                     int signalSize = inputHandler.readInt();
                     byte[] receivedSignal = new byte[signalSize];
                     inputHandler.readFully(receivedSignal);
-                    receiveAndProcessSignal(receivedSignal);
+                    try {
+                        receiveAndProcessSignal(receivedSignal);
+                        loop++;
+                    } catch (LineUnavailableException e) {
+                        e.printStackTrace();
+                        System.out.println("Error processing signal: " + e.getMessage());
+                        // Optionally stop the thread in case of this specific error
+                        stop();
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -54,18 +67,120 @@ public class  HamRadioClient implements HamRadioClientInterface {
     }
 
     //HamRadioClient code
-    public void sendCWSignal(String morseCode) throws IOException {
-        byte[] signal = parseMorseCodeToCW(morseCode);
-        outputHandler.writeInt(signal.length);
-        outputHandler.write(signal);
+    public void sendCWSignal() throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter Morse code ('.' for dot, '-' for dash");
+
+        while (true) {
+            char input = (char) System.in.read(); //Read one char
+            try {
+                if (input == '.') {
+                    System.out.println("Hello");
+                    sendDot();
+                } else if (input == '-') {
+                    sendDash();
+                } else {
+                    break;
+                }
+            } catch (IOException | LineUnavailableException e) {
+                e.printStackTrace();
+            }
+        }
     }
-    
-    public void receiveAndProcessSignal(byte[] signal) {
-        //parseFromCWSignalToMorsep
 
-        //code to filering and shit...
-        //play sound that morse
+    public void sendDot() throws IOException, LineUnavailableException {
+        double dotDuration = 100;
+        byte[] buffer = createSignalArray(dotDuration);
+        sendBufferToServer(buffer);
+    }
 
+    public void sendDash() throws IOException, LineUnavailableException {
+        double dashDuration = 300;
+        byte[] buffer = createSignalArray(dashDuration);
+        sendBufferToServer(buffer);
+    }
+
+    private byte[] createSignalArray(double duration) {
+        List<Byte> buffer = new ArrayList<>();
+
+        //Calculate the number of samples
+        double samplingRate = 42000;
+        int samples = (int) (duration * samplingRate / 1000);
+
+        //Generate sine wave
+        byte[] result = generateSineWave(transmitFrequency, samplingRate, samples);
+
+        System.out.println("created success");
+
+        return result;
+    }
+
+    private byte[] generateSineWave(double frequency, double samplingRate, int samples) {
+        byte[] sineWave = new byte[samples];
+        double angularFrequency = 2 * Math.PI * frequency / samplingRate;
+
+        for (int i = 0; i < samples; i++) {
+            //Sine wave value the scaled to fit into the byte range
+            double sineValue = Math.sin(angularFrequency * i);
+            //Scale the value to fit between -128 and 127
+            sineWave[i] = (byte) (sineValue * 127);
+        }
+        System.out.println("Generate success");
+        return sineWave;
+    }
+
+    private void sendBufferToServer(byte[] buffer) throws IOException {
+        outputHandler.writeInt(buffer.length);
+        outputHandler.write(buffer);
+        outputHandler.flush();
+    }
+
+    public void receiveAndProcessSignal(byte[] signal) throws LineUnavailableException {
+        playSound(signal);
+    }
+
+    private void playSound(byte[] signal) throws LineUnavailableException {
+        System.out.println("It'll play");
+        System.out.println(signal);
+
+        try {
+            //Open audio data stream
+            byte[] buf = new byte[1];
+            AudioFormat af = new AudioFormat(42000, 8, 1, true, false);
+            SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
+            sdl.open(af);
+
+            // Kiểm tra xem có hỗ trợ điều chỉnh âm lượng (MASTER_GAIN) không
+            /*if (sdl.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                FloatControl volumeControl = (FloatControl) sdl.getControl(FloatControl.Type.MASTER_GAIN);
+
+                // Lấy giá trị âm lượng tối thiểu và tối đa từ hệ thống
+                float minVolume = volumeControl.getMinimum(); // Thường là -80 dB
+                float maxVolume = volumeControl.getMaximum(); // Thường là 6.02 dB
+
+                // Chuyển đổi âm lượng từ phần trăm (0-100) sang giá trị dB
+                float volumeInDb = (float) ((volume / 100) * (maxVolume - minVolume) + minVolume);
+
+                volumeControl.setValue(volumeInDb);  // Điều chỉnh âm lượng sau khi quy đổi
+            } else {
+                System.out.println("MASTER_GAIN control không được hỗ trợ trên hệ thống này.");
+            }*/
+
+            sdl.start();
+
+            //Play the sound
+            for (int i = 0; i < signal.length; i++) {
+                buf[0] = signal[i];
+                sdl.write(buf, 0, 1);
+            }
+
+            //End
+            sdl.drain();
+            sdl.stop();
+            sdl.close();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setReceivingFrequency(double freq) {
