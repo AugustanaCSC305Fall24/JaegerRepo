@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="480" prefWidth="640" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.HamUIController">
+<AnchorPane prefHeight="480" prefWidth="640" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.HamUIController">
 <children>
     <!-- Top Label for Simulation Mode -->
     <Label layoutX="234.0" layoutY="21.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="SIMULATION MODE" textFill="#466854" />

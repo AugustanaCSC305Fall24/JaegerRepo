@@ -1,8 +1,12 @@
-package edu.augustana;
+package edu.augustana.Application.UI;
 
 import java.io.IOException;
 import java.util.Scanner;
 
+import edu.augustana.Application.UIHelper.MorseCodePlayer;
+import edu.augustana.Application.UIHelper.MorseCodeTranslator;
+import edu.augustana.RadioModel.HamRadioSimulator;
+import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -28,7 +32,7 @@ public class HamUIController {
     private String userOutput = "";
     private String cleanMorse = "";
 
-    HamRadioClientInterface client;
+    HamRadioSimulatorInterface radio;
 
     private final double minTune = 0.1;
     private final double maxTune = 1.0;
@@ -43,18 +47,19 @@ public class HamUIController {
     }
 
     @FXML
-    public void initialize() {
-        this.client = new HamRadioClient();
+    public void initialize() throws IOException {
+        this.radio = new HamRadioSimulator(0,0,0,0
+        ,0,0,1.0,0);
         rangeComboBox.getItems().addAll("HF", "VHF", "UHF");
-        client.setVolume(volumeSlider.getValue());
+        radio.setVolume(volumeSlider.getValue());
     }
 
-    public HamRadioClientInterface getClient(){
-        return this.client;
+    public HamRadioSimulatorInterface getRadio(){
+        return this.radio;
     }
 
-    public void setClient(HamRadioClientInterface client){
-        this.client = client;
+    public void setRadio(HamRadioSimulatorInterface radio){
+        this.radio = radio;
     }
 
     @FXML private void selectRangeAction(){ //FrequencyController
@@ -94,9 +99,9 @@ public class HamUIController {
         if(isStartClicked){
             displayTextArea.setText(displayTextString() + "\nYou are transmitting: "+ userOutput);
         } else {
-            displayTextArea.setText("Your received frequency: " + client.getReceivingFrequency() + "MHz \n" +
-                    "Your transmit frequency: " + client.getTransmitFrequency() + "MHz\n" +
-                     "Frequency Bandwidth: " + client.getBandWidth()
+            displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                    "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz\n" +
+                    "Frequency Bandwidth: " + radio.getBandWidth()
                     + "\nPlease hit Start to transmit and" + " receive CW signal" + "\n");
         }
 
@@ -114,11 +119,11 @@ public class HamUIController {
 
     @FXML public void volumeSliderAction(){ //volumeController
         double customizedVolume = volumeSlider.getValue();
-        client.setVolume(customizedVolume);
+        radio.setVolume(customizedVolume);
         if (!isStartClicked){
-            displayTextArea.setText("Your volume changed to " + client.getVolume() + "!\n" +
-                    "Your received frequency: " + client.getReceivingFrequency() + "MHz \n" +
-                    "Your transmit frequency: " + client.getTransmitFrequency() + "MHz \n"
+            displayTextArea.setText("Your volume changed to " + radio.getVolume() + "!\n" +
+                    "Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                    "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"
                     + "Please hit Start to transmit and" + " receive CW signal" + "\n");
 
         } else {
@@ -130,13 +135,13 @@ public class HamUIController {
     private void tuneUpButton() { //freqController
         String range = rangeComboBox.getSelectionModel().getSelectedItem();
         if (range.equals("HF")) {
-            client.setReceivingFrequency(client.getReceivingFrequency() + this.minTune);
+            radio.setReceiveFrequency(radio.getReceiveFrequency() + this.minTune);
         } else {
-            client.setReceivingFrequency(client.getReceivingFrequency() + this.maxTune);
+            radio.setReceiveFrequency(radio.getReceiveFrequency() + this.maxTune);
         }
         if(!isStartClicked){
-            displayTextArea.setText("Your received frequency: " + client.getReceivingFrequency() + "MHz \n" +
-                    "Your transmit frequency: " + client.getTransmitFrequency() + "MHz \n"
+            displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                    "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"
                     + "Please hit Start to transmit and" + " receive CW signal" + "\n");
 
         } else {
@@ -148,13 +153,13 @@ public class HamUIController {
     private void tuneDownButton() { //freqCOntroller
         String range = rangeComboBox.getSelectionModel().getSelectedItem();
         if (range.equals("HF")) {
-            client.setReceivingFrequency(client.getReceivingFrequency() - this.minTune);
+            radio.setReceiveFrequency(radio.getReceiveFrequency() - this.minTune);
         } else {
-            client.setReceivingFrequency(client.getReceivingFrequency() - this.maxTune);
+            radio.setReceiveFrequency(radio.getReceiveFrequency() - this.maxTune);
         }
         if(!isStartClicked){
-            displayTextArea.setText("Your received frequency: " + client.getReceivingFrequency() + "MHz \n" +
-                    "Your transmit frequency: " + client.getTransmitFrequency() + "MHz \n"
+            displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                    "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"
                     + "Please hit Start to transmit and" + " receive CW signal" + "\n");
 
         } else {
@@ -165,13 +170,13 @@ public class HamUIController {
     private void tuneTDownButton() {
         String range = rangeComboBox.getSelectionModel().getSelectedItem();
         if (range.equals("HF")) {
-            client.setTransmitFrequency(client.getTransmitFrequency() - this.minTune);
+            radio.setTransmitFrequency(radio.getTransmitFrequency() - this.minTune);
         } else {
-            client.setTransmitFrequency(client.getTransmitFrequency() - this.maxTune);
+            radio.setTransmitFrequency(radio.getTransmitFrequency() - this.maxTune);
         }
         if(!isStartClicked){
-            displayTextArea.setText("Your received frequency: " + client.getReceivingFrequency() + "MHz \n" +
-                    "Your transmit frequency: " + client.getTransmitFrequency() + "MHz \n"
+            displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                    "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"
                     + "Please hit Start to transmit and" + " receive CW signal" + "\n");
         } else {
             displayTextArea.setText("Your transmit frequency changed!\n" + displayTextString() + "\nYou are transmitting: " + userOutput);
@@ -182,32 +187,32 @@ public class HamUIController {
     private void tuneTUpButton() {
         String range = rangeComboBox.getSelectionModel().getSelectedItem();
         if (range.equals("HF")) {
-            client.setTransmitFrequency(client.getTransmitFrequency() + this.minTune);
+            radio.setTransmitFrequency(radio.getTransmitFrequency() + this.minTune);
         } else {
-            client.setTransmitFrequency(client.getTransmitFrequency() + this.maxTune);
+            radio.setTransmitFrequency(radio.getTransmitFrequency() + this.maxTune);
         }
         if(!isStartClicked){
-            displayTextArea.setText("Your received frequency: " + client.getReceivingFrequency() + "MHz \n" +
-                    "Your transmit frequency: " + client.getTransmitFrequency() + "MHz \n"
+            displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                    "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"
                     + "Please hit Start to transmit and" + " receive CW signal" + "\n");
         } else {
             displayTextArea.setText("Your transmit frequency changed!\n" + displayTextString() + "\nYou are transmitting: " + userOutput);
         }
     }
     private void initialize_frequency(double min, double max) { //freqController
-        client.setMinFrequency(min);
-        client.setMaxFrequency(max);
-        client.setReceivingFrequency((client.getMaxFrequency() + client.getMinFrequency()) / 2);
-        client.setTransmitFrequency((client.getMaxFrequency() + client.getMinFrequency()) / 2);
+        radio.setMinReceiveFrequency(min);
+        radio.setMaxReceiveFrequency(max);
+        radio.setReceiveFrequency((radio.getMaxReceiveFrequency() + radio.getMinReceiveFrequency()) / 2);
+        radio.setTransmitFrequency((radio.getMaxReceiveFrequency() + radio.getMinReceiveFrequency()) / 2);
     }
 
     public String displayTextString() { //TextFieldController
-        String radioStatus = "Your received frequency: " + client.getReceivingFrequency() + "MHz \n" +
-                "Your transmit frequency: " + client.getTransmitFrequency() + "MHz \n"+
+        String radioStatus = "Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"+
                 "Radio Status: Connected. You can start transmitting right now." +
-                "\n" + "Radio Volume: " + client.getVolume() +
-                "\n" + "Radio Playback Speed: " + client.getPlaybackSpeed() +
-                "\n" + "Frequency Bandwidth: " + client.getBandWidth();
+                "\n" + "Radio Volume: " + radio.getVolume() +
+                "\n" + "Radio Playback Speed: " + radio.getPlaybackSpeed() +
+                "\n" + "Frequency Bandwidth: " + radio.getBandWidth();
 
         return radioStatus;
     }
@@ -219,7 +224,7 @@ public class HamUIController {
             return;
         }
 
-        client.playTone(1500, 300); //bug: frequency se luon la 1500 Hz regardless
+        radio.playTone(1500, 300); //bug: frequency se luon la 1500 Hz regardless
         cleanMorse += "-";
         userOutput += "- ";
         displayTextArea.setText(displayTextString() + "\nYou are transmitting: " + userOutput);
@@ -232,7 +237,7 @@ public class HamUIController {
             return;
         }
 
-        client.playTone(1500, 100); //bug: frequency se luon la 1500 Hz regardless
+        radio.playTone(1500, 100); //bug: frequency se luon la 1500 Hz regardless
         cleanMorse += ".";
         userOutput += ". ";
         displayTextArea.setText(displayTextString() + "\nYou are transmitting: " +userOutput);
@@ -270,14 +275,14 @@ public class HamUIController {
 
     @FXML
     public void speedDownAction() { //speed controller
-        client.setPlaybackSpeed(client.getPlaybackSpeed() - 0.1);
+        radio.setPlaybackSpeed(radio.getPlaybackSpeed() - 0.1);
         if(!isStartClicked){
-            displayTextArea.setText("Your playback speed changed to " + client.getPlaybackSpeed() +
-                    "\nYour received frequency: " + client.getReceivingFrequency() + "MHz \n" +
-                    "\nYour transmit frequency: " + client.getTransmitFrequency() + "MHz \n"
+            displayTextArea.setText("Your playback speed changed to " + radio.getPlaybackSpeed() +
+                    "\nYour received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                    "\nYour transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"
                     + "Please hit Start to transmit and" + " receive CW signal" + "\n");
         } else {
-            displayTextArea.setText("Your Playback Speed changed to " + client.getPlaybackSpeed() +
+            displayTextArea.setText("Your Playback Speed changed to " + radio.getPlaybackSpeed() +
                     "\n" + displayTextString() +
                     "\nYou are transmitting: " + userOutput);
         }
@@ -285,14 +290,14 @@ public class HamUIController {
 
     @FXML
     public void speedUpAction() { //speed controller
-        client.setPlaybackSpeed(client.getPlaybackSpeed() + 0.1);
+        radio.setPlaybackSpeed(radio.getPlaybackSpeed() + 0.1);
         if(!isStartClicked){
-            displayTextArea.setText("Your playback speed changed to " + client.getPlaybackSpeed() +
-                    "\nYour received frequency: " + client.getReceivingFrequency() + "MHz \n" +
-                    "\nYour transmit frequency: " + client.getTransmitFrequency() + "MHz \n"
+            displayTextArea.setText("Your playback speed changed to " + radio.getPlaybackSpeed() +
+                    "\nYour received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                    "\nYour transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"
                     + "Please hit Start to transmit and" + " receive CW signal" + "\n");
         } else {
-            displayTextArea.setText("Your Playback Speed changed to " + client.getPlaybackSpeed() + "\n" + displayTextString() +
+            displayTextArea.setText("Your Playback Speed changed to " + radio.getPlaybackSpeed() + "\n" + displayTextString() +
                     "\nYou are transmitting: " + userOutput);
         }
     }
@@ -301,12 +306,13 @@ public class HamUIController {
     public void playBackAction() { //playback controller
         if (!isStartClicked){
             String message = "Please hit Start and type in before Playback!";
-            new Alert(Alert.AlertType.INFORMATION, message).show();
+            new Alert(AlertType.INFORMATION, message).show();
             return;
         }
-        if (Math.abs(client.getReceivingFrequency() - client.getTransmitFrequency()) <= client.getBandWidth() / 2) {
-            MorseCodePlayer player = new MorseCodePlayer(client.getPlaybackSpeed(), client);
+        if (Math.abs(radio.getReceiveFrequency() - radio.getTransmitFrequency()) <= radio.getBandWidth() / 2) {
+            MorseCodePlayer player = new MorseCodePlayer(radio.getPlaybackSpeed(), radio);
             player.playMorseCode(userOutput);
+
             displayTextArea.setText("Start play back!\n" + displayTextString() + "\nYou are transmitting: " + userOutput);
         }
     }
@@ -315,15 +321,15 @@ public class HamUIController {
     public void bandwidthUpAction(){ //freq controller
         String range = rangeComboBox.getSelectionModel().getSelectedItem();
         if (range.equals("HF")) {
-            client.filerBandWidth(client.getBandWidth() + this.minTune);
+            radio.setBandWidth(radio.getBandWidth() + this.minTune);
         } else {
-            client.filerBandWidth(client.getBandWidth() + this.maxTune);
+            radio.setBandWidth(radio.getBandWidth() + this.maxTune);
         }
 
         if(!isStartClicked){
-            displayTextArea.setText("Your received frequency: " + client.getReceivingFrequency() + "MHz \n" +
-                    "Your transmit frequency: " + client.getTransmitFrequency() + "MHz \n" +
-                    "Your bandwidth: " + client.getBandWidth() + "MHz \n"
+            displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                    "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n" +
+                    "Your bandwidth: " + radio.getBandWidth() + "MHz \n"
                     + "Please hit Start to transmit and" + " receive CW signal" + "\n");
         } else {
             displayTextArea.setText("Your bandwidth changed to \n" + displayTextString() + "\nYou are transmitting: " + userOutput);
@@ -334,15 +340,15 @@ public class HamUIController {
     public void bandwidthDownAction(){ //freq controller
         String range = rangeComboBox.getSelectionModel().getSelectedItem();
         if (range.equals("HF")) {
-            client.filerBandWidth(client.getBandWidth() - this.minTune);
+            radio.setBandWidth(radio.getBandWidth() - this.minTune);
         } else {
-            client.filerBandWidth(client.getBandWidth() - this.maxTune);
+            radio.setBandWidth(radio.getBandWidth() - this.maxTune);
         }
 
         if(!isStartClicked){
-            displayTextArea.setText("Your received frequency: " + client.getReceivingFrequency() + "MHz \n" +
-                    "Your transmit frequency: " + client.getTransmitFrequency() + "MHz \n" +
-                    "Your bandwidth: " + client.getBandWidth() + "MHz \n"
+            displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                    "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n" +
+                    "Your bandwidth: " + radio.getBandWidth() + "MHz \n"
                     + "Please hit Start to transmit and" + " receive CW signal" + "\n");
         } else {
             displayTextArea.setText("Your bandwidth changed to \n" + displayTextString() + "\nYou are transmitting: " + userOutput);
@@ -376,10 +382,6 @@ public class HamUIController {
 
     @FXML private void createTestUser() throws IOException {
         App.setRoot("RadioUserTest");
-    }
-
-    public void connectToServer() throws IOException {
-        client.connectToServer("localhost", 8080);
     }
 
 }

@@ -1,9 +1,25 @@
-package edu.augustana;
+package edu.augustana.Application.UIHelper;
+
+import edu.augustana.RadioModel.HamRadioSimulatorInterface;
+import javafx.scene.control.TextField;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MorseCodeTranslator {
+    private TextField translateTextField;
+    private boolean isBandSelected;
+    private HamRadioSimulatorInterface radio;
+
+    public MorseCodeTranslator(TextField translateTextField, HamRadioSimulatorInterface radio) {
+        this.translateTextField = translateTextField;
+        this.radio = radio;
+    }
+
+    public void setBandSelected(boolean bandSelected) {
+        isBandSelected = bandSelected;
+    }
+
     private static final Map<String, Character> MORSE_TO_CHAR = new HashMap<>();
     private static final Map<Character, String> CHAR_TO_MORSE = new HashMap<>();
 
@@ -51,5 +67,4 @@ public class MorseCodeTranslator {
         }
         return morse.toString().trim();
     }
-
 }

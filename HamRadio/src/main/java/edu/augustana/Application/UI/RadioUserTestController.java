@@ -1,17 +1,16 @@
-package edu.augustana;
+package edu.augustana.Application.UI;
 
-import javafx.event.ActionEvent;
+import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import javafx.fxml.FXML;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-public class RadioUserTestController extends HamUIController{
+public class RadioUserTestController extends HamUIController {
 
-    private HamRadioClientInterface client;
+    private HamRadioSimulatorInterface radio;
 
     @FXML
     private TextArea CWTextArea;
@@ -41,7 +40,7 @@ public class RadioUserTestController extends HamUIController{
     }
 
     @FXML public void initialize(){
-        setClient(this.client);
+        setRadio(this.radio);
     }
 
     @FXML private void switchToHamUI() throws IOException {

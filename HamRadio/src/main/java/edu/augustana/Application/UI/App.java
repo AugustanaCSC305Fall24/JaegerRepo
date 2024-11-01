@@ -1,4 +1,4 @@
-package edu.augustana;
+package edu.augustana.Application.UI;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,6 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
-    private HamRadioClientInterface radioClient = new HamRadioClient();
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -37,7 +36,7 @@ public class App extends Application {
 
     private static void switchToView(String fxmlFileName) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxmlFileName));
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/edu/augustana/Application/UI/" + fxmlFileName));
             scene.setRoot(fxmlLoader.load());
         } catch (IOException ex) {
             System.err.println("Can't find FXML file " + fxmlFileName);

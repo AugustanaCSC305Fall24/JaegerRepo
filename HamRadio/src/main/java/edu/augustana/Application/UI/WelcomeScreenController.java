@@ -1,4 +1,4 @@
-package edu.augustana;
+package edu.augustana.Application.UI;
 
 import java.io.IOException;
 import javafx.fxml.FXML;

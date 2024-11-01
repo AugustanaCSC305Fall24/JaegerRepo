@@ -4,7 +4,9 @@ module edu.augustana {
     requires Java.WebSocket;
     requires tyrus.standalone.client;
     requires java.desktop;
+    requires jdk.jfr;
 
-    opens edu.augustana to javafx.fxml;
-    exports edu.augustana;
+    opens edu.augustana.Application.UI to javafx.fxml;
+    exports edu.augustana.Application.UI;
+
 }

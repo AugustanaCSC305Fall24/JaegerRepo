@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.WelcomeScreenController">
+<AnchorPane prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.WelcomeScreenController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b2d9c0" height="304.0" layoutY="179.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="640.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#90c5a2" height="210.0" layoutY="247.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="640.0" />

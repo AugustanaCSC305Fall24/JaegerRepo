@@ -1,4 +1,4 @@
-package edu.augustana;
+package edu.augustana.RadioModel;
 
 public interface HamRadioHelperInterface {
 
