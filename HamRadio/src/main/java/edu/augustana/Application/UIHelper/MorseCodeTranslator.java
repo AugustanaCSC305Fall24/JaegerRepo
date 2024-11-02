@@ -1,17 +1,18 @@
 package edu.augustana.Application.UIHelper;
 
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class MorseCodeTranslator {
-    private TextField translateTextField;
+    private TextArea translateTextField;
     private boolean isBandSelected;
     private HamRadioSimulatorInterface radio;
 
-    public MorseCodeTranslator(TextField translateTextField, HamRadioSimulatorInterface radio) {
+    public MorseCodeTranslator(TextArea translateTextField, HamRadioSimulatorInterface radio) {
         this.translateTextField = translateTextField;
         this.radio = radio;
     }

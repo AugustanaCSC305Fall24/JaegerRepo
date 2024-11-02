@@ -1,5 +1,6 @@
 package edu.augustana.Application.UI;
 
+import edu.augustana.Application.UIHelper.KeyBindManager;
 import edu.augustana.RadioModel.Practice.PracticeScenerio;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,7 @@ public class App extends Application {
     private static Scene scene;
     private static List<PracticeScenerio> practiceScenerioList = new ArrayList<>();
     private static int practiceIndex = -1;
+    private static final KeyBindManager keyBindManager = new KeyBindManager();
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -29,6 +31,8 @@ public class App extends Application {
         practiceIndex = 0;
         stage.setScene(scene);
         switchToMainView();
+        // Set the key event handler for the scene
+        scene.addEventHandler(javafx.scene.input.KeyEvent.KEY_PRESSED, keyBindManager::handleKeyPress);
         stage.show();
     }
 
@@ -62,6 +66,10 @@ public class App extends Application {
             ex.printStackTrace();
         }
 
+    }
+
+    public static KeyBindManager getKeyBindManager() {
+        return keyBindManager;
     }
 
     public static void switchToMainView() {

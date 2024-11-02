@@ -2,25 +2,25 @@ package edu.augustana.Application.UIHelper;
 
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 import java.util.Scanner;
 
-public class Text2MorseController {
-    private TextField translateTextField;
+public class Text2MorseManager {
+    private TextArea translateTextField;
     private boolean isBandSelected;
     private HamRadioSimulatorInterface radio;
-    private PlaybackSpeedController speedController;
+    private PlaybackSpeedManager speedController;
     private MorseCodeTranslator translator;
     private MorseCodePlayer player;
 
-    public Text2MorseController(TextField translateTextField, HamRadioSimulatorInterface radio,
-                                MorseCodeTranslator translator, MorseCodePlayer player) {
+    public Text2MorseManager(TextArea translateTextField, HamRadioSimulatorInterface radio) {
         this.translateTextField = translateTextField;
         this.radio = radio;
-        this.speedController = new PlaybackSpeedController(translateTextField, radio);
+        this.speedController = new PlaybackSpeedManager(translateTextField, radio);
         this.translator = new MorseCodeTranslator(translateTextField, radio);
-        //this.player = new MorseCodePlayer(speedFactor, radio);
+        this.player = new MorseCodePlayer(radio.getPlaybackSpeed(), radio);
     }
 
     public void setBandSelected(boolean bandSelected) {
