@@ -69,9 +69,7 @@ public class HamPracticeUIController extends HamUIController{
     private void startButton() throws IOException {
         isStartClicked = true;
         statusConnect = " Connected";
-        String radioMessage = displayTextString() + "\nYou are transmitting: " + userOutput;
         statusTextArea.setText(displayTextString());
-        addMessageToChatLogUI(radioMessage);
     }
 
     private void addMessageToChatLogUI(String radioMessage) {
