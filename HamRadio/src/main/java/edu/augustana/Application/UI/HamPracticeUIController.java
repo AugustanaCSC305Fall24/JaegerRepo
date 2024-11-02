@@ -1,12 +1,12 @@
 package edu.augustana.Application.UI;
 
+import edu.augustana.Application.UIHelper.MorseCodeHandlerManager;
 import edu.augustana.Application.UIHelper.MorseCodePlayer;
 import edu.augustana.Application.UIHelper.MorseCodeTranslator;
 import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.RadioModel.Practice.Bot;
 import edu.augustana.RadioModel.Practice.PracticeScenerio;
-import edu.augustana.RadioModel.Practice.TaskForPractice;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
@@ -19,7 +19,7 @@ import javafx.scene.text.FontWeight;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class HamPracticeUIController extends HamUIController{
+public class HamPracticeUIController extends HamUIController {
     HamRadioSimulatorInterface radio;
     PracticeScenerio room;
     private String userOutput = "";
@@ -31,6 +31,7 @@ public class HamPracticeUIController extends HamUIController{
     private static final double DEFAULT_MAX_FREQ = 7067;
     private static final double DEFAULT_TUNE = 1.0;
     public static final int TONE = 600;
+    MorseCodeHandlerManager morseCodeHandlerManager;
 
     @FXML
     private TextArea statusTextArea;
@@ -68,6 +69,7 @@ public class HamPracticeUIController extends HamUIController{
         this.radio = new HamRadioSimulator(0,0,0,0
                 ,0,0,1.0,29.0);
         this.room = App.getCurrentPracticeScenerio();
+        morseCodeHandlerManager = new MorseCodeHandlerManager(inputTextArea, radio);
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
         radio.setTransmitFrequency(transmitFreqSlider.getValue());
@@ -224,12 +226,7 @@ public class HamPracticeUIController extends HamUIController{
 
     @FXML
     public void morseToTextAction() { //morsecode controller
-        if (!isStartClicked){
-            String message = "Please hit Start and type in before Playback!";
-            new Alert(Alert.AlertType.INFORMATION, message).show();
-        }
-        String morseToText = MorseCodeTranslator.morseToText(cleanMorse);
-        inputTextArea.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
+        morseCodeHandlerManager.morseToTextAction();
     }
 
     @FXML

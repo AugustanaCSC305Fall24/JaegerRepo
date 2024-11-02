@@ -5,7 +5,7 @@ import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 
-public class FrequencyController {
+public class FrequencyManager {
     private final double MIN_TUNE = 0.1;
     private final double MAX_TUNE = 1.0;
     private HamRadioSimulatorInterface radio;
@@ -18,7 +18,7 @@ public class FrequencyController {
 
     private TextArea displayTextArea; //this class
 
-    public FrequencyController(HamRadioSimulatorInterface radio, ComboBox<String> rangeComboBox, ComboBox<String> bandComboBox
+    public FrequencyManager(HamRadioSimulatorInterface radio, ComboBox<String> rangeComboBox, ComboBox<String> bandComboBox
             , TextArea displayTextArea, BandSelectionCallback callback) {
         this.radio = radio;
         this.rangeComboBox = rangeComboBox;

@@ -1,20 +1,13 @@
 package edu.augustana.Application.UI;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 import edu.augustana.Application.UIHelper.*;
 
 import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-
-import java.io.IOException;
-import javafx.fxml.FXML;
-import jdk.jfr.Frequency;
 
 public class HamGUIController {
     @FXML
@@ -28,15 +21,15 @@ public class HamGUIController {
     @FXML
     private TextField translateTextField; //this class
     private HamRadioSimulatorInterface radio;
-    MorseCodeHandlerController morseCodeHandlerController;
+    MorseCodeHandlerManager morseCodeHandlerManager;
 
     private boolean isBandSelected;
     private boolean isStartClicked;
-    private FrequencyController frequencyController;
+    private FrequencyManager frequencyManager;
 
     private void setBandSelected(boolean bandSelected) {
         isBandSelected = bandSelected;
-        morseCodeHandlerController.setBandSelected(bandSelected);
+        morseCodeHandlerManager.setBandSelected(bandSelected);
     }
 
     private void setSimulator(HamRadioSimulatorInterface radio) {
@@ -54,7 +47,7 @@ public class HamGUIController {
                 0, 0,0,0,0);
         rangeComboBox.getItems().addAll("HF", "VHF", "UHF");
         radio.setVolume(volumeSlider.getValue());
-        frequencyController = new FrequencyController(radio, rangeComboBox, bandComboBox,
+        frequencyManager = new FrequencyManager(radio, rangeComboBox, bandComboBox,
                 displayTextArea, this::setBandSelected);
         //morseCodeHandlerController = new MorseCodeHandlerController();
     }
@@ -70,7 +63,7 @@ public class HamGUIController {
             new Alert(Alert.AlertType.INFORMATION, message).show();
         }
         isStartClicked = true;
-        this.frequencyController.setStartClicked(true);
+        this.frequencyManager.setStartClicked(true);
         //displayTextArea.setText(displayTextString() + "\nYou are transmitting: " + userOutput);
     }
 
