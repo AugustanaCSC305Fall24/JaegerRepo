@@ -1,4 +1,6 @@
-package edu.augustana;
+package edu.augustana.Application.UIHelper;
+
+import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 
 import javax.sound.sampled.*;
 
@@ -11,12 +13,12 @@ public class MorseCodePlayer{
     private static final int FREQUENCY = 800; // bug vcl
 
     private double speedFactor;
-    private HamRadioClientInterface client;
+    private HamRadioSimulatorInterface radio;
 
-    public MorseCodePlayer(double speedFactor, HamRadioClientInterface client) {
+    public MorseCodePlayer(double speedFactor, HamRadioSimulatorInterface radio) {
 
         this.speedFactor = speedFactor;
-        this.client = client;
+        this.radio = radio;
     }
 
     public void setSpeedFactor(double speedFactor) {
@@ -24,10 +26,12 @@ public class MorseCodePlayer{
     }
 
     private int adjustDuration(int baseDuration) {
+       // System.out.println(speedFactor);
         return (int) (baseDuration / speedFactor);
     }
 
     public void playMorseCode(String input) {
+
         String[] words = input.split("/");
         for (String word : words) {
             playWord(word.trim());
@@ -46,9 +50,9 @@ public class MorseCodePlayer{
     private void playLetter(String letter) {
         for (char element : letter.toCharArray()) {
             if (element == '.') {
-                playTone(client.getTransmitFrequency(), adjustDuration(BASE_DOT_DURATION));
+                playTone(radio.getTransmitFrequency(), adjustDuration(BASE_DOT_DURATION));
             } else if (element == '-') {
-                playTone(client.getTransmitFrequency(), adjustDuration(BASE_DASH_DURATION));
+                playTone(radio.getTransmitFrequency(), adjustDuration(BASE_DASH_DURATION));
             } else {
                 throw new IllegalArgumentException("Invalid Morse code character: " + element);
             }
@@ -81,7 +85,7 @@ public class MorseCodePlayer{
                 float maxVolume = volumeControl.getMaximum(); // Thường là 6.02 dB
 
                 // Chuyển đổi âm lượng từ phần trăm (0-100) sang giá trị dB
-                float volumeInDb = (float) ((client.getVolume() / 100) * (maxVolume - minVolume) + minVolume);
+                float volumeInDb = (float) ((radio.getVolume() / 100) * (maxVolume - minVolume) + minVolume);
 
                 volumeControl.setValue(volumeInDb);  // Điều chỉnh âm lượng sau khi quy đổi
             } else {

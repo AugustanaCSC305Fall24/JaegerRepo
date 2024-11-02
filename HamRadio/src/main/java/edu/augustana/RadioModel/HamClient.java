@@ -1,4 +1,4 @@
-package edu.augustana;
+package edu.augustana.RadioModel;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

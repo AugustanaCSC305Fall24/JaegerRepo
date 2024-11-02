@@ -1,4 +1,4 @@
-package edu.augustana;
+package edu.augustana.Application.UI;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
@@ -27,4 +27,10 @@ public class WelcomeScreenController {
     private void switchToHamUI() throws IOException {
         App.setRoot("HamUI");
     }
+    @FXML
+    private void switchToHamPractice() throws IOException {
+        App.setRoot("HamPracticeUI");
+    }
+
+
 }
