@@ -78,7 +78,8 @@ public class HamPracticeUIController extends HamUIController{
         for (int i =0; i < Bot.nameList.length; i++){
             String name = Bot.getRandomBotName();
             int level = Bot.getRandomLevel();
-            Bot newBot = new Bot(level, name);
+            double frequency = Bot.getRandomFreq();
+            Bot newBot = new Bot(level, name, frequency);
             room.getBotList().add(newBot);
         }
 

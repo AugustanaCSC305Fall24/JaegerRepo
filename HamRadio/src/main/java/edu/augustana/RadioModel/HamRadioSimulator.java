@@ -56,7 +56,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
 
     @Override
     public double getTransmitFrequency() {
-        return this.transmitFrequency;
+        return Math.round(this.transmitFrequency * 100.0) / 100.0;
     }
 
     @Override
@@ -86,7 +86,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
 
     @Override
     public double getReceiveFrequency() {
-        return this.receiveFrequency;
+        return Math.round(this.receiveFrequency * 100.0) / 100.0;
     }
 
     @Override
