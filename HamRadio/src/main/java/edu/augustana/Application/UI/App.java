@@ -49,13 +49,6 @@ public class App extends Application {
         switchToView("WelcomeScreen.fxml");
     }
 
-    public static void switchToRegisterView() {
-        switchToView("WelcomeScreen.fxml");
-    }
-
-    public static void switchToLogInView() {
-        switchToView("WelcomeScreen.fxml");
-    }
 
     public static void main(String[] args) {
         launch();

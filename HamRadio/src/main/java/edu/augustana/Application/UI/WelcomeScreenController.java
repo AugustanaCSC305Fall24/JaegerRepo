@@ -27,4 +27,10 @@ public class WelcomeScreenController {
     private void switchToHamUI() throws IOException {
         App.setRoot("HamUI");
     }
+    @FXML
+    private void switchToHamPractice() throws IOException {
+        App.setRoot("HamPracticeUI");
+    }
+
+
 }
