@@ -47,6 +47,7 @@ public class HamUIController {
         this.client = new HamRadioClient();
         rangeComboBox.getItems().addAll("HF", "VHF", "UHF");
         client.setVolume(volumeSlider.getValue());
+        System.out.println((client.getPlaybackSpeed()));
     }
 
     public HamRadioClientInterface getClient(){
