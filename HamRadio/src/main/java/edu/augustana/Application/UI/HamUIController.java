@@ -157,7 +157,7 @@ public class HamUIController {
         displayTextArea.setText(displayTextString() + "\nYou are transmitting: " +userOutput);
     }
 
-    private void showAlert() {
+    public void showAlert() {
         Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle("Action Required");
         alert.setHeaderText("You did not hit START");

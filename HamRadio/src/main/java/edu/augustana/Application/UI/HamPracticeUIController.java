@@ -16,7 +16,7 @@ import javafx.scene.text.FontWeight;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class HamPracticeUIController {
+public class HamPracticeUIController extends HamUIController{
 
 
     private static final double DEFAULT_MIN_FREQ = 7000;
@@ -56,26 +56,13 @@ public class HamPracticeUIController {
     // To track if 'Start' button has been pressed
     private boolean isStartClicked = false;
 
-
-    @FXML
-    private void switchToWelcomeScreen() throws IOException {
-        App.setRoot("WelcomeScreen");
-    }
-
+    @Override
     @FXML
     public void initialize() throws IOException {
         this.radio = new HamRadioSimulator(0,0,0,0
                 ,0,0,1.0,0);
         radio.setVolume(volumeSlider.getValue());
         addMessageToChatLogUI("Radio: Hello, welcome to HAM Practice!");
-    }
-
-    public HamRadioSimulatorInterface getRadio(){
-        return this.radio;
-    }
-
-    public void setRadio(HamRadioSimulatorInterface radio){
-        this.radio = radio;
     }
 
     @FXML
@@ -96,6 +83,7 @@ public class HamPracticeUIController {
         Platform.runLater(() -> chatLogScrollPane.setVvalue(1.0)); // scroll the scrollpane to the bottom
     }
 
+    @Override
     @FXML public void volumeSliderAction(){ //volumeController
         double customizedVolume = volumeSlider.getValue();
         radio.setVolume(customizedVolume);
@@ -134,23 +122,6 @@ public class HamPracticeUIController {
             statusTextArea.setText("Your transmit frequency changed!\n" + displayTextString() + "\nYou are transmitting: " + userOutput);
         }
     }
-    private void initialize_frequency(double min, double max) { //freqController
-        radio.setMinReceiveFrequency(min);
-        radio.setMaxReceiveFrequency(max);
-        radio.setReceiveFrequency((radio.getMaxReceiveFrequency() + radio.getMinReceiveFrequency()) / 2);
-        radio.setTransmitFrequency((radio.getMaxReceiveFrequency() + radio.getMinReceiveFrequency()) / 2);
-    }
-
-    public String displayTextString() { //TextFieldController
-        String radioStatus = "Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
-                "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"+
-                "Radio Status: Connected. You can start transmitting right now." +
-                "\n" + "Radio Volume: " + radio.getVolume() +
-                "\n" + "Radio Playback Speed: " + radio.getPlaybackSpeed() +
-                "\n" + "Frequency Bandwidth: " + radio.getBandWidth();
-
-        return radioStatus;
-    }
 
     @FXML
     private void dashAction() {
@@ -178,18 +149,10 @@ public class HamPracticeUIController {
         statusTextArea.setText(displayTextString() + "\nYou are transmitting: " +userOutput);
     }
 
-    private void showAlert() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Action Required");
-        alert.setHeaderText("You did not hit START");
-        alert.setContentText("You must hit the 'Start' button, before using dot or dash.");
-        alert.showAndWait();
-    }
-
     @FXML
     public void spaceAction(ActionEvent event) {
         if (!isStartClicked) {
-            showAlert();
+            super.showAlert();
             return;
         }
         userOutput += "  ";
@@ -235,6 +198,17 @@ public class HamPracticeUIController {
             statusTextArea.setText("Your Playback Speed changed to " + radio.getPlaybackSpeed() + "\n" + displayTextString() +
                     "\nYou are transmitting: " + userOutput);
         }
+    }
+
+    public String displayTextString() { //TextFieldController
+        String radioStatus = "Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"+
+                "Radio Status: Connected. You can start transmitting right now." +
+                "\n" + "Radio Volume: " + radio.getVolume() +
+                "\n" + "Radio Playback Speed: " + radio.getPlaybackSpeed() +
+                "\n" + "Frequency Bandwidth: " + radio.getBandWidth();
+
+        return radioStatus;
     }
 
     @FXML
@@ -303,10 +277,6 @@ public class HamPracticeUIController {
         userOutput = textToMorse;
         statusTextArea.setText("You typed: " + textToBeTranslated + "\n"
                 + "Translated as: " + textToMorse);
-    }
-
-    @FXML private void createTestUser() throws IOException {
-        App.setRoot("RadioUserTest");
     }
 
     public void pushToTalkButton(ActionEvent actionEvent) {
