@@ -19,7 +19,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(new BorderPane(), 640, 480);
+        scene = new Scene(new BorderPane(), 900, 480);
         stage.setScene(scene);
         switchToMainView();
         stage.show();

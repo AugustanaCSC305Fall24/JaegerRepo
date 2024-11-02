@@ -19,9 +19,6 @@ public class HamUIController {
     private static final double DEFAULT_TUNE = 1.0;
 
     @FXML
-    private ComboBox<String> bandComboBox;
-
-    @FXML
     private TextArea displayTextArea;
 
     @FXML
@@ -90,10 +87,6 @@ public class HamUIController {
 
     @FXML
     private void startButton() throws IOException {
-        if (!isBandSelected){
-            String message = "Please select a frequency range and band before starting to transmit!";
-            new Alert(Alert.AlertType.INFORMATION, message).show();
-        }
         isStartClicked = true;
         displayTextArea.setText(displayTextString() + "\nYou are transmitting: " + userOutput);
     }
@@ -183,8 +176,8 @@ public class HamUIController {
     private void showAlert() {
         Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle("Action Required");
-        alert.setHeaderText("Please select the band and frequency first");
-        alert.setContentText("You must hit the 'Start' button, select the band, and set the frequency before using dot or dash.");
+        alert.setHeaderText("You did not hit START");
+        alert.setContentText("You must hit the 'Start' button, before using dot or dash.");
         alert.showAndWait();
     }
 
