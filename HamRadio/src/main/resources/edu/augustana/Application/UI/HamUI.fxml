@@ -55,13 +55,13 @@
             <Font name="Leelawadee UI Bold" size="12.0" />
          </font>
       </Label>
-      <Slider fx:id="transmitFreqSlider" blockIncrement="1.0" layoutX="24.0" layoutY="85.0" majorTickUnit="7.0" max="7067.0" min="7000.0" minorTickCount="1" prefHeight="37.0" prefWidth="228.0" showTickLabels="true" showTickMarks="true" value="7000.0" />
+      <Slider fx:id="transmitFreqSlider" blockIncrement="1.0" layoutX="24.0" layoutY="85.0" majorTickUnit="7.0" max="7067.0" min="7000.0" minorTickCount="1" onMouseReleased="#changeTransmittedFrequency" prefHeight="37.0" prefWidth="228.0" showTickLabels="true" showTickMarks="true" value="7000.0" />
       <Label layoutX="71.0" layoutY="68.0" text="Transmitting Frequency">
          <font>
             <Font name="Leelawadee UI Bold" size="12.0" />
          </font>
       </Label>
-      <Slider fx:id="receiveFreqSlider" blockIncrement="1.0" layoutX="24.0" layoutY="148.0" majorTickUnit="7.0" max="7067.0" min="7000.0" minorTickCount="1" prefHeight="37.0" prefWidth="228.0" showTickLabels="true" showTickMarks="true" value="7000.0" />
+      <Slider fx:id="receiveFreqSlider" blockIncrement="1.0" layoutX="24.0" layoutY="148.0" majorTickUnit="7.0" max="7067.0" min="7000.0" minorTickCount="1" onMouseReleased="#changeReceivedFrequency" prefHeight="37.0" prefWidth="228.0" showTickLabels="true" showTickMarks="true" value="7000.0" />
 
 </children>
 
