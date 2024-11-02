@@ -47,7 +47,6 @@ public class HamUIController {
 
     // To track if 'Start' button has been pressed
     private boolean isStartClicked = false;
-    private boolean isBandSelected = false;
 
 
     @FXML
@@ -68,21 +67,6 @@ public class HamUIController {
 
     public void setRadio(HamRadioSimulatorInterface radio){
         this.radio = radio;
-    }
-
-    @FXML private void selectRangeAction(){ //FrequencyController
-        isBandSelected = true;
-        initialize_frequency(DEFAULT_MIN_FREQ, DEFAULT_MAX_FREQ);
-
-        if(isStartClicked){
-            displayTextArea.setText(displayTextString() + "\nYou are transmitting: "+ userOutput);
-        } else {
-            displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
-                    "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz\n" +
-                    "Frequency Bandwidth: " + radio.getBandWidth()
-                    + "\nPlease hit Start to transmit and" + " receive CW signal" + "\n");
-        }
-
     }
 
     @FXML
@@ -277,7 +261,7 @@ public class HamUIController {
 
     @FXML
     public void morseToTextAction() { //morsecode controller
-        if (!isBandSelected){
+        if (!isStartClicked){
             String message = "Please hit Start and type in before Playback!";
             new Alert(Alert.AlertType.INFORMATION, message).show();
         }
@@ -287,7 +271,7 @@ public class HamUIController {
 
     @FXML
     public void textToMorseAction() { //morse code controller
-        if (!isBandSelected){
+        if (!isStartClicked){
             String message = "Please hit Start and type in before Playback!";
             new Alert(Alert.AlertType.INFORMATION, message).show();
         }
