@@ -57,7 +57,7 @@ public class HamUIController {
     @FXML
     public void initialize() throws IOException {
         this.radio = new HamRadioSimulator(0,0,0,0
-        ,0,0,1.0,0);
+        ,0,0,1.0,40.0);
         radio.setVolume(volumeSlider.getValue());
     }
 
@@ -224,7 +224,7 @@ public class HamUIController {
             return;
         }
         if (Math.abs(radio.getReceiveFrequency() - radio.getTransmitFrequency()) <= radio.getBandWidth() / 2) {
-            MorseCodePlayer player = new MorseCodePlayer(radio.getPlaybackSpeed(), radio);
+            MorseCodePlayer player = new MorseCodePlayer((int) radio.getWPM(), radio);
             player.playMorseCode(userOutput);
 
             displayTextArea.setText("Start play back!\n" + displayTextString() + "\nYou are transmitting: " + userOutput);

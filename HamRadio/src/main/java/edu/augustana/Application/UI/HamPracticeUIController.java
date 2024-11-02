@@ -30,6 +30,7 @@ public class HamPracticeUIController extends HamUIController{
     private static final double DEFAULT_MIN_FREQ = 7000;
     private static final double DEFAULT_MAX_FREQ = 7067;
     private static final double DEFAULT_TUNE = 1.0;
+    public static final int TONE = 600;
 
     @FXML
     private TextArea statusTextArea;
@@ -65,12 +66,14 @@ public class HamPracticeUIController extends HamUIController{
     @FXML
     public void initialize() throws IOException {
         this.radio = new HamRadioSimulator(0,0,0,0
-                ,0,0,1.0,0);
+                ,0,0,1.0,29.0);
         this.room = App.getCurrentPracticeScenerio();
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
         radio.setTransmitFrequency(transmitFreqSlider.getValue());
         addMessageToChatLogUI("Radio: Hello, welcome to HAM Practice!");
+        System.out.println("Radio WPM in Controller Practice Innitialize: "+radio.getWPM());
+
 
 //        for (TaskForPractice task : room.getTaskList()) {
 //            addMessageToChatLogUI(task.getDescription());
@@ -130,7 +133,7 @@ public class HamPracticeUIController extends HamUIController{
             return;
         }
 
-        radio.playTone(700, 300); //bug: frequency se luon la 1500 Hz regardless
+        radio.playTone(TONE, 300); //bug: frequency se luon la 1500 Hz regardless
         cleanMorse += "-";
         userOutput += "- ";
         inputTextArea.setText("You are transmitting: " + userOutput);
@@ -142,8 +145,7 @@ public class HamPracticeUIController extends HamUIController{
             showAlert();
             return;
         }
-
-        radio.playTone(600, 100); //bug: frequency se luon la 1500 Hz regardless
+        radio.playTone(TONE, 100);
         cleanMorse += ".";
         userOutput += ". ";
         inputTextArea.setText("You are transmitting: " +userOutput);
@@ -202,9 +204,8 @@ public class HamPracticeUIController extends HamUIController{
             return;
         }
         if (Math.abs(radio.getReceiveFrequency() - radio.getTransmitFrequency()) <= radio.getBandWidth() / 2) {
-            MorseCodePlayer player = new MorseCodePlayer(radio.getPlaybackSpeed(), radio);
+            MorseCodePlayer player = new MorseCodePlayer((int) radio.getWPM(), radio);
             player.playMorseCode(userOutput);
-
             statusTextArea.setText("Start play back!\n" + "\nYou are transmitting: " + userOutput);
         }
     }
