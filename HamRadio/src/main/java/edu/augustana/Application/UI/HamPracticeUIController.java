@@ -18,7 +18,11 @@ import java.util.Scanner;
 
 public class HamPracticeUIController extends HamUIController{
 
-
+    private String userOutput = "";
+    private String cleanMorse = "";
+    HamRadioSimulatorInterface radio;
+    // To track if 'Start' button has been pressed
+    private boolean isStartClicked = false;
     private static final double DEFAULT_MIN_FREQ = 7000;
     private static final double DEFAULT_MAX_FREQ = 7067;
     private static final double DEFAULT_TUNE = 1.0;
@@ -46,15 +50,6 @@ public class HamPracticeUIController extends HamUIController{
 
     @FXML
     private ScrollPane chatLogScrollPane;
-
-    private String userOutput = "";
-    private String cleanMorse = "";
-
-    HamRadioSimulatorInterface radio;
-
-
-    // To track if 'Start' button has been pressed
-    private boolean isStartClicked = false;
 
     @Override
     @FXML
