@@ -4,6 +4,11 @@ public class TransmittingTask implements TaskForPractice{
     private String description;
     private Bot sender;
 
+    public TransmittingTask(String description, Bot sender){
+        this.description = description;
+        this.sender = sender;
+    }
+
     @Override
     public String getDescription(){
         return description;

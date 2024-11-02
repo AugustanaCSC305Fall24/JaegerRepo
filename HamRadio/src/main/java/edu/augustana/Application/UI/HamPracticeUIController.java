@@ -4,6 +4,9 @@ import edu.augustana.Application.UIHelper.MorseCodePlayer;
 import edu.augustana.Application.UIHelper.MorseCodeTranslator;
 import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
+import edu.augustana.RadioModel.Practice.Bot;
+import edu.augustana.RadioModel.Practice.PracticeScenerio;
+import edu.augustana.RadioModel.Practice.TaskForPractice;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
@@ -18,6 +21,7 @@ import java.util.Scanner;
 
 public class HamPracticeUIController extends HamUIController{
     HamRadioSimulatorInterface radio;
+    PracticeScenerio room;
     private String userOutput = "";
     private String cleanMorse = "";
     private boolean isStartClicked = false;
@@ -54,15 +58,30 @@ public class HamPracticeUIController extends HamUIController{
     @FXML
     private TextArea inputTextArea;
 
+    @FXML
+    private ListView<Bot> botListView;
+
     @Override
     @FXML
     public void initialize() throws IOException {
         this.radio = new HamRadioSimulator(0,0,0,0
                 ,0,0,1.0,0);
+        this.room = App.getCurrentPracticeScenerio();
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
         radio.setTransmitFrequency(transmitFreqSlider.getValue());
         addMessageToChatLogUI("Radio: Hello, welcome to HAM Practice!");
+
+//        for (TaskForPractice task : room.getTaskList()) {
+//            addMessageToChatLogUI(task.getDescription());
+//        }
+        for (int i =0; i < Bot.nameList.length; i++){
+            String name = Bot.getRandomBotName();
+            int level = Bot.getRandomLevel();
+            Bot newBot = new Bot(level, name);
+            room.getBotList().add(newBot);
+        }
+
     }
 
     @FXML
@@ -70,6 +89,7 @@ public class HamPracticeUIController extends HamUIController{
         isStartClicked = true;
         statusConnect = " Connected";
         statusTextArea.setText(displayTextString());
+        botListView.getItems().addAll(room.getBotList());
     }
 
     private void addMessageToChatLogUI(String radioMessage) {

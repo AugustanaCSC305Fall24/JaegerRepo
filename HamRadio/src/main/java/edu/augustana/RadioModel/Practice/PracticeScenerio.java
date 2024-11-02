@@ -1,10 +1,18 @@
 package edu.augustana.RadioModel.Practice;
 
+import javafx.concurrent.Task;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class PracticeScenerio {
     private List<Bot> botList;
     private List<TaskForPractice> taskList;
+
+    public PracticeScenerio(){
+        botList = new ArrayList<>();
+        taskList = new ArrayList<>();
+    }
 
     private void addBot(){
 
@@ -22,11 +30,11 @@ public class PracticeScenerio {
 
     }
 
-    private List<Bot> getBotList(){
+    public List<Bot> getBotList(){
         return botList;
     }
 
-    private List<TaskForPractice> getTaskList(){
+    public List<TaskForPractice> getTaskList(){
         return taskList;
     }
 
