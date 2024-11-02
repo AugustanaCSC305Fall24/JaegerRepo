@@ -14,20 +14,24 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.shape.Circle;
 
 public class HamUIController {
-    @FXML
-    private ComboBox<String> rangeComboBox; //this class
 
     @FXML
-    private ComboBox<String> bandComboBox; //this class
+    private ComboBox<String> bandComboBox;
 
     @FXML
-    private TextArea displayTextArea; //this class
+    private TextArea displayTextArea;
 
     @FXML
-    private Slider volumeSlider; //this class
+    private Slider volumeSlider;
 
     @FXML
-    private TextField translateTextField; //this class
+    private TextArea statusTextArea;
+
+    @FXML
+    private Button pushToTalkButton;
+
+    @FXML
+    private Button englishOnButton;
 
     private String userOutput = "";
     private String cleanMorse = "";
@@ -36,10 +40,12 @@ public class HamUIController {
 
     private final double minTune = 0.1;
     private final double maxTune = 1.0;
+    private double defaultTune = 1.0;
 
     // To track if 'Start' button has been pressed
     private boolean isStartClicked = false;
     private boolean isBandSelected = false;
+
 
     @FXML
     private void switchToWelcomeScreen() throws IOException {
@@ -50,7 +56,6 @@ public class HamUIController {
     public void initialize() throws IOException {
         this.radio = new HamRadioSimulator(0,0,0,0
         ,0,0,1.0,0);
-        rangeComboBox.getItems().addAll("HF", "VHF", "UHF");
         radio.setVolume(volumeSlider.getValue());
     }
 
@@ -64,19 +69,6 @@ public class HamUIController {
 
     @FXML private void selectRangeAction(){ //FrequencyController
         isBandSelected = true;
-        if (rangeComboBox.getSelectionModel().getSelectedItem().equals("HF")) {
-            bandComboBox.getItems().clear();
-            bandComboBox.getItems().addAll("160m", "80m", "40m");
-            bandComboBox.getSelectionModel().select(0);
-        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("VHF")) {
-            bandComboBox.getItems().clear();
-            bandComboBox.getItems().addAll("6m", "2m");
-            bandComboBox.getSelectionModel().select(0);
-        } else if (rangeComboBox.getSelectionModel().getSelectedItem().equals("UHF")) {
-            bandComboBox.getItems().clear();
-            bandComboBox.getItems().addAll("70cm", "33cm", "23cm");
-            bandComboBox.getSelectionModel().select(0);
-        }
 
         String band = bandComboBox.getSelectionModel().getSelectedItem();
         if (band.equals("160m")) {
@@ -133,17 +125,11 @@ public class HamUIController {
 
     @FXML
     private void tuneUpButton() { //freqController
-        String range = rangeComboBox.getSelectionModel().getSelectedItem();
-        if (range.equals("HF")) {
-            radio.setReceiveFrequency(radio.getReceiveFrequency() + this.minTune);
-        } else {
-            radio.setReceiveFrequency(radio.getReceiveFrequency() + this.maxTune);
-        }
+        radio.setReceiveFrequency(radio.getReceiveFrequency() + this.defaultTune);
         if(!isStartClicked){
             displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
                     "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"
                     + "Please hit Start to transmit and" + " receive CW signal" + "\n");
-
         } else {
             displayTextArea.setText("Your received frequency changed!\n" + displayTextString() + "\nYou are transmitting: "+ userOutput);
         }
@@ -151,12 +137,7 @@ public class HamUIController {
 
     @FXML
     private void tuneDownButton() { //freqCOntroller
-        String range = rangeComboBox.getSelectionModel().getSelectedItem();
-        if (range.equals("HF")) {
-            radio.setReceiveFrequency(radio.getReceiveFrequency() - this.minTune);
-        } else {
-            radio.setReceiveFrequency(radio.getReceiveFrequency() - this.maxTune);
-        }
+        radio.setReceiveFrequency(radio.getReceiveFrequency() - this.defaultTune);
         if(!isStartClicked){
             displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
                     "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"
@@ -168,12 +149,7 @@ public class HamUIController {
     }
     @FXML
     private void tuneTDownButton() {
-        String range = rangeComboBox.getSelectionModel().getSelectedItem();
-        if (range.equals("HF")) {
-            radio.setTransmitFrequency(radio.getTransmitFrequency() - this.minTune);
-        } else {
-            radio.setTransmitFrequency(radio.getTransmitFrequency() - this.maxTune);
-        }
+        radio.setReceiveFrequency(radio.getTransmitFrequency() - this.defaultTune);
         if(!isStartClicked){
             displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
                     "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"
@@ -185,12 +161,7 @@ public class HamUIController {
 
     @FXML
     private void tuneTUpButton() {
-        String range = rangeComboBox.getSelectionModel().getSelectedItem();
-        if (range.equals("HF")) {
-            radio.setTransmitFrequency(radio.getTransmitFrequency() + this.minTune);
-        } else {
-            radio.setTransmitFrequency(radio.getTransmitFrequency() + this.maxTune);
-        }
+        radio.setReceiveFrequency(radio.getTransmitFrequency() + this.defaultTune);
         if(!isStartClicked){
             displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
                     "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"
@@ -319,12 +290,7 @@ public class HamUIController {
 
     @FXML
     public void bandwidthUpAction(){ //freq controller
-        String range = rangeComboBox.getSelectionModel().getSelectedItem();
-        if (range.equals("HF")) {
-            radio.setBandWidth(radio.getBandWidth() + this.minTune);
-        } else {
-            radio.setBandWidth(radio.getBandWidth() + this.maxTune);
-        }
+        radio.setBandWidth(radio.getBandWidth() + this.minTune);
 
         if(!isStartClicked){
             displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
@@ -338,12 +304,7 @@ public class HamUIController {
 
     @FXML
     public void bandwidthDownAction(){ //freq controller
-        String range = rangeComboBox.getSelectionModel().getSelectedItem();
-        if (range.equals("HF")) {
-            radio.setBandWidth(radio.getBandWidth() - this.minTune);
-        } else {
-            radio.setBandWidth(radio.getBandWidth() - this.maxTune);
-        }
+        radio.setBandWidth(radio.getBandWidth() - this.minTune);
 
         if(!isStartClicked){
             displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
@@ -362,7 +323,7 @@ public class HamUIController {
             new Alert(Alert.AlertType.INFORMATION, message).show();
         }
         String morseToText = MorseCodeTranslator.morseToText(cleanMorse);
-        translateTextField.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
+        displayTextArea.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
     }
 
     @FXML
@@ -376,7 +337,7 @@ public class HamUIController {
         String textToBeTranslated = scanner.nextLine();
         String textToMorse = MorseCodeTranslator.textToMorse(textToBeTranslated);
         userOutput = textToMorse;
-        translateTextField.setText("You typed: " + textToBeTranslated + "\n"
+        displayTextArea.setText("You typed: " + textToBeTranslated + "\n"
                 + "Translated as: " + textToMorse);
     }
 
@@ -384,6 +345,12 @@ public class HamUIController {
         App.setRoot("RadioUserTest");
     }
 
+    public void pushToTalkButton(ActionEvent actionEvent) {
+    }
+
+
+    public void englishOnButton(ActionEvent actionEvent) {
+    }
 }
 
 //add: PTTController -> change the state
