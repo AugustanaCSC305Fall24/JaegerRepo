@@ -24,6 +24,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 public class HamPracticeUIController extends HamUIController {
@@ -36,6 +37,7 @@ public class HamPracticeUIController extends HamUIController {
     private boolean isStartClicked = false;
     private String statusConnect = " Not Connected";
     private boolean isPushedToTalk = false;
+    private boolean isEnglishOn = false;
     private static final double DEFAULT_MIN_FREQ = 7000;
     private static final double DEFAULT_MAX_FREQ = 7067;
     private static final double DEFAULT_TUNE = 1.0;
@@ -75,6 +77,9 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     private Button rulesButton;
 
+    @FXML
+    private Button helpPeopleButton;
+
     @Override
     @FXML
     public void initialize() throws IOException {
@@ -89,17 +94,17 @@ public class HamPracticeUIController extends HamUIController {
         addMessageToChatLogUI("Radio: Please first read our game's rules by hitting \"Rules \"");
         System.out.println("Radio WPM in Controller Practice Innitialize: "+radio.getWPM());
 
-
         for (TaskForPractice task : room.getTaskList()) {
             addMessageToChatLogUI(task.getDescription());
         }
 
-        for (int i =0; i < Bot.nameList.length; i++){
-            String name = Bot.getRandomBotName();
+        for (int i = 0; i < Bot.nameList.length; i++){
+            String name = Bot.nameList[i];
             int level = Bot.getRandomLevel();
             double frequency = Bot.getRandomFreq();
             Bot newBot = new Bot(level, name, frequency);
             room.getBotList().add(newBot);
+            System.out.println("For testing in initialize() Practice UI: " + newBot + ", Freq: " + newBot.getBotFrequency());
         }
 
     }
@@ -142,6 +147,24 @@ public class HamPracticeUIController extends HamUIController {
     private void changeReceivedFrequency(){
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
         statusTextArea.setText(displayTextString());
+        givingTask();
+    }
+
+    private void givingTask() {
+        List<Bot> botList = room.getBotList();
+        double radioFreq = radio.getReceiveFrequency();
+        double radioBandwidth = radio.getBandWidth();
+        double receivableMin = radioFreq - radioBandwidth/2;
+        double receivableMax = radioFreq + radioBandwidth/2;
+        for (Bot bot: botList){
+            if(bot.getBotFrequency() < receivableMax && bot.getBotFrequency() > receivableMin){
+                bot.setDiscovered();
+                if (!bot.didAskForHelp()){
+                    addMessageToChatLogUI(bot.getIDCode() + " needs help!");
+                    bot.setDidAskForHelp();
+                }
+            }
+        }
     }
 
     @FXML
@@ -210,7 +233,6 @@ public class HamPracticeUIController extends HamUIController {
                 "\n" + "Volume: " + radio.getVolume() +
                 "\n" + "Playback Speed: " + radio.getPlaybackSpeed() +
                 "\n" + "Bandwidth: " + radio.getBandWidth();
-
         return radioStatus;
     }
 
@@ -232,12 +254,14 @@ public class HamPracticeUIController extends HamUIController {
     public void bandwidthUpAction(){ //freq controller
         radio.setBandWidth(radio.getBandWidth() + this.DEFAULT_TUNE);
         statusTextArea.setText(displayTextString());
+        givingTask();
     }
 
     @FXML
     public void bandwidthDownAction(){ //freq controller
         radio.setBandWidth(radio.getBandWidth() - this.DEFAULT_TUNE);
         statusTextArea.setText(displayTextString());
+        givingTask();
     }
 
     @FXML
@@ -261,26 +285,37 @@ public class HamPracticeUIController extends HamUIController {
     }
 
     public void pushToTalkButton(ActionEvent actionEvent) {
+        isPushedToTalk = true;
     }
 
 
     public void englishOnButton(ActionEvent actionEvent) {
+        isEnglishOn = true;
+    }
+
+    @FXML
+    private void helpPeopleAction(){
+        popUpWindow("HelpPeople", 400, 500, "Choose who to help!");
     }
 
     @FXML
     public void rulesButtonAction() {
+        popUpWindow("GameRules", 400, 500, "Game Rules");
+    }
+
+    private void popUpWindow(String fxmlFile, int windowWidth, int windowHeight, String title){
         try {
             // Load the FXML file for GameRules
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/edu/augustana/Application/UI/GameRules.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/edu/augustana/Application/UI/" + fxmlFile + ".fxml"));
             Parent root = fxmlLoader.load();
 
-            // Create a new scene and stage for the GameRules window
-            Scene scene = new Scene(root, 400, 500);
+            // Create a new scene and stage for the window
+            Scene scene = new Scene(root, windowWidth, windowHeight);
             Stage gameRulesStage = new Stage();
             gameRulesStage.setScene(scene);
 
             // Set the title for the new window
-            gameRulesStage.setTitle("Game Rules");
+            gameRulesStage.setTitle(title);
 
             // Show the new window
             gameRulesStage.show();

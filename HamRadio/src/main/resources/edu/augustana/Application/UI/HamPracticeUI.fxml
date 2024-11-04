@@ -50,7 +50,7 @@
         </Label>
         <Button fx:id="speedDownButton" layoutX="169.0" layoutY="207.0" onAction="#speedDownAction" prefWidth="20" text="-" />
         <Button fx:id="speedUpButton" ellipsisString="+" layoutX="197.0" layoutY="207.0" onAction="#speedUpAction" prefWidth="20" text="+" />
-        <Button layoutX="147.0" layoutY="357.0" mnemonicParsing="false" onAction="#createTestUser" prefHeight="25.0" prefWidth="100.0" text="TEST" />
+        <Button layoutX="147.0" layoutY="387.0" mnemonicParsing="false" onAction="#createTestUser" prefHeight="25.0" prefWidth="100.0" text="TEST" />
         <Button layoutX="147.0" layoutY="254.0" onAction="#pushToTalkButton" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="PUSH TO TALK" textFill="WHITE" />
         <Button layoutX="147.0" layoutY="291.0" onAction="#englishOnButton" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="ENG ON/OFF" textFill="WHITE" />
         <Label layoutX="80.0" layoutY="122.0" text="Receiving Frequency">
@@ -87,6 +87,7 @@
          </font>
       </Label>
       <Button fx:id="rulesButton" layoutX="147.0" layoutY="325.0" onAction="#rulesButtonAction" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="RULES" textFill="WHITE" />
+      <Button fx:id="helpPeopleButton" layoutX="147.0" layoutY="357.0" onAction="#helpPeopleAction" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="HELP PEOPLE" textFill="WHITE" />
 
     </children>
 

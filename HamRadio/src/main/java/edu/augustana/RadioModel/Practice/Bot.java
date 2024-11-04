@@ -6,10 +6,12 @@ public class Bot {
     private int level;
     private String idCode;
     private double frequency;
+    private boolean isDiscovered = false;
+    private boolean askedForHelp = false;
 
     public static final String[] nameList = {"Andy", "Mason", "Hoang", "Hieu",
                                             "Minh", "Unknown", "Yike", "Beef", "Cow",
-                                            "Fish"};
+                                            "Fish", "Stonedalh", "Vincent"};
     private static final Random randomGen = new Random();
 
     public Bot(int level, String idCode, double frequency){
@@ -34,9 +36,9 @@ public class Bot {
 
     }
 
-    public static String getRandomBotName() {
-        String name =nameList[randomGen.nextInt(nameList.length)];
-        return name;
+    public String getRandomBotName() {
+        //String name =nameList[randomGen.nextInt(nameList.length)];
+        return idCode;
     }
 
     public static int getRandomLevel(){
@@ -49,6 +51,22 @@ public class Bot {
         int max = 7067;
         double randomFreq = (double) (randomGen.nextInt(max - min + 1) + min) + randomGen.nextDouble();
         return randomFreq;
+    }
+
+    public double getBotFrequency(){
+        return frequency;
+    }
+
+    public void setDiscovered(){
+        isDiscovered = true;
+    }
+
+    public void setDidAskForHelp(){
+        askedForHelp = true;
+    }
+
+    public boolean didAskForHelp(){
+        return askedForHelp;
     }
 
     public String toString(){
