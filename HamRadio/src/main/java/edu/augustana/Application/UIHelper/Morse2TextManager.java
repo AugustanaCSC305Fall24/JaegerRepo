@@ -84,15 +84,9 @@ public class Morse2TextManager {
         int numOfSpaces = HelperClass.calculateSpaces(radio.getWPM(), timeSinceLastPress);
         System.out.println("Calculate space really is finished: " + numOfSpaces);
 
-        // Generate a string with the calculated number of spaces
-        StringBuilder spaces = new StringBuilder();
-        for (int i = 0; i < numOfSpaces; i++) {
-            spaces.append(" ");
-        }
-
         // Append the spaces and nextMorseCode to cleanMorseCode
-        cleanMorse += spaces.toString() + nextMorseCode;
-        userOutput += spaces.toString()+ " " + nextMorseCode;
+        cleanMorse += HelperClass.nextMorseCodeForCleanMorse(nextMorseCode, numOfSpaces);
+        userOutput += HelperClass.nextMorseCodeForUserOutput(nextMorseCode, numOfSpaces);
 
         //update translate text field
         updateTranslateTextField();

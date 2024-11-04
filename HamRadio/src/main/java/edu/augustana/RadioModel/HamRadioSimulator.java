@@ -1,7 +1,5 @@
 package edu.augustana.RadioModel;
 
-import edu.augustana.SoundPlayer;
-
 import javax.sound.sampled.*;
 import java.io.IOException;
 import java.util.ArrayList;
