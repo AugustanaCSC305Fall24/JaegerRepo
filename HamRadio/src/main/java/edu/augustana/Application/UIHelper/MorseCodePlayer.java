@@ -1,24 +1,31 @@
 package edu.augustana.Application.UIHelper;
 
+import edu.augustana.Application.UI.HamPracticeUIController;
+import edu.augustana.Application.UI.HamUIController;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 
 import javax.sound.sampled.*;
 
 public class MorseCodePlayer{
-    private static final int BASE_DOT_DURATION = 100;
-    private static final int BASE_DASH_DURATION = 300;
-    private static final int BASE_ELEMENT_PAUSE = 100;
-    private static final int BASE_LETTER_PAUSE = 300;
-    private static final int BASE_WORD_PAUSE = 700;
-    private static final int FREQUENCY = 800; // bug vcl
+    private int wordPerMin;
+    private int BASE_DOT_DURATION;
+    private int BASE_DASH_DURATION;
+    private int BASE_ELEMENT_PAUSE;
+    private int BASE_LETTER_PAUSE;
+    private int BASE_WORD_PAUSE ;
 
     private double speedFactor;
     private HamRadioSimulatorInterface radio;
 
-    public MorseCodePlayer(double speedFactor, HamRadioSimulatorInterface radio) {
-
-        this.speedFactor = speedFactor;
+    public MorseCodePlayer(int wpm, HamRadioSimulatorInterface radio) {
         this.radio = radio;
+        this.wordPerMin = wpm;
+        this.BASE_DOT_DURATION = (int) ((1.2 / wordPerMin) * 1000); // Milliseconds for each dot
+        this.BASE_DASH_DURATION = 3*BASE_DOT_DURATION;
+        this.BASE_ELEMENT_PAUSE = BASE_DOT_DURATION;
+        this.BASE_LETTER_PAUSE = BASE_DASH_DURATION;
+        this.BASE_WORD_PAUSE = 7*BASE_DOT_DURATION;
+
     }
 
     public void setSpeedFactor(double speedFactor) {
@@ -27,7 +34,8 @@ public class MorseCodePlayer{
 
     private int adjustDuration(int baseDuration) {
        // System.out.println(speedFactor);
-        return (int) (baseDuration / speedFactor);
+        return baseDuration;
+
     }
 
     public void playMorseCode(String input) {
@@ -50,9 +58,10 @@ public class MorseCodePlayer{
     private void playLetter(String letter) {
         for (char element : letter.toCharArray()) {
             if (element == '.') {
-                playTone(radio.getTransmitFrequency(), adjustDuration(BASE_DOT_DURATION));
+                System.out.println("Error in Adjust Duration in playLetter: " + adjustDuration(BASE_DOT_DURATION));
+                playTone(HamPracticeUIController.TONE, adjustDuration(BASE_DOT_DURATION));
             } else if (element == '-') {
-                playTone(radio.getTransmitFrequency(), adjustDuration(BASE_DASH_DURATION));
+                playTone(HamPracticeUIController.TONE, adjustDuration(BASE_DASH_DURATION));
             } else {
                 throw new IllegalArgumentException("Invalid Morse code character: " + element);
             }

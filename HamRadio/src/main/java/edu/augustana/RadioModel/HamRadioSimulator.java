@@ -23,7 +23,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     //constructor
     public HamRadioSimulator(double transmitFrequency, double minimumReceiveFrequency,
                              double maximumReceiveFrequency, double receiveFrequency,
-                             double bandWidth, double volume, double playbackSpeed, double WMP) throws IOException {
+                             double bandWidth, double volume, double playbackSpeed, double WPM) throws IOException {
         this.client = new HamRadioClient();
         this.transmitFrequency = transmitFrequency;
         this.minimumReceiveFrequency = minimumReceiveFrequency;
