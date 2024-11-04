@@ -58,6 +58,9 @@ public interface HamRadioSimulatorInterface {
     //setter of WPM
     void setWPM(double WPM);
 
+    //setter for is
+    void setIsKeyReleased(boolean isKeyRelease);
+
     //playTone
-    void playTone(double frequency, int duration);
+    void playTone(double frequency);
 }

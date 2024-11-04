@@ -19,6 +19,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     private double WPM;
     private SoundPlayer soundPlayer;
     private SignalProcessor signalProcessor;
+    private boolean isKeyReleased = true;
 
     //constructor
     public HamRadioSimulator(double transmitFrequency, double minimumReceiveFrequency,
@@ -135,7 +136,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     }
 
     @Override
-    public void playTone(double frequency, int duration) {
+    public void playTone(double frequency) {
         try {
             float sampleRate = 42000;
             byte[] buf = new byte[1];
@@ -160,12 +161,13 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
             }
 
             sdl.start();
-
+            int i = 0;
             // Sinh tín hiệu và phát qua loa
-            for (int i = 0; i < duration * (float) sampleRate / 1000; i++) {
+            while(!isKeyReleased) {
                 double angle = i / (sampleRate / frequency) * 2.0 * Math.PI;
                 buf[0] = (byte) (Math.sin(angle) * 127);  // Tạo sóng âm thanh
                 sdl.write(buf, 0, 1);
+                i++;
             }
 
             // Kết thúc phát âm thanh
@@ -180,5 +182,10 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     private void processSignalFromServer(byte[] signal) throws LineUnavailableException {
         signalProcessor.filterSignal(signal);
         soundPlayer.playSound(signal);
+    }
+
+    @Override
+    public void setIsKeyReleased(boolean isKeyReleased) {
+        this.isKeyReleased = isKeyReleased;
     }
 }

@@ -115,9 +115,18 @@ public class HamPracticeUIController extends HamUIController {
         statusConnect = " Connected";
         statusTextArea.setText(displayTextString());
         botListView.getItems().addAll(room.getBotList());
-        //App.getKeyBindManager().registerKeybind(KeyCode.ENTER, this::dotAction);
-        //App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::dashAction);
+        App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
     }
+
+    private void onPress() {
+        radio.setIsKeyReleased(false);
+        radio.playTone(600);
+    }
+
+    private void onRelease() {
+        radio.setIsKeyReleased(true);
+    }
+
 
     private void addMessageToChatLogUI(String radioMessage) {
         Label label = new Label(radioMessage);
@@ -165,53 +174,6 @@ public class HamPracticeUIController extends HamUIController {
                 }
             }
         }
-    }
-
-    @FXML
-    private void dashAction() {
-        if (!isStartClicked) {
-            showAlert();
-            return;
-        }
-
-        radio.playTone(TONE, 300); //bug: frequency se luon la 1500 Hz regardless
-        cleanMorse += "-";
-        userOutput += "- ";
-        inputTextArea.setText("You are transmitting: " + userOutput);
-    }
-
-    @FXML
-    public void dotAction() {
-        if (!isStartClicked) {
-            showAlert();
-            return;
-        }
-        radio.playTone(TONE, 100);
-        cleanMorse += ".";
-        userOutput += ". ";
-        inputTextArea.setText("You are transmitting: " +userOutput);
-    }
-
-    @FXML
-    public void spaceAction(ActionEvent event) {
-        if (!isStartClicked) {
-            super.showAlert();
-            return;
-        }
-        userOutput += "  ";
-        cleanMorse += " ";
-        inputTextArea.setText("You are transmitting: " + userOutput);
-    }
-
-    @FXML
-    public void splashAction(ActionEvent event) {
-        if (!isStartClicked) {
-            showAlert();
-            return;
-        }
-        userOutput += " / ";
-        cleanMorse += " / ";
-        inputTextArea.setText("You are transmitting: " + userOutput);
     }
 
     @FXML
