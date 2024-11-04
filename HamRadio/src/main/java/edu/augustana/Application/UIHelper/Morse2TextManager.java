@@ -14,7 +14,7 @@ public class Morse2TextManager {
     private MorseCodeTranslator translator;
     String cleanMorse;
     String userOutput;
-    KeyBindManager manager;
+    private boolean isFirstTime = true;
     private long lastPressTime; // Stores the time of the last key press
     private long currentPressTime;
     private long currentReleaseTime;
@@ -65,7 +65,13 @@ public class Morse2TextManager {
 
     private void displayMorseCode(long pressDuration) {
         System.out.println("displayMorseCode runs");
-        long timeSinceLastPress = currentPressTime - lastPressTime;
+        long timeSinceLastPress;
+        if (isFirstTime) {
+            timeSinceLastPress = 0;
+            isFirstTime = false;
+        } else {
+            timeSinceLastPress = currentPressTime - lastPressTime;
+        }
         if (pressDuration <= DOT_THRESHOLD) {
             display(".", timeSinceLastPress);
         } else { //then display dash
