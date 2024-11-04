@@ -110,8 +110,8 @@ public class HamPracticeUIController extends HamUIController {
         statusConnect = " Connected";
         statusTextArea.setText(displayTextString());
         botListView.getItems().addAll(room.getBotList());
-        App.getKeyBindManager().registerKeybind(KeyCode.ENTER, this::dotAction);
-        App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::dashAction);
+        //App.getKeyBindManager().registerKeybind(KeyCode.ENTER, this::dotAction);
+        //App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::dashAction);
     }
 
     private void addMessageToChatLogUI(String radioMessage) {

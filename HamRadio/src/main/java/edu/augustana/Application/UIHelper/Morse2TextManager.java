@@ -1,10 +1,10 @@
 package edu.augustana.Application.UIHelper;
 
+import edu.augustana.Application.UI.HelperClass;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.Application.UI.App;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
 public class Morse2TextManager {
@@ -16,8 +16,9 @@ public class Morse2TextManager {
     String userOutput;
     KeyBindManager manager;
     private long lastPressTime; // Stores the time of the last key press
-    private static final long LETTER_GAP = 300;  // Threshold for letter separation
-    private static final long WORD_GAP = 700;    // Threshold for word separation
+    private long currentPressTime;
+    private long currentReleaseTime;
+    private static final long DOT_THRESHOLD = 300;// Threshold for letter separation// Threshold for word separation
 
     public Morse2TextManager(TextArea translateTextField, HamRadioSimulatorInterface radio) {
         this.translateTextField = translateTextField;
@@ -41,51 +42,60 @@ public class Morse2TextManager {
     }
 
     public void morseToTextAction() {
+        System.out.println("morseToTextAction runs");
         //set the algoithm to bind with "enter" and "shift"
-        App.getKeyBindManager().registerKeybind(KeyCode.ENTER, this::onDot);
-        App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onDash);
+        App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onKeyPressed, this::onKeyReleased);
 
         String morseToText = translator.morseToText(cleanMorse);
         translateTextField.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
     }
 
-    //private methods
-    private void onDot() {
-        onClick(".");
+    private void onKeyPressed() {
+        // Stop the timer and calculate current time
+        currentPressTime = System.currentTimeMillis();
     }
-    private void onDash() {
-        onClick("-");
-    }
-    // This method is called when a dot or dash key is clicked, passing either "." or "-" as 'key'
-    private void onClick(String key) {
-        // Stop the timer and calculate time since last press
-        long currentTime = System.currentTimeMillis();
-        long timeSinceLastPress = currentTime - lastPressTime;
 
-        // Determine placement based on time since last press
-        if (timeSinceLastPress >= WORD_GAP) {
-            // Long gap, add three spaces (word separator)
-            cleanMorse += "   " + key;
-            userOutput += "    " + key;
-        } else if (timeSinceLastPress >= LETTER_GAP) {
-            // Medium gap, add one space (letter separator)
-            cleanMorse += " " + key;
-            userOutput += "  ";
-        } else {
-            // Short gap, add directly without spacing (same letter)
-            cleanMorse += key;
-            userOutput += " " + key;
+    private void onKeyReleased() {
+        //Stop the timer and calculate current time
+        currentReleaseTime = System.currentTimeMillis();
+        long duration = currentReleaseTime - currentPressTime;
+        displayMorseCode(duration);
+        lastPressTime = currentPressTime;
+    }
+
+    private void displayMorseCode(long pressDuration) {
+        System.out.println("displayMorseCode runs");
+        long timeSinceLastPress = currentPressTime - lastPressTime;
+        if (pressDuration <= DOT_THRESHOLD) {
+            display(".", timeSinceLastPress);
+        } else { //then display dash
+            display("-", timeSinceLastPress);
         }
+    }
 
-        // Update lastPressTime for the next click
-        lastPressTime = currentTime;
+    private void display(String nextMorseCode, long timeSinceLastPress) {
+        System.out.println("display runs");
+        int numOfSpaces = HelperClass.calculateSpaces(radio.getWPM(), timeSinceLastPress);
+        System.out.println("Calculate space really is finished: " + numOfSpaces);
 
-        // Update the display to show the Morse code sequence
+        // Create a string with the calculated number of spaces
+        String spaces = "";
+        for (int i = 0; i < numOfSpaces; i++) {
+            spaces += " ";
+        }
+        System.out.println("update spacing ez");
+
+        // Append the spaces and nextMorseCode to cleanMorseCode
+        cleanMorse += spaces + nextMorseCode;
+        userOutput += spaces + " " + nextMorseCode;
+
+        //update translate text field
         updateTranslateTextField();
     }
 
     // Updates the TextField to display the current Morse sequence
     private void updateTranslateTextField() {
+        System.out.println("textfield updated");
         translateTextField.setText("Current Morse Input: " + cleanMorse);
     }
 }
