@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -109,6 +110,8 @@ public class HamPracticeUIController extends HamUIController {
         statusConnect = " Connected";
         statusTextArea.setText(displayTextString());
         botListView.getItems().addAll(room.getBotList());
+        App.getKeyBindManager().registerKeybind(KeyCode.ENTER, this::dotAction);
+        App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::dashAction);
     }
 
     private void addMessageToChatLogUI(String radioMessage) {
