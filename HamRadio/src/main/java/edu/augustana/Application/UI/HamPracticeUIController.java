@@ -43,6 +43,8 @@ public class HamPracticeUIController extends HamUIController {
     private static final double DEFAULT_TUNE = 1.0;
     public static final int TONE = 600;
     MorseCodeHandlerManager morseCodeHandlerManager;
+    private volatile boolean isKeyReleased = true;
+    private Thread soundThread;
 
     @FXML
     private TextArea statusTextArea;
@@ -119,12 +121,25 @@ public class HamPracticeUIController extends HamUIController {
     }
 
     private void onPress() {
-        radio.setIsKeyReleased(false);
-        radio.playTone(600);
+//        radio.setIsKeyReleased(false);
+//        radio.playTone(600);
+        if (soundThread != null && soundThread.isAlive()) {
+            isKeyReleased = true;  // Signal existing thread to stop
+            try {
+                soundThread.join();  // Wait for the thread to finish
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        isKeyReleased = false;  // Reset to allow sound to play
+        soundThread = new Thread(() -> radio.playTone(600, this, radio.getVolume()));  // Pass the instance to access the field directly
+        soundThread.start();
     }
 
     private void onRelease() {
-        radio.setIsKeyReleased(true);
+//        radio.setIsKeyReleased(true);
+        this.isKeyReleased = true;
     }
 
 
@@ -285,6 +300,9 @@ public class HamPracticeUIController extends HamUIController {
             System.err.println("Can't find FXML file GameRules.fxml");
             ex.printStackTrace();
         }
+    }
+    public boolean isKeyReleased() {
+        return isKeyReleased;
     }
 
 }
