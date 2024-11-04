@@ -1,5 +1,7 @@
 package edu.augustana.RadioModel;
 
+import edu.augustana.Application.UI.HamPracticeUIController;
+
 import java.io.IOException;
 
 public interface HamRadioSimulatorInterface {
@@ -62,5 +64,5 @@ public interface HamRadioSimulatorInterface {
     void setIsKeyReleased(boolean isKeyRelease);
 
     //playTone
-    void playTone(double frequency);
+    void playTone(double frequency, HamPracticeUIController practiceUIController, double volume);
 }
