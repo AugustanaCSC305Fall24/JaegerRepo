@@ -57,7 +57,7 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
-    private static void switchToView(String fxmlFileName) {
+    public static void switchToView(String fxmlFileName) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/edu/augustana/Application/UI/" + fxmlFileName));
             scene.setRoot(fxmlLoader.load());

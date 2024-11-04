@@ -14,11 +14,13 @@ public class PracticeScenerio {
         taskList = new ArrayList<>();
     }
 
-    private void addBot(){
+    private void addBot(Bot botToAdd){
+        botList.add(botToAdd);
 
     }
 
-    private void deleteBot(){
+    private void deleteBot(Bot botToRemove){
+        botList.remove(botToRemove);
 
     }
 

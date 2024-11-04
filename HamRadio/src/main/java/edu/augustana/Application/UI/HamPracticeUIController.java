@@ -7,19 +7,27 @@ import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.RadioModel.Practice.Bot;
 import edu.augustana.RadioModel.Practice.PracticeScenerio;
+import edu.augustana.RadioModel.Practice.TaskForPractice;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class HamPracticeUIController extends HamUIController {
+    Scene scene;
+    Stage stage;
     HamRadioSimulatorInterface radio;
     PracticeScenerio room;
     private String userOutput = "";
@@ -63,6 +71,9 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     private ListView<Bot> botListView;
 
+    @FXML
+    private Button rulesButton;
+
     @Override
     @FXML
     public void initialize() throws IOException {
@@ -74,12 +85,14 @@ public class HamPracticeUIController extends HamUIController {
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
         radio.setTransmitFrequency(transmitFreqSlider.getValue());
         addMessageToChatLogUI("Radio: Hello, welcome to HAM Practice!");
+        addMessageToChatLogUI("Radio: Please first read our game's rules by hitting \"Rules \"");
         System.out.println("Radio WPM in Controller Practice Innitialize: "+radio.getWPM());
 
 
-//        for (TaskForPractice task : room.getTaskList()) {
-//            addMessageToChatLogUI(task.getDescription());
-//        }
+        for (TaskForPractice task : room.getTaskList()) {
+            addMessageToChatLogUI(task.getDescription());
+        }
+
         for (int i =0; i < Bot.nameList.length; i++){
             String name = Bot.getRandomBotName();
             int level = Bot.getRandomLevel();
@@ -250,4 +263,28 @@ public class HamPracticeUIController extends HamUIController {
 
     public void englishOnButton(ActionEvent actionEvent) {
     }
+
+    @FXML
+    public void rulesButtonAction() {
+        try {
+            // Load the FXML file for GameRules
+            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/edu/augustana/Application/UI/GameRules.fxml"));
+            Parent root = fxmlLoader.load();
+
+            // Create a new scene and stage for the GameRules window
+            Scene scene = new Scene(root, 400, 500);
+            Stage gameRulesStage = new Stage();
+            gameRulesStage.setScene(scene);
+
+            // Set the title for the new window
+            gameRulesStage.setTitle("Game Rules");
+
+            // Show the new window
+            gameRulesStage.show();
+        } catch (IOException ex) {
+            System.err.println("Can't find FXML file GameRules.fxml");
+            ex.printStackTrace();
+        }
+    }
+
 }

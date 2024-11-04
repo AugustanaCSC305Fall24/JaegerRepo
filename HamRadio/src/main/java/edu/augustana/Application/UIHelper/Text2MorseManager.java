@@ -20,7 +20,7 @@ public class Text2MorseManager {
         this.radio = radio;
         this.speedController = new PlaybackSpeedManager(translateTextField, radio);
         this.translator = new MorseCodeTranslator(translateTextField, radio);
-        this.player = new MorseCodePlayer(radio.getPlaybackSpeed(), radio);
+        this.player = new MorseCodePlayer((int) radio.getPlaybackSpeed(), radio);
     }
 
     public void setBandSelected(boolean bandSelected) {
@@ -41,6 +41,5 @@ public class Text2MorseManager {
         translateTextField.setText("You typed: " + textToBeTranslated + "\n"
                 + "Translated as: " + textToMorse);
     }
-
 
 }
