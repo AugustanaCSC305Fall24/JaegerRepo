@@ -141,8 +141,10 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     public void playTone(double frequency) {
         new Thread(() -> {
             try {
-                float sampleRate = 875;
+                float sampleRate = 2000;
                 byte[] buf = new byte[1];
+
+                //It might take some time creating either of these 3 out of the loop.
                 AudioFormat af = new AudioFormat(sampleRate, 8, 1, true, false);
                 SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
                 sdl.open(af);
@@ -168,8 +170,10 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
                 }
 
                 // Clean up audio line after release
-                sdl.drain();
+                //sdl.drain();
+                sdl.flush();
                 sdl.stop();
+                System.out.println("Stop");
                 sdl.close();
             } catch (LineUnavailableException e) {
                 e.printStackTrace();
