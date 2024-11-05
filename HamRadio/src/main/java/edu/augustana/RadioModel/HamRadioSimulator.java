@@ -1,6 +1,6 @@
 package edu.augustana.RadioModel;
 
-import edu.augustana.SoundPlayer;
+import edu.augustana.Application.UI.HamPracticeUIController;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
@@ -19,6 +19,8 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     private double WPM;
     private SoundPlayer soundPlayer;
     private SignalProcessor signalProcessor;
+    private boolean isKeyReleased = true;
+    private SourceDataLine sdl;
 
     //constructor
     public HamRadioSimulator(double transmitFrequency, double minimumReceiveFrequency,
@@ -134,46 +136,54 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
         this.WPM = WPM;
     }
 
+    // Adjusted `playTone` method with threading to avoid blocking the JavaFX UI thread
     @Override
-    public void playTone(double frequency, int duration) {
-        try {
-            float sampleRate = 42000;
-            byte[] buf = new byte[1];
-            AudioFormat af = new AudioFormat(sampleRate, 8, 1, true, false);
-            SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
-            sdl.open(af);
+    public void playTone(double frequency) {
+        new Thread(() -> {
+            try {
+                float sampleRate = 875;
+                byte[] buf = new byte[1];
+                AudioFormat af = new AudioFormat(sampleRate, 8, 1, true, false);
+                SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
+                sdl.open(af);
 
-            // Kiểm tra xem có hỗ trợ điều chỉnh âm lượng (MASTER_GAIN) không
-            if (sdl.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
-                FloatControl volumeControl = (FloatControl) sdl.getControl(FloatControl.Type.MASTER_GAIN);
+                // Check if volume adjustment is supported and set it
+                if (sdl.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                    FloatControl volumeControl = (FloatControl) sdl.getControl(FloatControl.Type.MASTER_GAIN);
+                    float minVolume = volumeControl.getMinimum();
+                    float maxVolume = volumeControl.getMaximum();
+                    float volumeInDb = (float) ((volume / 100) * (maxVolume - minVolume) + minVolume);
+                    volumeControl.setValue(volumeInDb);
+                } else {
+                    System.out.println("MASTER_GAIN control is not supported on this system.");
+                }
 
-                // Lấy giá trị âm lượng tối thiểu và tối đa từ hệ thống
-                float minVolume = volumeControl.getMinimum(); // Thường là -80 dB
-                float maxVolume = volumeControl.getMaximum(); // Thường là 6.02 dB
+                sdl.start();
+                int i = 0;
+                while (!isKeyReleased) {  // Check isKeyReleased status
+                    double angle = i / (sampleRate / frequency) * 2.0 * Math.PI;
+                    buf[0] = (byte) (Math.sin(angle) * 127);
+                    sdl.write(buf, 0, 1);
+                    i++;
+                }
 
-                // Chuyển đổi âm lượng từ phần trăm (0-100) sang giá trị dB
-                float volumeInDb = (float) ((volume / 100) * (maxVolume - minVolume) + minVolume);
-
-                volumeControl.setValue(volumeInDb);  // Điều chỉnh âm lượng sau khi quy đổi
-            } else {
-                System.out.println("MASTER_GAIN control không được hỗ trợ trên hệ thống này.");
+                // Clean up audio line after release
+                sdl.drain();
+                sdl.stop();
+                sdl.close();
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
             }
+        }).start();  // Run on a separate thread
+    }
 
-            sdl.start();
 
-            // Sinh tín hiệu và phát qua loa
-            for (int i = 0; i < duration * (float) sampleRate / 1000; i++) {
-                double angle = i / (sampleRate / frequency) * 2.0 * Math.PI;
-                buf[0] = (byte) (Math.sin(angle) * 127);  // Tạo sóng âm thanh
-                sdl.write(buf, 0, 1);
-            }
-
-            // Kết thúc phát âm thanh
-            sdl.drain();
+    @Override
+    public void stopTone() {
+        System.out.println("Stop!");
+        if (sdl != null && sdl.isOpen()) {
             sdl.stop();
             sdl.close();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
         }
     }
 
@@ -181,4 +191,10 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
         signalProcessor.filterSignal(signal);
         soundPlayer.playSound(signal);
     }
+
+    @Override
+    public void setIsKeyReleased(boolean isKeyReleased) {
+        this.isKeyReleased = isKeyReleased;
+    }
+
 }

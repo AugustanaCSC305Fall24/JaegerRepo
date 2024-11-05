@@ -138,7 +138,7 @@ public class HamUIController {
             return;
         }
 
-        radio.playTone(1500, 300); //bug: frequency se luon la 1500 Hz regardless
+//        radio.playTone(1500); //bug: frequency se luon la 1500 Hz regardless
         cleanMorse += "-";
         userOutput += "- ";
         displayTextArea.setText(displayTextString() + "\nYou are transmitting: " + userOutput);
@@ -151,7 +151,7 @@ public class HamUIController {
             return;
         }
 
-        radio.playTone(1500, 100); //bug: frequency se luon la 1500 Hz regardless
+//        radio.playTone(1500); //bug: frequency se luon la 1500 Hz regardless
         cleanMorse += ".";
         userOutput += ". ";
         displayTextArea.setText(displayTextString() + "\nYou are transmitting: " +userOutput);

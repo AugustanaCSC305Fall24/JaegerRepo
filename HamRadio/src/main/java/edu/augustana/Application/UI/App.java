@@ -6,9 +6,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,8 +31,11 @@ public class App extends Application {
         practiceIndex = 0;
         stage.setScene(scene);
         switchToMainView();
-        // Set the key event handler for the scene
-        scene.addEventHandler(javafx.scene.input.KeyEvent.KEY_PRESSED, keyBindManager::handleKeyPress);
+
+        // Set the key event handlers for both key presses and releases
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, keyBindManager::handleKeyPress);
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, keyBindManager::handleKeyRelease);
+
         stage.show();
     }
 
@@ -57,7 +60,7 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
-    public static void switchToView(String fxmlFileName) {
+    private static void switchToView(String fxmlFileName) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/edu/augustana/Application/UI/" + fxmlFileName));
             scene.setRoot(fxmlLoader.load());
@@ -75,7 +78,6 @@ public class App extends Application {
     public static void switchToMainView() {
         switchToView("WelcomeScreen.fxml");
     }
-
 
     public static void main(String[] args) {
         launch();
