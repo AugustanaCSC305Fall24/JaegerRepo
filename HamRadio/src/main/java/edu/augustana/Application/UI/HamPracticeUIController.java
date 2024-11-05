@@ -167,6 +167,9 @@ public class HamPracticeUIController extends HamUIController {
         for (Bot bot: botList){
             if(bot.getBotFrequency() < receivableMax && bot.getBotFrequency() > receivableMin){
                 bot.setDiscovered();
+                if(bot.isDiscovered()){
+                    room.addBotToIdentifiedList(bot);
+                }
                 if (!bot.didAskForHelp()){
                     addMessageToChatLogUI(bot.getIDCode() + " needs help!");
                     bot.setDidAskForHelp();
@@ -193,7 +196,8 @@ public class HamPracticeUIController extends HamUIController {
                 "Status: " + statusConnect +
                 "\n" + "Volume: " + radio.getVolume() +
                 "\n" + "Playback Speed: " + radio.getPlaybackSpeed() +
-                "\n" + "Bandwidth: " + radio.getBandWidth();
+                "\n" + "Bandwidth: " + radio.getBandWidth() +
+                "\n" + "\n" + "Your score: " +  room.getScore();
         return radioStatus;
     }
 

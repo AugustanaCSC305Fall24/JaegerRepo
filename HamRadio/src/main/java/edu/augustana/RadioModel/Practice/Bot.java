@@ -8,6 +8,7 @@ public class Bot {
     private double frequency;
     private boolean isDiscovered = false;
     private boolean askedForHelp = false;
+    private boolean isAddedToIdentifiedList = false;
 
     public static final String[] nameList = {"Andy", "Mason", "Hoang", "Hieu",
                                             "Minh", "Unknown", "Yike", "Beef", "Cow",
@@ -68,6 +69,19 @@ public class Bot {
     public boolean didAskForHelp(){
         return askedForHelp;
     }
+
+    public boolean isDiscovered(){
+        return isDiscovered;
+    }
+
+    public boolean isAddedToIdentifiedList(){
+        return isAddedToIdentifiedList;
+    }
+
+    public void setAddedToIdentifiedList(){
+        isAddedToIdentifiedList = true;
+    }
+
 
     public String toString(){
         return "Name: " + idCode + ", Level: " + level;
