@@ -37,7 +37,7 @@ public class HelperClass {
         return characterCount > 1 ? characterCount - 1 : 0;
     }
     
-    private static String multiplyingSpace(int numOfSpaces) {
+    public static String multiplyingSpace(int numOfSpaces) {
         StringBuilder spaces = new StringBuilder();
         for (int i = 0; i < numOfSpaces; i++) {
             spaces.append(" ");
@@ -51,6 +51,10 @@ public class HelperClass {
 
     public static String nextMorseCodeForUserOutput(String nextMorse, int numOfSpaces) {
         return " " + nextMorseCodeForCleanMorse(nextMorse, numOfSpaces);
+    }
+
+    public static long unitOfTime(double wpm) {
+        return 1200/(long) wpm;
     }
 
 }

@@ -84,3 +84,14 @@ public class App extends Application {
     }
 
 }
+
+// idea: set into onPress, which is the function that calls another function that handle its own thread contains a loop of infinitely many sound play of dot/dash
+//onPress: first, compute the distance to the last string, then repeatitively add more dots/dash in at a multiple of a
+//period of time call unitOfTime. This approach may increase the whole responsiveness of the sound playing module
+//onRelease: cut the condition
+// two keys
+
+//UI wise: any action that results in a continuous infinite loops has to be put in its own thread.
+//Handle server-client connection
+
+//multiple scene...
