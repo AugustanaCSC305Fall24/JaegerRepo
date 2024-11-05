@@ -64,5 +64,8 @@ public interface HamRadioSimulatorInterface {
     void setIsKeyReleased(boolean isKeyRelease);
 
     //playTone
-    void playTone(double frequency, HamPracticeUIController practiceUIController, double volume);
+    void playTone(double frequency);
+
+    //stopTone
+    void stopTone();
 }
