@@ -118,9 +118,10 @@ public class HamPracticeUIController extends HamUIController {
         App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
     }
 
-    private void onPress() {radio.setIsKeyReleased(false);
+    private void onPress() {
         radio.setIsKeyReleased(false);
-        radio.playTone(600);  // Starts playing tone in a separate thread
+        System.out.println("onPress");
+        radio.playTone(1200);  // Starts playing tone in a separate thread
     }
 
     private void onRelease() {
