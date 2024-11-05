@@ -141,7 +141,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     public void playTone(double frequency) {
         new Thread(() -> {
             try {
-                float sampleRate = 42000;
+                float sampleRate = 875;
                 byte[] buf = new byte[1];
                 AudioFormat af = new AudioFormat(sampleRate, 8, 1, true, false);
                 SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
