@@ -141,7 +141,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     public void playTone(double frequency) {
         new Thread(() -> {
             try {
-                float sampleRate = 2000;
+                float sampleRate = 3000;
                 byte[] buf = new byte[1];
 
                 //It might take some time creating either of these 3 out of the loop.
