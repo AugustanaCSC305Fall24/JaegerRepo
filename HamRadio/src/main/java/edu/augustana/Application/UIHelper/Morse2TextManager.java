@@ -6,6 +6,8 @@ import edu.augustana.Application.UI.App;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyCode;
+import javafx.scene.text.Font;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -53,6 +55,9 @@ public class Morse2TextManager {
         App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onKeyPressed, this::onKeyReleased);
 
         String morseToText = translator.morseToText(cleanMorse);
+        if (!cleanMorse.isEmpty() && morseToText.isEmpty()) {
+            morseToText = "Invalid Morse Code";
+        }
         translateTextField.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
     }
 
@@ -106,6 +111,7 @@ public class Morse2TextManager {
     // Updates the TextField to display the current Morse sequence
     private void updateTranslateTextField() {
         System.out.println("textfield updated");
-        translateTextField.setText("Current Morse Input: " + userOutput);
+        translateTextField.setFont(Font.font(18));
+        translateTextField.setText(userOutput);
     }
 }
