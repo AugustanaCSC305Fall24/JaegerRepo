@@ -39,19 +39,26 @@ public class MorseCodeTranslator {
     }
 
     public static String morseToText(String morseCode) {
-        StringBuilder text = new StringBuilder();
-        String[] words = morseCode.split(" / "); // Use " / " as the word separator in Morse code
-        for (String word : words) {
-            String[] letters = word.split(" ");
-            for (String letter : letters) {
-                Character ch = MORSE_TO_CHAR.get(letter);
-                if (ch != null) {
-                    text.append(ch);
+        if (morseCode.isEmpty()) {
+            return "";
+        } else {
+            StringBuilder text = new StringBuilder();
+            String[] words = morseCode.split(" / "); // Use " / " as the word separator in Morse code
+            for (String word : words) {
+                String[] letters = word.split(" ");
+                for (String letter : letters) {
+                    Character ch = MORSE_TO_CHAR.get(letter);
+                    if (ch != null) {
+                        text.append(ch);
+                    } else {
+                        text.append("#");
+                    }
                 }
+                text.append(" "); // Add space between words
             }
-            text.append(" "); // Add space between words
+            return text.toString().trim();
         }
-        return text.toString().trim();
+
     }
 
     public static String textToMorse(String text) {
