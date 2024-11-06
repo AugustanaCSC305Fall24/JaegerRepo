@@ -139,46 +139,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     // Adjusted `playTone` method with threading to avoid blocking the JavaFX UI thread
     @Override
     public void playTone(double frequency) {
-        new Thread(() -> {
-            try {
-                float sampleRate = 3000;
-                byte[] buf = new byte[1];
-
-                //It might take some time creating either of these 3 out of the loop.
-                AudioFormat af = new AudioFormat(sampleRate, 8, 1, true, false);
-                SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
-                sdl.open(af);
-
-                // Check if volume adjustment is supported and set it
-                if (sdl.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
-                    FloatControl volumeControl = (FloatControl) sdl.getControl(FloatControl.Type.MASTER_GAIN);
-                    float minVolume = volumeControl.getMinimum();
-                    float maxVolume = volumeControl.getMaximum();
-                    float volumeInDb = (float) ((volume / 100) * (maxVolume - minVolume) + minVolume);
-                    volumeControl.setValue(volumeInDb);
-                } else {
-                    System.out.println("MASTER_GAIN control is not supported on this system.");
-                }
-
-                sdl.start();
-                int i = 0;
-                while (!isKeyReleased) {  // Check isKeyReleased status
-                    double angle = i / (sampleRate / frequency) * 2.0 * Math.PI;
-                    buf[0] = (byte) (Math.sin(angle) * 127);
-                    sdl.write(buf, 0, 1);
-                    i++;
-                }
-
-                // Clean up audio line after release
-                //sdl.drain();
-                sdl.flush();
-                sdl.stop();
-                System.out.println("Stop");
-                sdl.close();
-            } catch (LineUnavailableException e) {
-                e.printStackTrace();
-            }
-        }).start();  // Run on a separate thread
+        soundPlayer.playTone(frequency, volume);// Run on a separate thread
     }
 
 
@@ -199,6 +160,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
     public void setIsKeyReleased(boolean isKeyReleased) {
         this.isKeyReleased = isKeyReleased;
+        soundPlayer.setIsKeyRelease(isKeyReleased);
     }
 
 }
