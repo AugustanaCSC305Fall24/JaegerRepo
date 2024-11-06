@@ -84,7 +84,7 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     public void initialize() throws IOException {
         this.radio = new HamRadioSimulator(0,0,0,0
-                ,0,0,1.0,10);
+                ,0,0,1.0,20);
         this.room = App.getCurrentPracticeScenerio();
         morseCodeHandlerManager = new MorseCodeHandlerManager(inputTextArea, radio);
         radio.setVolume(volumeSlider.getValue());
