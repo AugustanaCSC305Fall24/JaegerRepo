@@ -212,7 +212,8 @@ public class HamPracticeUIController extends HamUIController {
         }
         if (Math.abs(radio.getReceiveFrequency() - radio.getTransmitFrequency()) <= radio.getBandWidth() / 2) {
             MorseCodePlayer player = new MorseCodePlayer((int) radio.getWPM(), radio);
-            player.playMorseCode(userOutput);
+//            player.playMorseCode(userOutput);
+            player.playMorse(userOutput);
             statusTextArea.setText("Start play back!\n" + "\nYou are transmitting: " + userOutput);
         }
     }
@@ -238,7 +239,7 @@ public class HamPracticeUIController extends HamUIController {
 
     @FXML
     public void textToMorseAction() { //morse code controller
-        morseCodeHandlerManager.textToMorseAction();
+        userOutput = morseCodeHandlerManager.textToMorseAction();
     }
 
     public void pushToTalkButton(ActionEvent actionEvent) {

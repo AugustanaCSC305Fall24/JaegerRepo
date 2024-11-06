@@ -2,6 +2,7 @@ package edu.augustana.Application.UI;
 
 import edu.augustana.Application.UIHelper.KeyBindManager;
 import edu.augustana.RadioModel.Practice.PracticeScenerio;
+import edu.augustana.RadioModel.SoundPlayer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

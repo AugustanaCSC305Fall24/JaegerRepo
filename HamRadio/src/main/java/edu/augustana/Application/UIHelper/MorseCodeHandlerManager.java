@@ -40,7 +40,7 @@ public class MorseCodeHandlerManager {
         morse2TextManager.morseToTextAction();
     }
 
-    public void textToMorseAction() {
-        text2MorseManager.textToMorseAction();
+    public String textToMorseAction() {
+        return text2MorseManager.textToMorseAction();
     }
 }

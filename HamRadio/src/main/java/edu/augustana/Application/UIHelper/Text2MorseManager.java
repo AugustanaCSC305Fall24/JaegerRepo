@@ -29,7 +29,8 @@ public class Text2MorseManager {
         translator.setBandSelected(bandSelected);
     }
 
-    public void textToMorseAction() {
+    public String textToMorseAction() {
+        String userOutput = "";
         if (!isBandSelected){
             String message = "Please hit Start and type in before Playback!";
             new Alert(Alert.AlertType.INFORMATION, message).show();
@@ -38,9 +39,12 @@ public class Text2MorseManager {
             System.out.print("Type English to be translated: ");
             String textToBeTranslated = scanner.nextLine();
             String textToMorse = translator.textToMorse(textToBeTranslated);
+            userOutput += textToMorse;
             translateTextField.setText("You typed: " + textToBeTranslated + "\n"
                     + "Translated as: " + textToMorse);
+
         }
+        return userOutput;
     }
 
 }

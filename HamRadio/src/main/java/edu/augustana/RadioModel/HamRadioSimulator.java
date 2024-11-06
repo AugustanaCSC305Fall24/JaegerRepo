@@ -142,7 +142,6 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
         soundPlayer.playTone(frequency, volume);// Run on a separate thread
     }
 
-
     @Override
     public void stopTone() {
         System.out.println("Stop!");

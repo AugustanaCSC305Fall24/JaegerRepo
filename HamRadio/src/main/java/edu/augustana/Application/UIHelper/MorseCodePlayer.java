@@ -3,6 +3,7 @@ package edu.augustana.Application.UIHelper;
 import edu.augustana.Application.UI.HamPracticeUIController;
 import edu.augustana.Application.UI.HamUIController;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
+import edu.augustana.RadioModel.SoundPlayer;
 
 import javax.sound.sampled.*;
 
@@ -13,6 +14,7 @@ public class MorseCodePlayer{
     private int BASE_ELEMENT_PAUSE;
     private int BASE_LETTER_PAUSE;
     private int BASE_WORD_PAUSE ;
+    private SoundPlayer player;
 
     private double speedFactor;
     private HamRadioSimulatorInterface radio;
@@ -25,6 +27,7 @@ public class MorseCodePlayer{
         this.BASE_ELEMENT_PAUSE = BASE_DOT_DURATION;
         this.BASE_LETTER_PAUSE = BASE_DASH_DURATION;
         this.BASE_WORD_PAUSE = 7*BASE_DOT_DURATION;
+        player = new SoundPlayer(radio.getVolume());
 
     }
 
@@ -67,6 +70,10 @@ public class MorseCodePlayer{
             }
             pause(adjustDuration(BASE_ELEMENT_PAUSE));
         }
+    }
+
+    public void playMorse(String userOutput){
+        player.playMorse(userOutput, wordPerMin);
     }
 
     private void pause(int duration) {
