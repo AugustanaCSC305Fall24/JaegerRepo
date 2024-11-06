@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.RadioModel.Practice.HelpPeopleController">
+   <children>
+      <ListView fx:id="peopleList" layoutX="39.0" layoutY="63.0" prefHeight="373.0" prefWidth="321.0" />
+      <Label layoutX="79.0" layoutY="14.0" text="CHOOSE WHO TO HELP!" textFill="#466854">
+         <font>
+            <Font name="System Bold" size="21.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="45.0" text="Don't worry if you can't help everyone. You are an amateur" textFill="#466854" />
+      <Button fx:id="helpButton" layoutX="270.0" layoutY="445.0" mnemonicParsing="false" onAction="#helpPeople" prefHeight="31.0" prefWidth="84.0" style="-fx-background-color: #466854;" text="Help Them!" textFill="WHITE" />
+      <Button fx:id="leaveButton" layoutX="139.0" layoutY="445.0" mnemonicParsing="false" onAction="#leavePeople" prefHeight="31.0" prefWidth="119.0" style="-fx-background-color: #466854;" text="Sorry, Leave them!" textFill="WHITE" />
+      <Button fx:id="leaveButton1" layoutX="39.0" layoutY="445.0" mnemonicParsing="false" onAction="#exitAction" prefHeight="31.0" prefWidth="84.0" style="-fx-background-color: #466854;" text="Exit Window" textFill="WHITE" />
+   </children>
+</AnchorPane>
