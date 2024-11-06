@@ -56,7 +56,7 @@ public class SoundPlayer {
         }
     }
 
-    public void playTone(double frequency, double volume) {
+    public void playTone1(double frequency, double volume) {
         new Thread(() -> {
             try {
                 float sampleRate = 3000;
@@ -93,6 +93,55 @@ public class SoundPlayer {
                 sdl.stop();
                 System.out.println("Stop");
                 sdl.close();
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
+            }
+        }).start();  // Run on a separate thread
+    }
+
+    public void playTone(double frequency, double volume) {
+        new Thread(() -> {
+            try {
+                ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+
+                AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 1, 2, 44100, false);
+                DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+                SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(info);
+
+                int sampleRate = (int) format.getSampleRate();
+                int numSamples = (int) ((50 / 1000.0) * sampleRate);
+                byte[] toneBuffer = new byte[2 * numSamples];
+
+                sourceLine.open(format);
+
+                // Check if volume adjustment is supported and set it
+                if (sourceLine.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                    FloatControl volumeControl = (FloatControl) sourceLine.getControl(FloatControl.Type.MASTER_GAIN);
+                    float minVolume = volumeControl.getMinimum();
+                    float maxVolume = volumeControl.getMaximum();
+                    float volumeInDb = (float) ((volume / 100) * (maxVolume - minVolume) + minVolume);
+                    volumeControl.setValue(volumeInDb);
+                } else {
+                    System.out.println("MASTER_GAIN control is not supported on this system.");
+                }
+
+                sourceLine.start();
+                while (!isKeyReleased) {
+                    for (int i = 0; i < numSamples; i++) {
+                        double angle = 2.0 * Math.PI * i * frequency / sampleRate;
+                        short sample = (short) (Math.sin(angle) * Short.MAX_VALUE);
+                        toneBuffer[2 * i] = (byte) (sample & 0xff);
+                        toneBuffer[2 * i + 1] = (byte) ((sample >> 8) & 0xff);
+                    }
+                    sourceLine.write(toneBuffer, 0, toneBuffer.length);
+                }
+
+                // Clean up audio line after release
+                //sdl.drain();
+                sourceLine.flush();
+                sourceLine.stop();
+                System.out.println("Stop");
+                sourceLine.close();
             } catch (LineUnavailableException e) {
                 e.printStackTrace();
             }

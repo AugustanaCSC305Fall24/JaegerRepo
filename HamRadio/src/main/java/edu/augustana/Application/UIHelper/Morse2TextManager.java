@@ -93,10 +93,10 @@ public class Morse2TextManager {
     private void display(String nextMorseCode, long timeSinceLastPress) {
         System.out.println("UOF: " + HelperClass.unitOfTime(radio.getWPM()));
         System.out.println("display runs");
-        if (timeSinceLastPress < 3 * HelperClass.unitOfTime(radio.getWPM())) {
+        if (timeSinceLastPress < 6 * HelperClass.unitOfTime(radio.getWPM())) {
             cleanMorse += nextMorseCode;
             userOutput += nextMorseCode;
-        } else if (timeSinceLastPress < 14 * HelperClass.unitOfTime(radio.getWPM())) {
+        } else if (timeSinceLastPress < 30 * HelperClass.unitOfTime(radio.getWPM())) {
             cleanMorse += " " + nextMorseCode;
             userOutput += "  " + nextMorseCode;
         } else {
