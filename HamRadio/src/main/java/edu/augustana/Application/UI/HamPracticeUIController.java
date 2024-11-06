@@ -122,7 +122,7 @@ public class HamPracticeUIController extends HamUIController {
     private void onPress() {
         radio.setIsKeyReleased(false);
         System.out.println("onPress");
-        radio.playTone(1200);  // Starts playing tone in a separate thread
+        radio.playTone(600);  // Starts playing tone in a separate thread
     }
 
     private void onRelease() {

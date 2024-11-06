@@ -96,7 +96,7 @@ public class Morse2TextManager {
         if (timeSinceLastPress < 6 * HelperClass.unitOfTime(radio.getWPM())) {
             cleanMorse += nextMorseCode;
             userOutput += nextMorseCode;
-        } else if (timeSinceLastPress < 14 * HelperClass.unitOfTime(radio.getWPM())) {
+        } else if (timeSinceLastPress < 30 * HelperClass.unitOfTime(radio.getWPM())) {
             cleanMorse += " " + nextMorseCode;
             userOutput += "  " + nextMorseCode;
         } else {
