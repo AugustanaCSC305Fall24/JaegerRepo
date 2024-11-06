@@ -33,13 +33,14 @@ public class Text2MorseManager {
         if (!isBandSelected){
             String message = "Please hit Start and type in before Playback!";
             new Alert(Alert.AlertType.INFORMATION, message).show();
+        } else {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Type English to be translated: ");
+            String textToBeTranslated = scanner.nextLine();
+            String textToMorse = translator.textToMorse(textToBeTranslated);
+            translateTextField.setText("You typed: " + textToBeTranslated + "\n"
+                    + "Translated as: " + textToMorse);
         }
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Type English to be translated: ");
-        String textToBeTranslated = scanner.nextLine();
-        String textToMorse = translator.textToMorse(textToBeTranslated);
-        translateTextField.setText("You typed: " + textToBeTranslated + "\n"
-                + "Translated as: " + textToMorse);
     }
 
 }
