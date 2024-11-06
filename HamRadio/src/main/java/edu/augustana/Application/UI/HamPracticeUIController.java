@@ -115,6 +115,7 @@ public class HamPracticeUIController extends HamUIController {
         statusConnect = " Connected";
         statusTextArea.setText(displayTextString());
         botListView.getItems().addAll(room.getBotList());
+        morseCodeHandlerManager.setBandSelected(true);
         App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
     }
 
@@ -237,17 +238,7 @@ public class HamPracticeUIController extends HamUIController {
 
     @FXML
     public void textToMorseAction() { //morse code controller
-        if (!isStartClicked){
-            String message = "Please hit Start and type in before Playback!";
-            new Alert(Alert.AlertType.INFORMATION, message).show();
-        }
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Type English to be translated: ");
-        String textToBeTranslated = scanner.nextLine();
-        String textToMorse = MorseCodeTranslator.textToMorse(textToBeTranslated);
-        userOutput = textToMorse;
-        inputTextArea.setText("You typed: " + textToBeTranslated + "\n"
-                + "Translated as: " + textToMorse);
+        morseCodeHandlerManager.textToMorseAction();
     }
 
     public void pushToTalkButton(ActionEvent actionEvent) {
