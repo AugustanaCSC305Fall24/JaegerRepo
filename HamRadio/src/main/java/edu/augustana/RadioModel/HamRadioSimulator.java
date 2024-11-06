@@ -16,7 +16,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     private double bandWidth;
     private double volume;
     private double playbackSpeed;
-    private double WPM = 40;
+    private double WPM = 10;
     private SoundPlayer soundPlayer;
     private SignalProcessor signalProcessor;
     private boolean isKeyReleased = true;

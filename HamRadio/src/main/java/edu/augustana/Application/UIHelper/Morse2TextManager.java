@@ -78,7 +78,7 @@ public class Morse2TextManager {
         } else {
             timeSinceLastPress = currentPressTime - lastPressTime;
         }
-        if (pressDuration <= DOT_THRESHOLD) {
+        if (pressDuration <= 3 * HelperClass.unitOfTime(radio.getWPM())) {
             display(".", timeSinceLastPress);
         } else { //then display dash
             display("-", timeSinceLastPress);
@@ -86,13 +86,18 @@ public class Morse2TextManager {
     }
 
     private void display(String nextMorseCode, long timeSinceLastPress) {
+        System.out.println("UOF: " + HelperClass.unitOfTime(radio.getWPM()));
         System.out.println("display runs");
-        int numOfSpaces = HelperClass.calculateSpaces(radio.getWPM(), timeSinceLastPress);
-        System.out.println("Calculate space really is finished: " + numOfSpaces);
-
-        // Append the spaces and nextMorseCode to cleanMorseCode
-        cleanMorse += HelperClass.nextMorseCodeForCleanMorse(nextMorseCode, numOfSpaces);
-        userOutput += HelperClass.nextMorseCodeForUserOutput(nextMorseCode, numOfSpaces);
+        if (timeSinceLastPress < HelperClass.unitOfTime(radio.getWPM())) {
+            cleanMorse += nextMorseCode;
+            userOutput += nextMorseCode;
+        } else if (timeSinceLastPress < 21 * HelperClass.unitOfTime(radio.getWPM())) {
+            cleanMorse += " " + nextMorseCode;
+            userOutput += "  " + nextMorseCode;
+        } else {
+            cleanMorse += " / " + nextMorseCode;
+            userOutput += "  / " + nextMorseCode;
+        }
 
         //update translate text field
         updateTranslateTextField();
@@ -101,6 +106,6 @@ public class Morse2TextManager {
     // Updates the TextField to display the current Morse sequence
     private void updateTranslateTextField() {
         System.out.println("textfield updated");
-        translateTextField.setText("Current Morse Input: " + cleanMorse);
+        translateTextField.setText("Current Morse Input: " + userOutput);
     }
 }

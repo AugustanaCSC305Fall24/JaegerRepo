@@ -54,6 +54,7 @@ public class HelperClass {
     }
 
     public static long unitOfTime(double wpm) {
+        System.out.println("wpm: " + wpm);
         return 1200/(long) wpm;
     }
 
