@@ -9,7 +9,7 @@ public class PracticeScenerio {
     private List<Bot> botList;
     private List<TaskForPractice> taskList;
     private List<Bot> identifiedBotList;
-    private List<Bot> peopleToHelpList;
+    private List<TaskForPractice> transmitTaskList;
     private int score = 0;
 
     public PracticeScenerio(){
@@ -55,16 +55,12 @@ public class PracticeScenerio {
         }
     }
 
-    public List<Bot> getPeopleToHelpList(){
-        return peopleToHelpList;
+    public List<TaskForPractice> getTransmitTask(){
+        return transmitTaskList;
     }
 
     public void addPeopleToHelpList(Bot bot){
         return;
-    }
-    public void readyToHelpPeople(Bot bot){
-        peopleToHelpList.add(bot);
-        
     }
 
     public int getScore() {

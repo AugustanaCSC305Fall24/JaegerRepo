@@ -3,6 +3,9 @@ package edu.augustana.RadioModel.Practice;
 public class TransmittingTask implements TaskForPractice{
     private String description;
     private Bot sender;
+    public static String[] desscriptionOptions = {"Augustana", "Ambrose",
+            "Chicago", "Tampa Bay", "Rock Island", "39 Street", "20 Street",
+            "Westerlin", "Erickson", "Olin Center", "Oldmain", "Swanson Commons"};
 
     public TransmittingTask(String description, Bot sender){
         this.description = description;
