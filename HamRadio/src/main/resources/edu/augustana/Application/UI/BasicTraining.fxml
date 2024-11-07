@@ -10,29 +10,31 @@
 <AnchorPane prefHeight="480.0" prefWidth="700.0" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.BasicTrainingController">
     <children>
         <!-- Title Label -->
-        <Label layoutX="210.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #466854;" text="CW Basic Trainer" textAlignment="CENTER" />
+        <Label layoutX="210.0" layoutY="14.0" prefHeight="51.0" prefWidth="211.0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #466854;" text="CW Basic Trainer" textAlignment="CENTER" />
 
         <!-- Play Button -->
-        <Button fx:id="playButton" layoutX="31.0" layoutY="84.0" prefWidth="100" style="-fx-background-color: #466854; -fx-text-fill: white;" text="Play Morse Code" />
+        <Button fx:id="playButton" layoutX="31.0" layoutY="84.0" onAction="#playMorseCode" prefHeight="42.0" prefWidth="53.0" style="-fx-background-color: #466854; -fx-text-fill: white;" text="🎧">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
 
         <!-- Text Input Label -->
-        <Label layoutX="28.0" layoutY="142.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="ENTER YOUR INTERPRETATION">
+        <Label layoutX="28.0" layoutY="142.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="ENTER YOUR MORSE INTERPRETATION">
          <font>
             <Font size="14.0" />
          </font></Label>
 
         <!-- Text Input Field -->
-        <TextField fx:id="inputField" layoutX="26.0" layoutY="167.0" prefHeight="150.0" prefWidth="575.0" promptText="Type what you heard" />
+        <TextField fx:id="morseInputField" layoutX="26.0" layoutY="167.0" prefHeight="51.0" prefWidth="559.0" promptText="Type what you heard" />
 
         <!-- Submit Button -->
-        <Button fx:id="submitButton" layoutX="376.0" layoutY="332.0" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #466854; -fx-text-fill: white;" text="Submit" />
+        <Button fx:id="submitButton" layoutX="376.0" layoutY="332.0" onAction="#submitAnswer" prefHeight="35.0" prefWidth="100.0" style="-fx-background-color: #466854; -fx-text-fill: white;" text="Submit" />
 
         <!-- Result Label -->
-        <Label layoutX="33.0" layoutY="317.0" prefHeight="35.0" prefWidth="53.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="Result:">
+        <Label fx:id="resultLabel" layoutX="33.0" layoutY="317.0" prefHeight="35.0" prefWidth="172.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="Result:">
          <font>
             <Font size="14.0" />
          </font></Label>
-        <Label fx:id="feedbackLabel" layoutX="100.0" layoutY="260.0" style="-fx-font-size: 12px; -fx-text-fill: red;" text="" />
         <Label fx:id="scoreLabel" layoutX="33.0" layoutY="352.0" style="-fx-font-size: 12px;" text="Score: 0/0">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -44,6 +46,12 @@
         <!-- Volume Control (Slider) -->
         <Label layoutX="622.0" layoutY="117.0" style="-fx-font-family: 'Leelawadee UI Bold'; -fx-font-size: 12px;" text="VOLUME" />
         <Slider fx:id="volumeSlider" layoutX="627.0" layoutY="151.0" max="100" min="0" orientation="VERTICAL" prefHeight="150.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
+      <Label layoutX="28.0" layoutY="231.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="ENTER YOUR ENGLISH INTERPRETATION">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="englishInputField" layoutX="26.0" layoutY="251.0" prefHeight="51.0" prefWidth="559.0" promptText="Type what you heard" />
 
     </children>
 </AnchorPane>

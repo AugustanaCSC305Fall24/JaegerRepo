@@ -19,14 +19,13 @@ public class Text2MorseManager {
         this.translateTextField = translateTextField;
         this.radio = radio;
         this.speedController = new PlaybackSpeedManager(translateTextField, radio);
-        this.translator = new MorseCodeTranslator(translateTextField, radio);
+        this.translator = new MorseCodeTranslator();
         this.player = new MorseCodePlayer((int) radio.getPlaybackSpeed(), radio);
     }
 
     public void setBandSelected(boolean bandSelected) {
         isBandSelected = bandSelected;
         speedController.setBandSelected(bandSelected);
-        translator.setBandSelected(bandSelected);
     }
 
     public String textToMorseAction() {
@@ -39,6 +38,7 @@ public class Text2MorseManager {
             System.out.print("Type English to be translated: ");
             String textToBeTranslated = scanner.nextLine();
             String textToMorse = translator.textToMorse(textToBeTranslated);
+            //
             userOutput += textToMorse;
             translateTextField.setText("You typed: " + textToBeTranslated + "\n"
                     + "Translated as: " + textToMorse);

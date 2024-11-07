@@ -1,82 +1,105 @@
 package edu.augustana.Application.UI;
 
+import edu.augustana.Application.UIHelper.Dictionary;
+import edu.augustana.Application.UIHelper.MorseCodePlayer;
+import edu.augustana.Application.UIHelper.MorseCodeTranslator;
+import edu.augustana.RadioModel.HamRadioSimulator;
+import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+
+import java.io.IOException;
 
 
 public class BasicTrainingController {
+    private String randomWord;
+    private String randomMorse;
+    private Dictionary dictionary;
+    HamRadioSimulatorInterface radio;
+    MorseCodePlayer player;
 
     @FXML
-    private Button playButton;
+    private TextField morseInputField;
 
     @FXML
-    private TextField inputField;
+    private TextField englishInputField;
 
     @FXML
-    private Button submitButton;
-
-    @FXML
-    private Label feedbackLabel;
+    private Label resultLabel;
 
     @FXML
     private Label scoreLabel;
 
     @FXML
-    private Button resetButton;
-
-    @FXML
     private Slider volumeSlider;
 
     private int score = 0;
-    private int attempts = 0;
-    private String currentMorseCode = "..."; // Placeholder for Morse code to be played
+    private String result;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         // Initialize volume slider
         volumeSlider.setValue(50);
         volumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> adjustVolume(newVal.doubleValue()));
 
         // Set initial score label
         updateScoreLabel();
+        radio =
+                new HamRadioSimulator(600.0, 500.0,
+                700.0, 600.0, 0.0, 0,
+                1, 10);
+        radio.setVolume(volumeSlider.getValue());
+        dictionary = new Dictionary();
+        player = new MorseCodePlayer(radio.getWPM(), radio);
     }
 
     @FXML
     private void playMorseCode() {
-        // For testing, set the current Morse code pattern (this should match the played code)
-        currentMorseCode = "... --- ..."; // Example: "SOS" in Morse code
+        randomWord = dictionary.getRandomString();
+        randomMorse = MorseCodeTranslator.textToMorse(randomWord);
+        player.playMorseCode(randomMorse);
     }
 
     @FXML
     private void submitAnswer() {
-        String userAnswer = inputField.getText().trim();
-        if (userAnswer.isEmpty()) {
-            feedbackLabel.setText("Please enter your interpretation.");
+        String userWordAnswer = englishInputField.getText().trim();
+        String userMorseAnswer = morseInputField.getText().trim();
+        if (userWordAnswer.isEmpty() || userMorseAnswer.isEmpty()) {
+            String message = "You must enter something!!!";
+            new Alert(Alert.AlertType.INFORMATION, message).show();
             return;
+        }
+        if (userWordAnswer.equalsIgnoreCase(randomWord)) {
+            englishInputField.setText(userWordAnswer + " ✓");
+        } else {
+            englishInputField.setText(userWordAnswer + " ✗");
+        }
+
+        if (userMorseAnswer.equalsIgnoreCase(randomMorse)) {
+            morseInputField.setText(userMorseAnswer + " ✓");
+        } else {
+            morseInputField.setText(userMorseAnswer + " ✗");
         }
 
         // Check if user's input matches the current Morse code
-        if (userAnswer.equalsIgnoreCase(morseCodeToText(currentMorseCode))) {
-            feedbackLabel.setText("Correct!");
+        if (userWordAnswer.equalsIgnoreCase(randomWord)
+                && userMorseAnswer.equalsIgnoreCase(randomMorse)) {
             score++;
-        } else {
-            feedbackLabel.setText("Incorrect. Try again.");
-        }
+            result = "Correct!";
 
-        attempts++;
+
+        } else {
+            result = "Incorrect!";
+        }
+        setResultLabel();
         updateScoreLabel();
-        inputField.clear();
     }
 
     @FXML
     private void resetGame() {
         score = 0;
-        attempts = 0;
-        feedbackLabel.setText("");
-        inputField.clear();
+
+        morseInputField.clear();
         updateScoreLabel();
     }
 
@@ -86,16 +109,11 @@ public class BasicTrainingController {
     }
 
     private void updateScoreLabel() {
-        scoreLabel.setText("Score: " + score + "/" + attempts);
+        scoreLabel.setText("Score: " + score );
     }
 
-    // Placeholder method to convert Morse code to text
-    private String morseCodeToText(String morseCode) {
-        // For now, just return "SOS" if it matches the "..." format
-        // You should replace this with a real Morse code translator
-        if ("... --- ...".equals(morseCode)) {
-            return "SOS";
-        }
-        return "";
+    private void setResultLabel() {
+        resultLabel.setText("Result: " + result);
     }
+
 }
