@@ -78,6 +78,9 @@ public class MorseCodePlayer{
 
     public void playMorseForBot(String userOutput, Bot bot){
         player.playMorse(userOutput, wordPerMin, radio.getReceiveFrequency(), bot.getBotFrequency());
+        System.out.println("Radio Receive: ...." + radio.getReceiveFrequency());
+        System.out.println("Bot Transmitting... " + bot.getBotFrequency());
+        System.out.println("Playing sound for...." + bot.getIDCode());
     }
 
     private void pause(int duration) {
