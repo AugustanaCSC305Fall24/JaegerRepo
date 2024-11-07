@@ -187,10 +187,12 @@ public class HamPracticeUIController extends HamUIController {
                 player.playMorse(bot.getTask().getDescription());
                 addMessageToChatLogUI(bot.getIDCode() + ": " + bot.getTask().getDescription());
                 player = new MorseCodePlayer((int) radio.getWPM(), radio);
-                String botTaskTranslated = morseCodeHandlerManager.textToMorseAction();
+                String botTaskTranslated = MorseCodeTranslator.textToMorse(bot.getTask().getDescription());
                 player.playMorseForBot(botTaskTranslated, bot);
             }
         }
+        System.out.println("-----------------------");
+        System.out.println("Done Giving Task.");
     }
 
     @FXML
