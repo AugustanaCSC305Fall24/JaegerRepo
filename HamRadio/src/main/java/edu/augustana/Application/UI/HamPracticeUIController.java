@@ -8,7 +8,9 @@ import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.RadioModel.Practice.Bot;
 import edu.augustana.RadioModel.Practice.PracticeScenerio;
 import edu.augustana.RadioModel.Practice.TaskForPractice;
+import edu.augustana.RadioModel.Practice.TransmittingTask;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,6 +26,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -43,6 +46,7 @@ public class HamPracticeUIController extends HamUIController {
     private static final double DEFAULT_TUNE = 1.0;
     public static final int TONE = 600;
     MorseCodeHandlerManager morseCodeHandlerManager;
+    MorseCodePlayer player;
 
     @FXML
     private TextArea statusTextArea;
@@ -80,6 +84,9 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     private Button helpPeopleButton;
 
+    @FXML
+    private ComboBox wpmComboBox;
+
     @Override
     @FXML
     public void initialize() throws IOException {
@@ -93,16 +100,16 @@ public class HamPracticeUIController extends HamUIController {
         addMessageToChatLogUI("Radio: Hello, welcome to HAM Practice!");
         addMessageToChatLogUI("Radio: Please first read our game's rules by hitting \"Rules \"");
         System.out.println("Radio WPM in Controller Practice Innitialize: "+radio.getWPM());
-
-        for (TaskForPractice task : room.getTaskList()) {
-            addMessageToChatLogUI(task.getDescription());
-        }
+        List<TaskForPractice> taskForPracticeList = new ArrayList<>();
 
         for (int i = 0; i < Bot.nameList.length; i++){
             String name = Bot.nameList[i];
             int level = Bot.getRandomLevel();
             double frequency = Bot.getRandomFreq();
             Bot newBot = new Bot(level, name, frequency);
+            TaskForPractice task = new TransmittingTask(newBot.getIDCode() + " " + TransmittingTask.desscriptionOptions[i], newBot);
+            taskForPracticeList.add(task);
+            newBot.setTask(task);
             room.getBotList().add(newBot);
             System.out.println("For testing in initialize() Practice UI: " + newBot + ", Freq: " + newBot.getBotFrequency());
         }
@@ -176,6 +183,12 @@ public class HamPracticeUIController extends HamUIController {
                     addMessageToChatLogUI(bot.getIDCode() + " needs help!");
                     bot.setDidAskForHelp();
                 }
+                addMessageToChatLogUI(bot.getTask().getDescription());
+                player = new MorseCodePlayer(radio.getWPM(), radio);
+                player.playMorse(bot.getTask().getDescription());
+                addMessageToChatLogUI(bot.getIDCode() + ": " + bot.getTask().getDescription());
+                player = new MorseCodePlayer((int) radio.getWPM(), radio);
+                player.playMorseForBot(bot.getTask().getDescription(), bot);
             }
         }
     }
@@ -230,6 +243,13 @@ public class HamPracticeUIController extends HamUIController {
         radio.setBandWidth(radio.getBandWidth() - this.DEFAULT_TUNE);
         statusTextArea.setText(displayTextString());
         givingTask();
+    }
+
+    @FXML
+    public void selectWPMAction(){
+        int wpm = (int) wpmComboBox.getSelectionModel().getSelectedItem();
+        radio.setWPM(wpm);
+        System.out.println("wpm: " + radio.getWPM());
     }
 
     @FXML
