@@ -16,7 +16,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     private double bandWidth;
     private double volume;
     private double playbackSpeed;
-    private double WPM = 10;
+    private int WPM = 10;
     private SoundPlayer soundPlayer;
     private SignalProcessor signalProcessor;
     private boolean isKeyReleased = true;
@@ -25,7 +25,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     //constructor
     public HamRadioSimulator(double transmitFrequency, double minimumReceiveFrequency,
                              double maximumReceiveFrequency, double receiveFrequency,
-                             double bandWidth, double volume, double playbackSpeed, double WPM) throws IOException {
+                             double bandWidth, double volume, double playbackSpeed, int WPM) throws IOException {
         this.client = new HamRadioClient();
         this.transmitFrequency = transmitFrequency;
         this.minimumReceiveFrequency = minimumReceiveFrequency;
@@ -127,12 +127,12 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     }
 
     @Override
-    public double getWPM() {
+    public int getWPM() {
         return this.WPM;
     }
 
     @Override
-    public void setWPM(double WPM) {
+    public void setWPM(int WPM) {
         this.WPM = WPM;
     }
 
