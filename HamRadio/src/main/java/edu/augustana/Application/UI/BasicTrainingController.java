@@ -58,6 +58,7 @@ public class BasicTrainingController {
         randomWord = dictionary.getRandomString();
         randomMorse = MorseCodeTranslator.textToMorse(randomWord);
         player.playMorseCode(randomMorse);
+
     }
 
     @FXML
@@ -97,10 +98,7 @@ public class BasicTrainingController {
 
     @FXML
     private void resetGame() {
-        score = 0;
-
-        morseInputField.clear();
-        updateScoreLabel();
+        reset();
     }
 
     @FXML
@@ -114,6 +112,15 @@ public class BasicTrainingController {
 
     private void setResultLabel() {
         resultLabel.setText("Result: " + result);
+    }
+
+    private void reset() {
+        score = 0;
+        englishInputField.clear();
+        morseInputField.clear();
+        updateScoreLabel();
+        result = "";
+        setResultLabel();
     }
 
 }
