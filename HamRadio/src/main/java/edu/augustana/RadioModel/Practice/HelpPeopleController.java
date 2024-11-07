@@ -28,12 +28,6 @@ public class HelpPeopleController {
     }
 
     @FXML
-    void helpPeople(ActionEvent event) {
-        Bot peopleToHelp = (Bot) peopleList.getSelectionModel().getSelectedItem();
-        room.readyToHelpPeople(peopleToHelp);
-    }
-
-    @FXML
     void leavePeople(ActionEvent event) {
 
     }

@@ -1,5 +1,7 @@
 package edu.augustana.RadioModel.Practice;
 
+import javafx.concurrent.Task;
+
 import java.util.Random;
 
 public class Bot {
@@ -9,6 +11,7 @@ public class Bot {
     private boolean isDiscovered = false;
     private boolean askedForHelp = false;
     private boolean isAddedToIdentifiedList = false;
+    private TaskForPractice task;
 
     public static final String[] nameList = {"Andy", "Mason", "Hoang", "Hieu",
                                             "Minh", "Unknown", "Yike", "Beef", "Cow",
@@ -81,6 +84,15 @@ public class Bot {
     public void setAddedToIdentifiedList(){
         isAddedToIdentifiedList = true;
     }
+
+    public TaskForPractice getTask(){
+        return task;
+    }
+
+    public void setTask(TaskForPractice task){
+        this.task = task;
+    }
+
 
 
     public String toString(){

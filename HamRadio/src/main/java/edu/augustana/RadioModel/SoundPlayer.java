@@ -12,6 +12,10 @@ public class SoundPlayer {
         this.volume = volume;
     }
 
+    public double getVolume(){
+        return volume;
+    }
+
     public void playSound(byte[] signal) throws LineUnavailableException {
         System.out.println("It'll play");
         System.out.println(signal);
@@ -148,7 +152,7 @@ public class SoundPlayer {
         }).start();  // Run on a separate thread
     }
 
-    public void playMorse(String morseString, int wordsPerMinute, double receivedFrequency, double transmitFrequency, double bandwidth){
+    public void playMorse(String morseString, int wordsPerMinute, double receivedFrequency, double transmitFrequency){
         int dotDuration = calculateDotDuration(wordsPerMinute);
         System.out.println("I'm working... playMorse in SoundPlayer");
         System.out.println("I'm speaking..." + morseString);

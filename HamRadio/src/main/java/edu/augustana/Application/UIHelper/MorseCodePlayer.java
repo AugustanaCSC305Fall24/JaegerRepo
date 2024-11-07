@@ -73,7 +73,7 @@ public class MorseCodePlayer{
     }
 
     public void playMorse(String userOutput){
-        player.playMorse(userOutput, wordPerMin, radio.getReceiveFrequency(), radio.getTransmitFrequency(), radio.getBandWidth());
+        player.playMorse(userOutput, wordPerMin, radio.getReceiveFrequency(), radio.getTransmitFrequency());
     }
 
     private void pause(int duration) {
