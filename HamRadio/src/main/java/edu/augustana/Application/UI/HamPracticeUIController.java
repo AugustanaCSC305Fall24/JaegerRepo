@@ -168,6 +168,37 @@ public class HamPracticeUIController extends HamUIController {
         givingTask();
     }
 
+    private void givingTask() {
+        System.out.println("-----------------");
+        System.out.println("Start Giving Task.");
+        List<Bot> botList = room.getBotList();
+        double radioFreq = radio.getReceiveFrequency();
+        double radioBandwidth = radio.getBandWidth();
+        double receivableMin = radioFreq - radioBandwidth/2;
+        double receivableMax = radioFreq + radioBandwidth/2;
+        for (Bot bot: botList){
+            if(bot.getBotFrequency() < receivableMax && bot.getBotFrequency() > receivableMin){
+                bot.setDiscovered();
+                if(bot.isDiscovered()){
+                    room.addBotToIdentifiedList(bot);
+                }
+                if (!bot.didAskForHelp()){
+                    bot.setDidAskForHelp();
+                }
+                MorseCodePlayer player1 = new MorseCodePlayer(radio.getWPM(), radio);
+
+                String botTaskTranslated = MorseCodeTranslator.textToMorse(bot.getTask().getDescription());
+                //player1.playMorseForBot(botTaskTranslated, bot);
+                player1.playMorse(botTaskTranslated);
+                addMessageToChatLogUI(bot.getIDCode() + ": " + bot.getTask().getDescription());
+            }
+        }
+        System.out.println("No Loop");
+        System.out.println("End Giving Task.");
+        System.out.println("-----------------------");
+
+    }
+
     private void givingTaskBackUp() {
         List<Bot> botList = room.getBotList();
         double radioFreq = radio.getReceiveFrequency();
@@ -186,38 +217,13 @@ public class HamPracticeUIController extends HamUIController {
                 player = new MorseCodePlayer(radio.getWPM(), radio);
                 player.playMorse(bot.getTask().getDescription());
                 addMessageToChatLogUI(bot.getIDCode() + ": " + bot.getTask().getDescription());
-                player = new MorseCodePlayer((int) radio.getWPM(), radio);
                 String botTaskTranslated = MorseCodeTranslator.textToMorse(bot.getTask().getDescription());
-                player.playMorseForBot(botTaskTranslated, bot);
-            }
-        }
-        System.out.println("-----------------------");
-        System.out.println("Done Giving Task.");
-    }
-
-    private void givingTask() {
-        List<Bot> botList = room.getBotList();
-        double radioFreq = radio.getReceiveFrequency();
-        double radioBandwidth = radio.getBandWidth();
-        double receivableMin = radioFreq - radioBandwidth/2;
-        double receivableMax = radioFreq + radioBandwidth/2;
-        for (Bot bot: botList){
-            if(bot.getBotFrequency() < receivableMax && bot.getBotFrequency() > receivableMin){
-                bot.setDiscovered();
-                if(bot.isDiscovered()){
-                    room.addBotToIdentifiedList(bot);
-                }
-                if (!bot.didAskForHelp()){
-                    bot.setDidAskForHelp();
-                }
-                player = new MorseCodePlayer(radio.getWPM(), radio);
-                player.playMorse(bot.getTask().getDescription());
-                addMessageToChatLogUI(bot.getIDCode() + ": " + bot.getTask().getDescription());
-                String botTaskTranslated = MorseCodeTranslator.textToMorse(bot.getTask().getDescription());
-                new Thread(() -> {
-                    MorseCodePlayer new_player = new MorseCodePlayer((int) radio.getWPM(), radio);
-                    new_player.playMorseForBot(botTaskTranslated, bot);
-                }).start();
+//                new Thread(() -> {
+//                    MorseCodePlayer new_player = new MorseCodePlayer((int) radio.getWPM(), radio);
+//                    new_player.playMorseForBot(botTaskTranslated, bot);
+//                }).start();
+                MorseCodePlayer new_player = new MorseCodePlayer((int) radio.getWPM(), radio);
+                new_player.playMorseForBot(botTaskTranslated, bot);
             }
         }
         System.out.println("-----------------------");
@@ -248,20 +254,20 @@ public class HamPracticeUIController extends HamUIController {
     }
 
     @FXML
-    public void playBackActionBackUp() { //playback controller
+    public void playBackAction() { //playback controller
         if (!isStartClicked){
             String message = "Please hit Start and type in before Playback!";
             new Alert(Alert.AlertType.INFORMATION, message).show();
             return;
         }
         if (Math.abs(radio.getReceiveFrequency() - radio.getTransmitFrequency()) <= radio.getBandWidth()/2) {
-            MorseCodePlayer player = new MorseCodePlayer((int) radio.getWPM(), radio);
-            player.playMorse(userOutput);
+            MorseCodePlayer player2 = new MorseCodePlayer((int) radio.getWPM(), radio);
+            player2.playMorse(userOutput);
             statusTextArea.setText("Start play back!\n" + "\nYou are transmitting: " + userOutput);
         }
     }
 
-    public void playBackAction() {//playback controller
+    public void playBackActionBackUp() {//playback controller
         new Thread(() -> {
             if (!isStartClicked){
                 String message = "Please hit Start and type in before Playback!";
