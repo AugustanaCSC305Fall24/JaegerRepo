@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.Random;
 
 public class Dictionary {
+    int numOfTimes;
     private Set<String> characterSet;
     private Random random;
 
@@ -13,6 +14,7 @@ public class Dictionary {
     public Dictionary() {
         characterSet = new HashSet<>();
         random = new Random();
+        numOfTimes = 1;
 
         // Add characters A-Z
         for (char c = 'A'; c <= 'Z'; c++) {
@@ -49,7 +51,21 @@ public class Dictionary {
 
     // Method to return a random string from the set
     public String getRandomString() {
-        int index = random.nextInt(characterSet.size());
-        return characterSet.toArray(new String[0])[index];
+        if (numOfTimes == 1) {
+            numOfTimes++;
+            return "cq";
+        } else if (numOfTimes == 2) {
+            numOfTimes++;
+            return "A";
+
+        } else if (numOfTimes == 3) {
+            numOfTimes++;
+            return "B";
+
+        } else {
+            numOfTimes++;
+            int index = random.nextInt(characterSet.size());
+            return characterSet.toArray(new String[0])[index];
+        }
     }
 }
