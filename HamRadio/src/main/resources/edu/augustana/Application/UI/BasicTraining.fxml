@@ -41,10 +41,7 @@
          </font></Label>
 
         <!-- Reset Button -->
-        <Button fx:id="resetButton" layoutX="471.0" layoutY="387.0" prefHeight="35.0" prefWidth="109.0" style="-fx-background-color: #466854; -fx-text-fill: white;" text="Reset">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font></Button>
+        <Button fx:id="resetButton" layoutX="491.0" layoutY="332.0" prefHeight="35.0" prefWidth="109.0" style="-fx-background-color: #466854; -fx-text-fill: white;" text="Reset" onAction="#resetGame"/>
 
         <!-- Volume Control (Slider) -->
         <Label layoutX="755.0" layoutY="66.0" prefHeight="35.0" prefWidth="87.0" style="-fx-font-family: 'Leelawadee UI Bold'; -fx-font-size: 18;" text="VOLUME">
