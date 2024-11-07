@@ -55,10 +55,10 @@ public interface HamRadioSimulatorInterface {
     void setPlaybackSpeed(double playbackSpeed);
 
     //getter of the WPM
-    double getWPM();
+    int getWPM();
 
     //setter of WPM
-    void setWPM(double WPM);
+    void setWPM(int WPM);
 
     //setter for is
     void setIsKeyReleased(boolean isKeyRelease);

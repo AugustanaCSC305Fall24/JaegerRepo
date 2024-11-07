@@ -57,7 +57,7 @@ public class HamUIController {
     @FXML
     public void initialize() throws IOException {
         this.radio = new HamRadioSimulator(0,0,0,0
-        ,0,0,1.0,40.0);
+        ,0,0,1.0,40);
         radio.setVolume(volumeSlider.getValue());
     }
 

@@ -97,7 +97,7 @@ public class HamPracticeUIController extends HamUIController {
         addMessageToChatLogUI("Radio: Hello, welcome to HAM Practice!");
         addMessageToChatLogUI("Radio: Please first read our game's rules by hitting \"Rules \"");
         System.out.println("Radio WPM in Controller Practice Innitialize: "+radio.getWPM());
-        wpmComboBox.getItems().addAll(5.0,10.0,15.0,20.0);
+        wpmComboBox.getItems().addAll(5,10,15,20);
 
         for (TaskForPractice task : room.getTaskList()) {
             addMessageToChatLogUI(task.getDescription());
@@ -239,7 +239,7 @@ public class HamPracticeUIController extends HamUIController {
 
     @FXML
     public void selectWPMAction() {
-        double wpm = (double) wpmComboBox.getSelectionModel().getSelectedItem();
+        int wpm = (int) wpmComboBox.getSelectionModel().getSelectedItem();
         radio.setWPM(wpm);
         System.out.println("wpm: " + radio.getWPM());
     }
