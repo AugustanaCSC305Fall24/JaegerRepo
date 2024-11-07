@@ -162,7 +162,13 @@ public class SoundPlayer {
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 1, 2, 44100, false);
         double frequencyDifference = Math.abs(receivedFrequency - transmitFrequency);
-        boolean addNoise = frequencyDifference > 0;
+        System.out.println("The Difference in frequency is...." + frequencyDifference);
+        boolean addNoise = frequencyDifference > 5;
+        if (addNoise){
+            System.out.println("You will hear pitch variance");
+        } else {
+            System.out.println("The sound should be beautiful right now!");
+        }
 
         for (int i = 0; i < morseString.length(); i++) {
             char symbol = morseString.charAt(i);
