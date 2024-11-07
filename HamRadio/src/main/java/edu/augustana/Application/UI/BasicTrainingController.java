@@ -40,7 +40,6 @@ public class BasicTrainingController {
     public void initialize() throws IOException {
         // Initialize volume slider
         volumeSlider.setValue(50);
-        volumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> adjustVolume(newVal.doubleValue()));
 
         // Set initial score label
         updateScoreLabel();
@@ -102,11 +101,13 @@ public class BasicTrainingController {
     }
 
     @FXML
-    private void adjustVolume(double newVolume) {
-
+    private void adjustVolume() {
+        double customizedVolume = volumeSlider.getValue();
+        radio.setVolume(customizedVolume);
     }
 
     private void updateScoreLabel() {
+        scoreLabel.setVisible(false);
         scoreLabel.setText("Score: " + score );
     }
 
@@ -121,6 +122,10 @@ public class BasicTrainingController {
         updateScoreLabel();
         result = "";
         setResultLabel();
+    }
+    @FXML
+    private void switchToWelcomeScreen() throws IOException {
+        App.setRoot("WelcomeScreen");
     }
 
 }

@@ -43,7 +43,6 @@ public class App extends Application {
     public static List<PracticeScenerio> getPracticeScenerioList(){
         return practiceScenerioList;
     }
-
     public static PracticeScenerio getCurrentPracticeScenerio(){
         if (practiceIndex >= 0 && practiceIndex < practiceScenerioList.size()) {
             return practiceScenerioList.get(practiceIndex);
