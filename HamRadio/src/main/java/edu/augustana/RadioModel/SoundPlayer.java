@@ -148,7 +148,7 @@ public class SoundPlayer {
         }).start();  // Run on a separate thread
     }
 
-    public void playMorse(String morseString, int wordsPerMinute){
+    public void playMorse(String morseString, int wordsPerMinute, double receivedFrequency, double transmitFrequency, double bandwidth){
         int dotDuration = calculateDotDuration(wordsPerMinute);
         System.out.println("I'm working... playMorse in SoundPlayer");
         System.out.println("I'm speaking..." + morseString);
@@ -157,18 +157,27 @@ public class SoundPlayer {
 
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 1, 2, 44100, false);
+        double frequencyDifference = Math.abs(receivedFrequency - transmitFrequency);
+        boolean addNoise = frequencyDifference > 0;
 
-        // Generate audio signal for each character in the morseString
         for (int i = 0; i < morseString.length(); i++) {
             char symbol = morseString.charAt(i);
             if (symbol == '.') {
-                // Generate "dit" sound (600 Hz for dot)
-                generateTone(600, dotDuration, format, byteBuffer);
+                if (addNoise) {
+                    generateNoiseWithPitch(dotDuration, format, byteBuffer, frequencyDifference);
+                } else {
+                    // Generate "dit" sound (600 Hz for dot)
+                    generateTone(600, dotDuration, format, byteBuffer);
+                }
                 // Add silence (gap between symbols)
                 generateSilence(dotDuration, format, byteBuffer);
             } else if (symbol == '-') {
-                // Generate "dah" sound (600 Hz for dash)
-                generateTone(600, 3 * dotDuration, format, byteBuffer);
+                if (addNoise) {
+                    generateNoiseWithPitch(3 * dotDuration, format, byteBuffer, frequencyDifference);
+                } else {
+                    // Generate "dah" sound (600 Hz for dash)
+                    generateTone(600, 3 * dotDuration, format, byteBuffer);
+                }
                 // Add silence (gap between symbols)
                 generateSilence(dotDuration, format, byteBuffer);
             } else if (symbol == ' ') {
@@ -179,6 +188,7 @@ public class SoundPlayer {
                 generateSilence(7 * dotDuration, format, byteBuffer);
             }
         }
+
 
         // Playback the generated Morse code using SourceDataLine
         try {
@@ -242,6 +252,11 @@ public class SoundPlayer {
         byte[] buf = new byte[1];
         buf[0] = (byte) (Math.sin(angle) * 127);  // Tạo sóng âm thanh
         sdl.write(buf, 0, 1);
+    }
+
+    private void generateNoiseWithPitch(int durationMs, AudioFormat format, ByteArrayOutputStream byteBuffer, double frequencyDifference) {
+        int adjustedFrequency = (int) (frequencyDifference / 5);
+        generateTone( 600*adjustedFrequency, durationMs, format, byteBuffer);
     }
 
     public void setIsKeyRelease(boolean isKeyReleased) {

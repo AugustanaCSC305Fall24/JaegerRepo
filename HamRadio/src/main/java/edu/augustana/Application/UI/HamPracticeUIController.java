@@ -215,7 +215,7 @@ public class HamPracticeUIController extends HamUIController {
             new Alert(Alert.AlertType.INFORMATION, message).show();
             return;
         }
-        if (Math.abs(radio.getReceiveFrequency() - radio.getTransmitFrequency()) <= radio.getBandWidth() / 2) {
+        if (Math.abs(radio.getReceiveFrequency() - radio.getTransmitFrequency()) <= radio.getBandWidth()/2) {
             MorseCodePlayer player = new MorseCodePlayer((int) radio.getWPM(), radio);
 //            player.playMorseCode(userOutput);
             player.playMorse(userOutput);
