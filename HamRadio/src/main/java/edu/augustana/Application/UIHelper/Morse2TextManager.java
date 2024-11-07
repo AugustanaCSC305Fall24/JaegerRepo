@@ -55,9 +55,10 @@ public class Morse2TextManager {
         App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onKeyPressed, this::onKeyReleased);
 
         String morseToText = translator.morseToText(cleanMorse);
-        if (!cleanMorse.isEmpty() && morseToText.isEmpty()) {
-            morseToText = "Invalid Morse Code";
-        }
+       // System.out.println(morseToText);
+//        if (!cleanMorse.isEmpty() && morseToText.isEmpty()) {
+//            morseToText = "Invalid Morse Code";
+//        }
         translateTextField.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
     }
 
