@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="480.0" prefWidth="600.0" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.BasicTrainingController">
+    <children>
+        <!-- Title Label -->
+        <Label layoutX="210.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #466854;" text="CW Trainer" />
+
+        <!-- Play Button -->
+        <Button fx:id="playButton" layoutX="50.0" layoutY="80.0" prefWidth="100" style="-fx-background-color: #466854; -fx-text-fill: white;" text="Play Morse Code" />
+
+        <!-- Text Input Label -->
+        <Label layoutX="50.0" layoutY="150.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="Enter your interpretation:" />
+
+        <!-- Text Input Field -->
+        <TextField fx:id="inputField" layoutX="50.0" layoutY="170.0" prefWidth="500.0" promptText="Type what you heard" />
+
+        <!-- Submit Button -->
+        <Button fx:id="submitButton" layoutX="460.0" layoutY="210.0" prefWidth="90" style="-fx-background-color: #466854; -fx-text-fill: white;" text="Submit" />
+
+        <!-- Result Label -->
+        <Label layoutX="50.0" layoutY="260.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="Result:" />
+        <Label fx:id="feedbackLabel" layoutX="100.0" layoutY="260.0" style="-fx-font-size: 12px; -fx-text-fill: red;" text="" />
+
+        <!-- Score/Progress Label -->
+        <Label layoutX="50.0" layoutY="290.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="Progress:" />
+        <Label fx:id="scoreLabel" layoutX="120.0" layoutY="290.0" style="-fx-font-size: 12px;" text="Score: 0/0" />
+
+        <!-- Reset Button -->
+        <Button fx:id="resetButton" layoutX="50.0" layoutY="330.0" prefWidth="100" style="-fx-background-color: #466854; -fx-text-fill: white;" text="Reset" />
+
+        <!-- Volume Control (Slider) -->
+        <Label layoutX="500.0" layoutY="50.0" text="VOLUME" style="-fx-font-family: 'Leelawadee UI Bold'; -fx-font-size: 12px;" />
+        <Slider fx:id="volumeSlider" layoutX="520.0" layoutY="80.0" max="100" min="0" orientation="VERTICAL" prefHeight="150.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
+
+    </children>
+</AnchorPane>
