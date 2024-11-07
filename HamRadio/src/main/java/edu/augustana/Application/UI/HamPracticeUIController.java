@@ -196,6 +196,8 @@ public class HamPracticeUIController extends HamUIController {
     }
 
     private void givingTask() {
+        System.out.println("-----------------");
+        System.out.println("Start*************************");;
         List<Bot> botList = room.getBotList();
         double radioFreq = radio.getReceiveFrequency();
         double radioBandwidth = radio.getBandWidth();
