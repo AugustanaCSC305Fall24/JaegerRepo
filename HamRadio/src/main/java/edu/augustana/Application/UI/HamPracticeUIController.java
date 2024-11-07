@@ -10,14 +10,12 @@ import edu.augustana.RadioModel.Practice.PracticeScenerio;
 import edu.augustana.RadioModel.Practice.TaskForPractice;
 import edu.augustana.RadioModel.Practice.TransmittingTask;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -25,10 +23,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
+//import com.google.gson.Gson;
+//import com.google.gson.GsonBuilder;
 
 public class HamPracticeUIController extends HamUIController {
     Scene scene;
@@ -87,11 +87,14 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     private ComboBox wpmComboBox;
 
+    @FXML
+    private Slider bandWitdhSlider;
+
     @Override
     @FXML
     public void initialize() throws IOException {
         this.radio = new HamRadioSimulator(0,0,0,0
-                ,0,0,1.0,10);
+                ,3.0,0,1.0,10);
         this.room = App.getCurrentPracticeScenerio();
         morseCodeHandlerManager = new MorseCodeHandlerManager(inputTextArea, radio);
         radio.setVolume(volumeSlider.getValue());
@@ -165,7 +168,10 @@ public class HamPracticeUIController extends HamUIController {
     private void changeReceivedFrequency(){
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
         statusTextArea.setText(displayTextString());
-        givingTask();
+        if(isStartClicked){
+            givingTask();
+        }
+
     }
 
     private void givingTask() {
@@ -230,24 +236,12 @@ public class HamPracticeUIController extends HamUIController {
         System.out.println("Done Giving Task.");
     }
 
-    @FXML
-    public void speedDownAction() { //speed controller
-        radio.setPlaybackSpeed(radio.getPlaybackSpeed() - 0.1);
-        statusTextArea.setText(displayTextString());
-    }
-
-    @FXML
-    public void speedUpAction() { //speed controller
-        radio.setPlaybackSpeed(radio.getPlaybackSpeed() + 0.1);
-        statusTextArea.setText(displayTextString());
-    }
 
     public String displayTextString() { //TextFieldController
         String radioStatus = "Receive: " + radio.getReceiveFrequency() + "MHz \n" +
                 "Transmit: " + radio.getTransmitFrequency() + "MHz \n"+
                 "Status: " + statusConnect +
                 "\n" + "Volume: " + radio.getVolume() +
-                "\n" + "Playback Speed: " + radio.getPlaybackSpeed() +
                 "\n" + "Bandwidth: " + radio.getBandWidth() +
                 "\n" + "\n" + "Your score: " +  room.getScore();
         return radioStatus;
@@ -283,17 +277,13 @@ public class HamPracticeUIController extends HamUIController {
     }
 
     @FXML
-    public void bandwidthUpAction(){ //freq controller
-        radio.setBandWidth(radio.getBandWidth() + this.DEFAULT_TUNE);
+    public void bandWidthAction(){
+        radio.setBandWidth(radio.getBandWidth() + bandWitdhSlider.getValue());
         statusTextArea.setText(displayTextString());
-        givingTask();
-    }
+        if (isStartClicked){
+            givingTask();
+        }
 
-    @FXML
-    public void bandwidthDownAction(){ //freq controller
-        radio.setBandWidth(radio.getBandWidth() - this.DEFAULT_TUNE);
-        statusTextArea.setText(displayTextString());
-        givingTask();
     }
 
     @FXML
@@ -353,5 +343,21 @@ public class HamPracticeUIController extends HamUIController {
             ex.printStackTrace();
         }
     }
+
+//    @FXML
+//    public void saveFileAction(){
+//        String filename = "room.json";
+//        PracticeScenerio.serializeToFile(room, filename);
+//    }
+//
+//    @FXML
+//    public PracticeScenerio openFileAction(){
+//        String filename = "room.json";
+//        PracticeScenerio openedRoom = PracticeScenerio.deserializeFromFile(filename);
+//        return openedRoom;
+//
+//    }
+
+
 
 }
