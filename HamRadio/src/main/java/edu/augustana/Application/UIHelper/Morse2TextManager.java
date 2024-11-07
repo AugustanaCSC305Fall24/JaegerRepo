@@ -30,7 +30,7 @@ public class Morse2TextManager {
     public Morse2TextManager(TextArea translateTextField, HamRadioSimulatorInterface radio) {
         this.translateTextField = translateTextField;
         this.radio = radio;
-        this.translator = new MorseCodeTranslator(translateTextField, radio);
+        this.translator = new MorseCodeTranslator();
         this.cleanMorse = "";
         this.userOutput = "";
         this.isKeyRelease = true;
@@ -38,7 +38,6 @@ public class Morse2TextManager {
 
     public void setBandSelected(boolean bandSelected) {
         this.isBandSelected = bandSelected;
-        translator.setBandSelected(bandSelected);
     }
 
     public void setUserOutput(String userOutput) {

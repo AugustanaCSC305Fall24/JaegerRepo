@@ -24,12 +24,20 @@ public class WelcomeScreenController {
     private ImageView userAvatar;
 
     @FXML
+    private Button basicTrainingBtn;
+
+    @FXML
     private void switchToHamUI() throws IOException {
         App.setRoot("HamUI");
     }
     @FXML
     private void switchToHamPractice() throws IOException {
         App.setRoot("HamPracticeUI");
+    }
+
+    @FXML
+    private void switchtoBasicTraining() throws IOException {
+        App.setRoot("BasicTraining");
     }
 
 

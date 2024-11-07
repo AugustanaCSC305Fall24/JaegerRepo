@@ -8,7 +8,6 @@ import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.RadioModel.Practice.Bot;
 import edu.augustana.RadioModel.Practice.PracticeScenerio;
 import edu.augustana.RadioModel.Practice.TaskForPractice;
-import edu.augustana.RadioModel.Practice.TransmittingTask;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +24,6 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -45,7 +43,6 @@ public class HamPracticeUIController extends HamUIController {
     private static final double DEFAULT_TUNE = 1.0;
     public static final int TONE = 600;
     MorseCodeHandlerManager morseCodeHandlerManager;
-    MorseCodePlayer player;
 
     @FXML
     private TextArea statusTextArea;
@@ -87,7 +84,7 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     public void initialize() throws IOException {
         this.radio = new HamRadioSimulator(0,0,0,0
-                ,0,25,1.0,10);
+                ,0,0,1.0,10);
         this.room = App.getCurrentPracticeScenerio();
         morseCodeHandlerManager = new MorseCodeHandlerManager(inputTextArea, radio);
         radio.setVolume(volumeSlider.getValue());
@@ -95,17 +92,17 @@ public class HamPracticeUIController extends HamUIController {
         radio.setTransmitFrequency(transmitFreqSlider.getValue());
         addMessageToChatLogUI("Radio: Hello, welcome to HAM Practice!");
         addMessageToChatLogUI("Radio: Please first read our game's rules by hitting \"Rules \"");
-        System.out.println("Radio WPM in Controller Practice Innitialize: "+ radio.getWPM());
+        System.out.println("Radio WPM in Controller Practice Innitialize: "+radio.getWPM());
 
-        List<TaskForPractice> transmitTaskList = new ArrayList<>();
+        for (TaskForPractice task : room.getTaskList()) {
+            addMessageToChatLogUI(task.getDescription());
+        }
+
         for (int i = 0; i < Bot.nameList.length; i++){
             String name = Bot.nameList[i];
             int level = Bot.getRandomLevel();
             double frequency = Bot.getRandomFreq();
             Bot newBot = new Bot(level, name, frequency);
-            TaskForPractice task = new TransmittingTask( newBot.getIDCode() + " " + TransmittingTask.desscriptionOptions[i], newBot);
-            newBot.setTask(task);
-            transmitTaskList.add(task);
             room.getBotList().add(newBot);
             System.out.println("For testing in initialize() Practice UI: " + newBot + ", Freq: " + newBot.getBotFrequency());
         }
@@ -179,11 +176,20 @@ public class HamPracticeUIController extends HamUIController {
                     addMessageToChatLogUI(bot.getIDCode() + " needs help!");
                     bot.setDidAskForHelp();
                 }
-                addMessageToChatLogUI(bot.getIDCode() + ": " + bot.getTask().getDescription());
-                player = new MorseCodePlayer((int) radio.getWPM(), radio);
-                player.playMorseForBot(bot.getTask().getDescription(), bot);
             }
         }
+    }
+
+    @FXML
+    public void speedDownAction() { //speed controller
+        radio.setPlaybackSpeed(radio.getPlaybackSpeed() - 0.1);
+        statusTextArea.setText(displayTextString());
+    }
+
+    @FXML
+    public void speedUpAction() { //speed controller
+        radio.setPlaybackSpeed(radio.getPlaybackSpeed() + 0.1);
+        statusTextArea.setText(displayTextString());
     }
 
     public String displayTextString() { //TextFieldController
@@ -205,8 +211,8 @@ public class HamPracticeUIController extends HamUIController {
             return;
         }
         if (Math.abs(radio.getReceiveFrequency() - radio.getTransmitFrequency()) <= radio.getBandWidth()/2) {
+            MorseCodePlayer player = new MorseCodePlayer((int) radio.getWPM(), radio);
 //            player.playMorseCode(userOutput);
-            player = new MorseCodePlayer((int) radio.getWPM(), radio);
             player.playMorse(userOutput);
             statusTextArea.setText("Start play back!\n" + "\nYou are transmitting: " + userOutput);
         }
