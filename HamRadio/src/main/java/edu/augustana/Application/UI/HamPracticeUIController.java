@@ -87,9 +87,8 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     public void initialize() throws IOException {
         this.radio = new HamRadioSimulator(0,0,0,0
-                ,0,0,1.0,10);
+                ,0,25,1.0,10);
         this.room = App.getCurrentPracticeScenerio();
-        player = new MorseCodePlayer((int) radio.getWPM(), radio);
         morseCodeHandlerManager = new MorseCodeHandlerManager(inputTextArea, radio);
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
@@ -180,22 +179,11 @@ public class HamPracticeUIController extends HamUIController {
                     addMessageToChatLogUI(bot.getIDCode() + " needs help!");
                     bot.setDidAskForHelp();
                 }
-                addMessageToChatLogUI(bot.getTask().getDescription());
-                player.playMorse(bot.getTask().getDescription());
+                addMessageToChatLogUI(bot.getIDCode() + ": " + bot.getTask().getDescription());
+                player = new MorseCodePlayer((int) radio.getWPM(), radio);
+                player.playMorseForBot(bot.getTask().getDescription(), bot);
             }
         }
-    }
-
-    @FXML
-    public void speedDownAction() { //speed controller
-        radio.setPlaybackSpeed(radio.getPlaybackSpeed() - 0.1);
-        statusTextArea.setText(displayTextString());
-    }
-
-    @FXML
-    public void speedUpAction() { //speed controller
-        radio.setPlaybackSpeed(radio.getPlaybackSpeed() + 0.1);
-        statusTextArea.setText(displayTextString());
     }
 
     public String displayTextString() { //TextFieldController
@@ -218,6 +206,7 @@ public class HamPracticeUIController extends HamUIController {
         }
         if (Math.abs(radio.getReceiveFrequency() - radio.getTransmitFrequency()) <= radio.getBandWidth()/2) {
 //            player.playMorseCode(userOutput);
+            player = new MorseCodePlayer((int) radio.getWPM(), radio);
             player.playMorse(userOutput);
             statusTextArea.setText("Start play back!\n" + "\nYou are transmitting: " + userOutput);
         }
