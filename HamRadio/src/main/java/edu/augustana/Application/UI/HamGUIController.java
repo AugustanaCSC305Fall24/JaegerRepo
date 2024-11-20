@@ -113,7 +113,7 @@ public class HamGUIController {
 
     @FXML
     public void morseToTextAction() {
-        //morsecode controller
+        morseCodeHandlerManager.morseToTextAction();
     }
 
     @FXML
