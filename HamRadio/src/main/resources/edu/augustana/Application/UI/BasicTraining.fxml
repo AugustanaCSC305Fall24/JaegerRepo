@@ -48,7 +48,7 @@
 
         <!-- Volume Control (Slider) -->
         <Label layoutX="805.0" layoutY="101.0" prefHeight="25.0" prefWidth="61.0" style="-fx-font-family: 'Leelawadee UI Bold'; -fx-font-size: 12px;" text="VOLUME" />
-        <Slider fx:id="volumeSlider" layoutX="816.0" layoutY="136.0" max="100" min="0" orientation="VERTICAL" prefHeight="220.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
+        <Slider fx:id="volumeSlider" layoutX="816.0" layoutY="136.0" max="100" min="0" orientation="VERTICAL" prefHeight="220.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" onMouseReleased="#adjustVolume" />
       <Label layoutX="28.0" layoutY="231.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="ENTER YOUR ENGLISH INTERPRETATION">
          <font>
             <Font size="14.0" />
