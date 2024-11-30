@@ -13,6 +13,7 @@ public class UserPreferences {
     private String primaryUserName = "User";
     private String serverAddress = "localhost";
     private int numBot = 0;
+    private int wpm = 0;
 
     public UserPreferences() {
     }
@@ -25,7 +26,6 @@ public class UserPreferences {
         this.primaryUserName = primaryUserName;
     }
 
-
     public int getNumBot() {return numBot;}
 
     public void setNumBot(int numBot) {this.numBot = numBot;}
@@ -37,6 +37,10 @@ public class UserPreferences {
     public void setServerAddress(String serverAddress) {
         this.serverAddress = serverAddress;
     }
+
+    public void setWPM(int wpm){this.wpm = wpm;}
+
+    public int getWPM(){return this.wpm;}
 
     public String toJSON() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

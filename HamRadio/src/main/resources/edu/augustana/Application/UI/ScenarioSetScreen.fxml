@@ -35,9 +35,9 @@
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
-      <TextField layoutX="387.0" layoutY="129.0" prefHeight="25.0" prefWidth="234.0" />
-      <ComboBox layoutX="472.0" layoutY="190.0" prefWidth="150.0" promptText="How many bots?" />
-      <ComboBox layoutX="472.0" layoutY="250.0" prefWidth="150.0" promptText="How fast?" />
+      <TextField fx:id="primaryUserNameTextField" layoutX="387.0" layoutY="129.0" prefHeight="25.0" prefWidth="234.0" />
+      <ComboBox fx:id="numBotBox" layoutX="472.0" layoutY="190.0" prefWidth="150.0" promptText="How many bots?" />
+      <ComboBox fx:id="wpmBox" layoutX="472.0" layoutY="250.0" prefWidth="150.0" promptText="How fast?" />
       <Button layoutX="325.0" layoutY="378.0" mnemonicParsing="false" onAction="#switchToHamUIPractice" prefWidth="102.0" style="-fx-background-color: #466854;" text="START" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
@@ -53,6 +53,6 @@
             <Font name="System Bold Italic" size="24.0" />
          </font>
       </Label>
-      <Slider fx:id="transmitFreqSlider" blockIncrement="1.0" layoutX="520.0" layoutY="308.0" majorTickUnit="7.0" max="7067.0" min="7000.0" minorTickCount="1" onMouseReleased="#changeTransmittedFrequency" prefHeight="37.0" prefWidth="228.0" showTickLabels="true" showTickMarks="true" value="7000.0" />
+      <Slider fx:id="transmitFreqSlider" blockIncrement="1.0" layoutX="520.0" layoutY="308.0" majorTickUnit="7.0" max="7067.0" min="7000.0" minorTickCount="1" prefHeight="37.0" prefWidth="228.0" showTickLabels="true" showTickMarks="true" value="7000.0" />
    </children>
 </AnchorPane>

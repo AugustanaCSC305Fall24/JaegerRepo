@@ -2,6 +2,7 @@ package edu.augustana.Application.UI;
 
 import edu.augustana.Application.UIHelper.KeyBindManager;
 import edu.augustana.RadioModel.Practice.PracticeScenerio;
+import edu.augustana.RadioModel.Practice.UserPreferences;
 import edu.augustana.RadioModel.SoundPlayer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -19,11 +20,17 @@ import java.util.List;
  * JavaFX App
  */
 public class App extends Application {
-
+    private static App app;
     private static Scene scene;
     private static List<PracticeScenerio> practiceScenerioList = new ArrayList<>();
     private static int practiceIndex = -1;
     private static final KeyBindManager keyBindManager = new KeyBindManager();
+    private UserPreferences userPrefs = UserPreferences.loadFromJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);
+
+    private static App returnAupp(){return app;}
+    public static UserPreferences getUserPrefs() {
+        return app.userPrefs;
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
