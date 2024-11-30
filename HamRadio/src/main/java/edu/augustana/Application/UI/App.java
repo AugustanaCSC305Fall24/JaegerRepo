@@ -27,7 +27,7 @@ public class App extends Application {
     private static final KeyBindManager keyBindManager = new KeyBindManager();
     private UserPreferences userPrefs = UserPreferences.loadFromJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);
 
-    private static App returnAupp(){return app;}
+    private static App returnApp() {return app;}
     public static UserPreferences getUserPrefs() {
         return app.userPrefs;
     }
