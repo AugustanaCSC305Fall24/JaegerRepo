@@ -32,7 +32,7 @@ public class WelcomeScreenController {
     }
     @FXML
     private void switchToHamPractice() throws IOException {
-        App.setRoot("HamPracticeUI");
+        App.setRoot("ScenarioSetScreen");
     }
 
     @FXML

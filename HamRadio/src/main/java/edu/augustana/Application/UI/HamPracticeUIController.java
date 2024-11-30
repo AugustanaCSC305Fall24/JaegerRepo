@@ -318,9 +318,13 @@ public class HamPracticeUIController extends HamUIController {
         isPushedToTalk = true;
     }
 
-
     public void englishOnButton(ActionEvent actionEvent) {
         isEnglishOn = true;
+    }
+
+    @FXML
+    public void switchToCustomizeScenario() throws IOException{
+        App.setRoot("ScenarioSetScreen");
     }
 
     @FXML

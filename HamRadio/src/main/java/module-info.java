@@ -5,6 +5,7 @@ module edu.augustana {
     requires tyrus.standalone.client;
     requires java.desktop;
     requires jdk.jfr;
+    requires com.google.gson;
 
     opens edu.augustana.Application.UI to javafx.fxml;
     exports edu.augustana.Application.UI;

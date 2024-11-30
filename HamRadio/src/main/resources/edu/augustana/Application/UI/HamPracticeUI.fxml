@@ -80,7 +80,7 @@
       </Label>
       <Button fx:id="rulesButton" layoutX="147.0" layoutY="352.0" onAction="#rulesButtonAction" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="RULES" textFill="WHITE" />
       <ComboBox fx:id="wpmComboBox" layoutX="160.0" layoutY="250.0" onAction="#selectWPMAction" prefHeight="26.0" prefWidth="73.0" promptText="10" />
-      <Button fx:id="rulesButton1" layoutX="147.0" layoutY="384.0" onAction="#rulesButtonAction" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="EXIT" textFill="WHITE" />
+      <Button fx:id="rulesButton1" layoutX="147.0" layoutY="384.0" onAction="#switchToCustomizeScenario" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="EXIT" textFill="WHITE" />
       <Slider fx:id="bandWitdhSlider" blockIncrement="1.0" layoutX="22.0" layoutY="184.0" majorTickUnit="5.0" max="35.0" minorTickCount="1" onMouseReleased="#bandWidthAction" prefHeight="37.0" prefWidth="228.0" showTickLabels="true" showTickMarks="true" value="3.0" />
       <Button fx:id="rulesButton11" layoutX="797.0" layoutY="352.0" prefHeight="17.0" prefWidth="73.0" text="Save" />
       <Button fx:id="rulesButton1111" layoutX="797.0" layoutY="384.0" prefHeight="17.0" prefWidth="73.0" text="Open" />

@@ -161,9 +161,9 @@ public class SoundPlayer {
 
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 1, 2, 44100, false);
-        double frequencyDifference = Math.abs(receivedFrequency - transmitFrequency);
+        double frequencyDifference = receivedFrequency - transmitFrequency;
         System.out.println("The Difference in frequency is...." + frequencyDifference);
-        boolean addNoise = frequencyDifference > 5;
+        boolean addNoise = frequencyDifference > 5 || frequencyDifference < -5;
         if (addNoise){
             System.out.println("You will hear pitch variance");
         } else {
