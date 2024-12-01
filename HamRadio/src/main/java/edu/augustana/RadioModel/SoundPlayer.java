@@ -2,10 +2,12 @@ package edu.augustana.RadioModel;
 
 import javax.sound.sampled.*;
 import java.io.ByteArrayOutputStream;
+import java.util.Random;
 
 public class SoundPlayer {
     private double volume;
     private boolean isKeyReleased;
+    private boolean isWhiteNoiseOn;
 
     public SoundPlayer(double volume) {
         this.isKeyReleased = true;
@@ -101,6 +103,10 @@ public class SoundPlayer {
                 e.printStackTrace();
             }
         }).start();  // Run on a separate thread
+    }
+
+    public void setWhiteNoiseOn(boolean whiteNoiseOn) {
+        this.isWhiteNoiseOn = whiteNoiseOn;
     }
 
     public void playTone(double frequency, double volume) {
@@ -228,6 +234,57 @@ public class SoundPlayer {
             e.printStackTrace();
         }
 
+    }
+
+    public void generateWhiteNoise(float volumePercentage) {
+        Thread whiteNoiseThread = new Thread(() -> {
+            float sampleRate = 44100.0f;
+            int sampleSizeInBits = 16;
+            int channels = 1;
+            boolean signed = true;
+            boolean bigEndian = false;
+
+            // Define the audio format
+            AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
+
+            try {
+                //Get and open the source data line
+                DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+                SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(info);
+                sourceLine.open(format);
+
+                // Adjust volume if support
+                if (sourceLine.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                    FloatControl volumeControl = (FloatControl) sourceLine.getControl(FloatControl.Type.MASTER_GAIN);
+                    float minVolume = volumeControl.getMinimum();
+                    float maxVolume = volumeControl.getMaximum();
+                    float volumeInDb = (volumePercentage / 100.0f) * (maxVolume - minVolume) + minVolume;
+                    volumeControl.setValue(volumeInDb);
+                } else {
+                    System.out.println("MASTER_GAIN control is not supported on this system.");
+                }
+
+                //Start the line
+                sourceLine.start();
+
+                // Generate and play white noise continuously
+                byte[] buffer = new byte[1024]; // Buffer size
+                Random random = new Random();
+
+                while (isWhiteNoiseOn) {
+                    for (int i = 0; i < buffer.length; i++) {
+                        buffer[i] = (byte) (random.nextInt(256) - 128);
+                    }
+                    sourceLine.write(buffer, 0, buffer.length);
+                }
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        // Start the white noise thread
+        whiteNoiseThread.start();
     }
 
     private static int calculateDotDuration(int wordsPerMinute) {

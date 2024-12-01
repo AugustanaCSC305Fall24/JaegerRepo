@@ -76,6 +76,14 @@ public class MorseCodePlayer{
         player.playMorse(userOutput, 20, radio.getReceiveFrequency(), radio.getTransmitFrequency());
     }
 
+    public void playWhiteNoise() {
+        player.generateWhiteNoise(40);
+    }
+
+    public void setIsWhiteNoiseOn(boolean isOn) {
+        player.setWhiteNoiseOn(isOn);
+    }
+
     public void playMorseForBot(String userOutput, Bot bot){
         System.out.println("Test: Radio Trasmit Freq: " + radio.getTransmitFrequency());
         System.out.println("Test: Bot Transmit Freq: " + bot.getBotFrequency());
