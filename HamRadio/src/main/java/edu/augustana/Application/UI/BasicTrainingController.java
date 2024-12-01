@@ -132,4 +132,12 @@ public class BasicTrainingController {
         App.setRoot("WelcomeScreen");
     }
 
+    private void setDifficulty(int difficulty) {
+        dictionary.setDifficulty(difficulty);
+    }
+
+    public int getDifficulty() {
+        return dictionary.getDifficulty();
+    }
+
 }
