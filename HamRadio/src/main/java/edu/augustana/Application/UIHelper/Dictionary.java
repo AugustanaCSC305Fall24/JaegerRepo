@@ -21,26 +21,26 @@ public class Dictionary {
 
         // Initialize the words array
         words = new String[] {
-                "cat", "dog", "ant", "bat", "owl",
-                "rat", "pig", "cow", "bee", "ram",
-                "fox", "hen", "ape", "elk", "cod",
-                "jay", "emu", "eel", "bug", "orb",
-                "sap", "fig", "oak", "ash", "fir",
-                "ice", "sun", "ink", "lip", "joy"
+                "CQ", "QTH", "QRZ", "73", "88",
+                "OM", "YL", "SK", "DE", "RST",
+                "K", "BK", "AR", "KN", "QSL",
+                "QRM", "QRN", "QRS", "QRQ", "QSB",
+                "ANT", "PWR", "CW", "QRP", "QRO",
+                "HV", "WX", "SIG", "FREQ", "QSO"
         };
 
         // Initialize the sentences array
         sentences = new String[] {
-                "The quick brown fox jumps over the lazy dog.",
-                "A journey of a thousand miles begins with a single step.",
-                "To be or not to be, that is the question.",
-                "All that glitters is not gold.",
-                "A picture is worth a thousand words.",
-                "Fortune favors the bold.",
-                "Actions speak louder than words.",
-                "The pen is mightier than the sword.",
-                "An apple a day keeps the doctor away.",
-                "When in Rome, do as the Romans do."
+                "CQ CQ CQ DE CALLSIGN K",  // General call
+                "CALLSIGN DE CALLSIGN UR RST 599 QTH LOCATION K",  // Signal report and location
+                "CALLSIGN DE CALLSIGN TNX FER QSO 73 SK",  // Thank you and signing off
+                "QRL? IS THIS FREQUENCY IN USE?",  // Checking if a frequency is busy
+                "QTH IS CITY NAME WX IS SUNNY 25C",  // Sharing location and weather
+                "QRZ? DE CALLSIGN",  // Asking who’s calling
+                "QRS PSE I AM NEW TO CW",  // Requesting slower Morse speed
+                "QRM IS STRONG HR",  // Reporting interference
+                "ANT IS DIPOLE UP 30FT PWR IS 100W",  // Antenna and power information
+                "CALLSIGN DE CALLSIGN HW? AR KN"  // How do you copy? (asking signal quality)
         };
     }
 
