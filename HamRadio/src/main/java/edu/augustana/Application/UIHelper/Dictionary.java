@@ -46,11 +46,12 @@ public class Dictionary {
 
     // Setter for difficulty
     public void setDifficulty(int difficulty) {
-        if (difficulty == 1 || difficulty == 2) {
-            this.difficulty = difficulty;
-        } else {
-            throw new IllegalArgumentException("Difficulty must be 0 or 1.");
-        }
+//        if (difficulty == 1 || difficulty == 2) {
+//            this.difficulty = difficulty;
+//        } else {
+//            throw new IllegalArgumentException("Difficulty must be 0 or 1.");
+//        }
+        this.difficulty = difficulty;
     }
 
     // Getter for difficulty
@@ -60,25 +61,25 @@ public class Dictionary {
 
     // Method to return a random string based on difficulty
     public String getRandomString() {
-        if (numOfTimes == 1) {
-            numOfTimes++;
-            return "cq";
-        } else if (numOfTimes == 2) {
-            numOfTimes++;
-            return "A";
-        } else if (numOfTimes == 3) {
-            numOfTimes++;
-            return "B";
+//        if (numOfTimes == 1) {
+//            numOfTimes++;
+//            return "cq";
+//        } else if (numOfTimes == 2) {
+//            numOfTimes++;
+//            return "A";
+//        } else if (numOfTimes == 3) {
+//            numOfTimes++;
+//            return "B";
+//        } else {
+//            numOfTimes++;
+        if (difficulty == 1) {
+            // Difficulty 0: Pick a random word
+            return words[random.nextInt(words.length)];
         } else {
-            numOfTimes++;
-            if (difficulty == 1) {
-                // Difficulty 0: Pick a random word
-                return words[random.nextInt(words.length)];
-            } else {
-                // Difficulty 1: Pick a random sentence
-                return sentences[random.nextInt(sentences.length)];
-            }
+            // Difficulty 1: Pick a random sentence
+            return sentences[random.nextInt(sentences.length)];
         }
+//        }
     }
 
     // Method to display the words array

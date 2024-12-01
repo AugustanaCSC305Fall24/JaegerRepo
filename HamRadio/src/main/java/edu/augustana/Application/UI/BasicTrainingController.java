@@ -17,6 +17,7 @@ public class BasicTrainingController {
     private String randomMorse;
     private Dictionary dictionary;
     HamRadioSimulatorInterface radio;
+    private boolean isLevelPicked;
 
 
 
@@ -60,11 +61,14 @@ public class BasicTrainingController {
 
     @FXML
     private void playMorseCode() {
+        if (!isLevelPicked) {
+            new Alert(Alert.AlertType.ERROR, "Pick the level before you learn").show();
+            return;
+        }
         randomWord = dictionary.getRandomString();
         randomMorse = MorseCodeTranslator.textToMorse(randomWord);
         MorseCodePlayer player = new MorseCodePlayer(radio.getWPM(), radio);
         player.playMorse(randomMorse);
-
     }
 
     @FXML
@@ -138,11 +142,13 @@ public class BasicTrainingController {
 
     @FXML
     private void setDifficulty() {
+        isLevelPicked = true;
         int level = (int) levelComboBox.getSelectionModel().getSelectedItem();
         dictionary.setDifficulty(level);
     }
 
-    public int getDifficulty() {
-        return dictionary.getDifficulty();
+    private int getDifficulty() {
+        return (int) levelComboBox.getSelectionModel().getSelectedItem();
     }
+
 }
