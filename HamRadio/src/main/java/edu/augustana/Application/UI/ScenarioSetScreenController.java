@@ -1,7 +1,5 @@
 package edu.augustana.Application.UI;
-
 import javafx.fxml.FXML;
-
 import java.io.IOException;
 import edu.augustana.RadioModel.Practice.UserPreferences;
 import javafx.scene.control.ComboBox;
@@ -15,10 +13,12 @@ public class ScenarioSetScreenController {
     @FXML
     private ComboBox<Integer> wpmBox;
 
+    UserPreferences prefs = App.getUserPrefs();
+
     @FXML
-    private void initialize(){
-        numBotBox.getItems().addAll(0,1,2,3,4,5,6,7);
-        wpmBox.getItems().addAll(5,10,15,20,25,30);
+    private void initialize() {
+        numBotBox.getItems().addAll(0, 1, 2, 3, 4, 5, 6, 7);
+        wpmBox.getItems().addAll(5, 10, 15, 20, 25, 30);
     }
 
     @FXML
@@ -33,8 +33,5 @@ public class ScenarioSetScreenController {
         App.getUserPrefs().saveToJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);
         App.setRoot("HamPracticeUI");
     }
-
-
-
 
 }
