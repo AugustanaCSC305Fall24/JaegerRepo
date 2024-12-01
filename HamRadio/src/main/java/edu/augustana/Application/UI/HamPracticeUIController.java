@@ -6,6 +6,11 @@ import edu.augustana.Application.UIHelper.MorseCodeTranslator;
 import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.RadioModel.Practice.*;
+import edu.augustana.RadioModel.Practice.Bot;
+import edu.augustana.RadioModel.Practice.PracticeScenerio;
+import edu.augustana.RadioModel.Practice.TaskForPractice;
+import edu.augustana.RadioModel.Practice.TransmittingTask;
+import edu.augustana.RadioModel.SoundPlayer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -121,6 +126,7 @@ public class HamPracticeUIController extends HamUIController {
             room.getBotList().add(newBot);
             System.out.println("For testing in initialize() Practice UI: " + newBot + ", Freq: " + newBot.getBotFrequency());
         }
+        player = new MorseCodePlayer(wpm, radio);
 
     }
 
@@ -131,7 +137,16 @@ public class HamPracticeUIController extends HamUIController {
         statusTextArea.setText(displayTextString());
         botListView.getItems().addAll(room.getBotList());
         morseCodeHandlerManager.setBandSelected(true);
+        generateWhiteNoise();
         App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
+    }
+
+    private void generateWhiteNoise() {
+        player.playWhiteNoise();
+    }
+
+    public void setWhiteNoiseOn(boolean isOn) {
+        player.setIsWhiteNoiseOn(isOn);
     }
 
     private void onPress() {
