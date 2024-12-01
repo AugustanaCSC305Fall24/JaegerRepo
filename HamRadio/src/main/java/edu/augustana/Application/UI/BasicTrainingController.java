@@ -68,7 +68,9 @@ public class BasicTrainingController {
         randomWord = dictionary.getRandomString();
         randomMorse = MorseCodeTranslator.textToMorse(randomWord);
         MorseCodePlayer player = new MorseCodePlayer(radio.getWPM(), radio);
+        player.playWhiteNoise();
         player.playMorse(randomMorse);
+
     }
 
     @FXML

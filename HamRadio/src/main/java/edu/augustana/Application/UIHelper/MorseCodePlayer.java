@@ -1,7 +1,6 @@
 package edu.augustana.Application.UIHelper;
 
 import edu.augustana.Application.UI.HamPracticeUIController;
-import edu.augustana.Application.UI.HamUIController;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.RadioModel.Practice.Bot;
 import edu.augustana.RadioModel.SoundPlayer;
@@ -15,7 +14,7 @@ public class MorseCodePlayer{
     private int BASE_ELEMENT_PAUSE;
     private int BASE_LETTER_PAUSE;
     private int BASE_WORD_PAUSE ;
-    private SoundPlayer player;
+    private SoundPlayer soundPlayer;
 
     private double speedFactor;
     private HamRadioSimulatorInterface radio;
@@ -28,7 +27,7 @@ public class MorseCodePlayer{
         this.BASE_ELEMENT_PAUSE = BASE_DOT_DURATION;
         this.BASE_LETTER_PAUSE = BASE_DASH_DURATION;
         this.BASE_WORD_PAUSE = 7*BASE_DOT_DURATION;
-        player = new SoundPlayer(radio.getVolume());
+        soundPlayer = new SoundPlayer(radio.getVolume());
     }
 
     public void setSpeedFactor(double speedFactor) {
@@ -73,21 +72,21 @@ public class MorseCodePlayer{
     }
 
     public void playMorse(String userOutput){
-        player.playMorse(userOutput, radio.getWPM(), radio.getReceiveFrequency(), radio.getTransmitFrequency());
+        soundPlayer.playMorse(userOutput, radio.getWPM(), radio.getReceiveFrequency(), radio.getTransmitFrequency());
     }
 
     public void playWhiteNoise() {
-        player.generateWhiteNoise(40);
+        soundPlayer.generateWhiteNoise(40);
     }
 
     public void setIsWhiteNoiseOn(boolean isOn) {
-        player.setWhiteNoiseOn(isOn);
+        soundPlayer.setWhiteNoiseOn(isOn);
     }
 
     public void playMorseForBot(String userOutput, Bot bot){
         System.out.println("Test: Radio Trasmit Freq: " + radio.getTransmitFrequency());
         System.out.println("Test: Bot Transmit Freq: " + bot.getBotFrequency());
-        player.playMorse(userOutput, wordPerMin, radio.getReceiveFrequency(), bot.getBotFrequency());
+        soundPlayer.playMorse(userOutput, wordPerMin, radio.getReceiveFrequency(), bot.getBotFrequency());
         System.out.println("Radio Receive: ...." + radio.getReceiveFrequency());
         System.out.println("Bot Transmitting... " + bot.getBotFrequency());
         System.out.println("Playing sound for...." + bot.getIDCode());
