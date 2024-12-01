@@ -95,14 +95,19 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     private Slider bandWitdhSlider;
 
-    private String primaryUserName = App.getUserPrefs().getPrimaryUserName();
-    private String serverAddress = App.getUserPrefs().getServerAddress();
-    private int numBot = App.getUserPrefs().getNumBot();
-    private int wpm = App.getUserPrefs().getWPM();
+    private String primaryUserName;
+    private String serverAddress;
+    private int numBot;
+    private int wpm;
 
     @Override
     @FXML
     public void initialize() throws IOException {
+        System.out.println("\ninitialize is running.....");
+        primaryUserName = App.getUserPrefs().getPrimaryUserName();
+        String serverAddress = App.getUserPrefs().getServerAddress();
+        int numBot = App.getUserPrefs().getNumBot();
+        int wpm = App.getUserPrefs().getWPM();
         this.radio = new HamRadioSimulator(0,0,0,0
                 ,3.0,0,1.0,wpm);
         this.room = App.getCurrentPracticeScenerio();
@@ -405,6 +410,7 @@ public class HamPracticeUIController extends HamUIController {
                 // Update application state with loaded preferences
                 applyLoadedPreferences(prefs);
 
+
             } catch (Exception e) {
                 new Alert(Alert.AlertType.ERROR, "Error loading user data file: " + chosenFile).show();
             }
@@ -412,13 +418,14 @@ public class HamPracticeUIController extends HamUIController {
     }
 
 
-    private void applyLoadedPreferences(UserPreferences prefs) {
+    private void applyLoadedPreferences(UserPreferences prefs) throws IOException {
         // Example of applying preferences to the application
+        initialize();
         System.out.println("User Name: " + prefs.getPrimaryUserName());
         System.out.println("Number of Bots: " + prefs.getNumBot());
         System.out.println("WPM: " + prefs.getWPM());
+        System.out.println("White noise: " + prefs.getWhiteNoise());
 
-        // Add any other logic to update UI or internal state with loaded preferences
     }
 
     @FXML

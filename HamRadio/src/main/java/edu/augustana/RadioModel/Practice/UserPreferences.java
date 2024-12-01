@@ -78,4 +78,11 @@ public class UserPreferences {
             return new UserPreferences();
         }
     }
+
+    public String toString(){
+        return "From Reference: UserName...." + getPrimaryUserName()
+                + "\nFrom Reference: Num of Bots...." + getNumBot()
+                + "\nFrom Reference: WPM...." + getWPM()
+                + "\nFrom Reference: White Noise.... " + getWhiteNoise();
+    }
 }
