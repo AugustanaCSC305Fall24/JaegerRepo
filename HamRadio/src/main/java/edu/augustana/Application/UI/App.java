@@ -27,17 +27,24 @@ public class App extends Application {
     private static final KeyBindManager keyBindManager = new KeyBindManager();
     private UserPreferences userPrefs = UserPreferences.loadFromJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);
 
-    private static App returnAupp(){return app;}
+    private int hello = 1;
+
+    private static App returnApp(){return app;}
     public static UserPreferences getUserPrefs() {
         return app.userPrefs;
     }
 
     @Override
     public void start(Stage stage) throws IOException {
+        App.app = this;
+        System.out.println("App: Debug in App for App.... " + this);
+        System.out.println("App: Debug in App for App.... " + app);
         scene = new Scene(new BorderPane(), 900, 480);
         practiceScenerioList.add(new PracticeScenerio());
         practiceIndex = 0;
         stage.setScene(scene);
+        System.out.println("UserPref: Debug in App for App.... " + userPrefs);
+        System.out.println("UserPref: Debug in App for App.app...." + app.userPrefs);
         switchToMainView();
 
         // Set the key event handlers for both key presses and releases

@@ -22,21 +22,16 @@ public class ScenarioSetScreenController {
     }
 
     @FXML
-    private void switchToHamUIPractice() throws IOException{
-        App.setRoot("HamPracticeUI");
-
-    }
-
-    @FXML
-    public void actionStartChatting() {
+    public void actionStartChatting() throws IOException {
         String primaryUserName = primaryUserNameTextField.getText();
+        System.out.println("Debug in Controller:............." + App.getUserPrefs());
         App.getUserPrefs().setPrimaryUserName(primaryUserName);
         App.getUserPrefs().setNumBot((int) numBotBox.getSelectionModel().getSelectedItem());
         App.getUserPrefs().setWPM((int) wpmBox.getSelectionModel().getSelectedItem());
         //String serverIPAddress = serverAddressTextField.getText();
         //App.getUserPrefs().setServerAddress(serverIPAddress);
         App.getUserPrefs().saveToJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);
-
+        App.setRoot("HamPracticeUI");
     }
 
 

@@ -90,11 +90,17 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     private Slider bandWitdhSlider;
 
+    private String primaryUserName = App.getUserPrefs().getPrimaryUserName();
+    private String serverAddress = App.getUserPrefs().getServerAddress();
+    private int numBot = App.getUserPrefs().getNumBot();
+    private int wpm = App.getUserPrefs().getWPM();
+
     @Override
     @FXML
     public void initialize() throws IOException {
+
         this.radio = new HamRadioSimulator(0,0,0,0
-                ,3.0,0,1.0,10);
+                ,3.0,0,1.0,wpm);
         this.room = App.getCurrentPracticeScenerio();
         morseCodeHandlerManager = new MorseCodeHandlerManager(inputTextArea, radio);
         radio.setVolume(volumeSlider.getValue());
@@ -106,7 +112,7 @@ public class HamPracticeUIController extends HamUIController {
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
         List<TaskForPractice> taskForPracticeList = new ArrayList<>();
 
-        for (int i = 0; i < Bot.nameList.length; i++){
+        for (int i = 0; i < numBot; i++){
             String name = Bot.nameList[i];
             int level = Bot.getRandomLevel();
             double frequency = Bot.getRandomFreq();

@@ -8,8 +8,7 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 
 public class UserPreferences {
-    public static final File DEFAULT_USER_PREFERENCES_FILE = new File("user_preferences.json");
-
+    public static final File DEFAULT_USER_PREFERENCES_FILE = new File("user_preferences2.json");
     private String primaryUserName = "User";
     private String serverAddress = "localhost";
     private int numBot = 0;
