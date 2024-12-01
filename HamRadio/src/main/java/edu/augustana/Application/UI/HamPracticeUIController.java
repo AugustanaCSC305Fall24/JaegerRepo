@@ -42,6 +42,7 @@ public class HamPracticeUIController extends HamUIController {
     private String userOutput = "";
     private String cleanMorse = "";
     private boolean isStartClicked = false;
+    boolean isStartClickedTwice = false;
     private String statusConnect = " Not Connected";
     private boolean isPushedToTalk = false;
     private boolean isEnglishOn = false;
@@ -136,10 +137,13 @@ public class HamPracticeUIController extends HamUIController {
         isStartClicked = true;
         statusConnect = " Connected";
         statusTextArea.setText(displayTextString());
+        botListView.getItems().clear();
         botListView.getItems().addAll(room.getBotList());
         morseCodeHandlerManager.setBandSelected(true);
-        if(App.getUserPrefs().getWhiteNoise()){
+
+        if(App.getUserPrefs().getWhiteNoise() && !isStartClickedTwice){
             generateWhiteNoise();
+            isStartClickedTwice = true;
         }
         App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
     }
