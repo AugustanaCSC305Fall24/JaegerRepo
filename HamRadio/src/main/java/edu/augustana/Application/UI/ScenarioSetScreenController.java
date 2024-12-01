@@ -40,7 +40,7 @@ public class ScenarioSetScreenController {
         App.getUserPrefs().setWhiteNoise(whiteNoiseBox.isSelected());
         //String serverIPAddress = serverAddressTextField.getText();
         //App.getUserPrefs().setServerAddress(serverIPAddress);
-        App.getUserPrefs().saveToJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);
+        //App.getUserPrefs().saveToJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);
         App.setRoot("HamPracticeUI");
     }
 

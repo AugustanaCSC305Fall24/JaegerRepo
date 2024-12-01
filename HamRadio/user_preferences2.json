@@ -1,7 +1,7 @@
 {
-  "primaryUserName": "Hieu Nguyen",
+  "primaryUserName": "Nhat Minh",
   "serverAddress": "localhost",
-  "numBot": 5,
-  "wpm": 20,
-  "isWhiteNoise": true
+  "numBot": 1,
+  "wpm": 5,
+  "isWhiteNoise": false
 }
