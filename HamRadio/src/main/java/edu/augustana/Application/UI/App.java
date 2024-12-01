@@ -26,7 +26,6 @@ public class App extends Application {
     private static int practiceIndex = -1;
     private static final KeyBindManager keyBindManager = new KeyBindManager();
     private UserPreferences userPrefs = UserPreferences.loadFromJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);
-
     private int hello = 1;
 
     private static App returnApp(){return app;}

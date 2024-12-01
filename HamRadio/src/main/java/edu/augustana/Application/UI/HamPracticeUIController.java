@@ -177,7 +177,6 @@ public class HamPracticeUIController extends HamUIController {
         if(isStartClicked){
             givingTask();
         }
-
     }
 
     private void givingTask() {

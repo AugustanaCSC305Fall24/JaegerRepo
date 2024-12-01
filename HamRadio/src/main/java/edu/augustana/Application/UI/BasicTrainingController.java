@@ -5,6 +5,7 @@ import edu.augustana.Application.UIHelper.MorseCodePlayer;
 import edu.augustana.Application.UIHelper.MorseCodeTranslator;
 import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
+import edu.augustana.RadioModel.SoundPlayer;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -16,7 +17,8 @@ public class BasicTrainingController {
     private String randomMorse;
     private Dictionary dictionary;
     HamRadioSimulatorInterface radio;
-    MorseCodePlayer player;
+
+
 
     @FXML
     private TextField morseInputField;
@@ -47,16 +49,17 @@ public class BasicTrainingController {
                 new HamRadioSimulator(600.0, 500.0,
                 700.0, 600.0, 0.0, 0,
                 1, 10);
-        radio.setVolume(volumeSlider.getValue());
+        radio.setVolume(50);
+        System.out.println(volumeSlider.getValue());
         dictionary = new Dictionary();
-        player = new MorseCodePlayer(radio.getWPM(), radio);
     }
 
     @FXML
     private void playMorseCode() {
         randomWord = dictionary.getRandomString();
         randomMorse = MorseCodeTranslator.textToMorse(randomWord);
-        player.playMorseCode(randomMorse);
+        MorseCodePlayer player = new MorseCodePlayer(radio.getWPM(), radio);
+        player.playMorse(randomMorse);
 
     }
 
@@ -104,6 +107,7 @@ public class BasicTrainingController {
     private void adjustVolume() {
         double customizedVolume = volumeSlider.getValue();
         radio.setVolume(customizedVolume);
+        System.out.println(volumeSlider.getValue());
     }
 
     private void updateScoreLabel() {
