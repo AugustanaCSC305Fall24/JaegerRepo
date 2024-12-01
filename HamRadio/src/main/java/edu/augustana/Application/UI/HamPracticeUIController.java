@@ -5,10 +5,12 @@ import edu.augustana.Application.UIHelper.MorseCodePlayer;
 import edu.augustana.Application.UIHelper.MorseCodeTranslator;
 import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
+import edu.augustana.RadioModel.Practice.*;
 import edu.augustana.RadioModel.Practice.Bot;
 import edu.augustana.RadioModel.Practice.PracticeScenerio;
 import edu.augustana.RadioModel.Practice.TaskForPractice;
 import edu.augustana.RadioModel.Practice.TransmittingTask;
+import edu.augustana.RadioModel.SoundPlayer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +23,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -38,6 +42,7 @@ public class HamPracticeUIController extends HamUIController {
     private String userOutput = "";
     private String cleanMorse = "";
     private boolean isStartClicked = false;
+    boolean isStartClickedTwice = false;
     private String statusConnect = " Not Connected";
     private boolean isPushedToTalk = false;
     private boolean isEnglishOn = false;
@@ -98,7 +103,6 @@ public class HamPracticeUIController extends HamUIController {
     @Override
     @FXML
     public void initialize() throws IOException {
-
         this.radio = new HamRadioSimulator(0,0,0,0
                 ,3.0,0,1.0,wpm);
         this.room = App.getCurrentPracticeScenerio();
@@ -108,10 +112,12 @@ public class HamPracticeUIController extends HamUIController {
         radio.setTransmitFrequency(transmitFreqSlider.getValue());
         addMessageToChatLogUI("Radio: Hello, welcome to HAM Practice!");
         addMessageToChatLogUI("Radio: Please first read our game's rules by hitting \"Rules \"");
-        System.out.println("Radio WPM in Controller Practice Innitialize: "+radio.getWPM());
+        System.out.println("Radio WPM in Controller Practice Innitialize: " + radio.getWPM());
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
         List<TaskForPractice> taskForPracticeList = new ArrayList<>();
-
+        System.out.println("In Controller: Num bots is....." + numBot);
+        System.out.println("In Controller: User name is...." + App.getUserPrefs().getPrimaryUserName());
+        System.out.println("In controller: WPM is..." + wpm);
         for (int i = 0; i < numBot; i++){
             String name = Bot.nameList[i];
             int level = Bot.getRandomLevel();
@@ -123,7 +129,7 @@ public class HamPracticeUIController extends HamUIController {
             room.getBotList().add(newBot);
             System.out.println("For testing in initialize() Practice UI: " + newBot + ", Freq: " + newBot.getBotFrequency());
         }
-
+        player = new MorseCodePlayer(wpm, radio);
     }
 
     @FXML
@@ -131,9 +137,23 @@ public class HamPracticeUIController extends HamUIController {
         isStartClicked = true;
         statusConnect = " Connected";
         statusTextArea.setText(displayTextString());
+        botListView.getItems().clear();
         botListView.getItems().addAll(room.getBotList());
         morseCodeHandlerManager.setBandSelected(true);
+
+        if(App.getUserPrefs().getWhiteNoise() && !isStartClickedTwice){
+            generateWhiteNoise();
+            isStartClickedTwice = true;
+        }
         App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
+    }
+
+    private void generateWhiteNoise() {
+        player.playWhiteNoise();
+    }
+
+    public void setWhiteNoiseOn(boolean isOn) {
+        player.setIsWhiteNoiseOn(isOn);
     }
 
     private void onPress() {
@@ -330,6 +350,7 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     public void switchToCustomizeScenario() throws IOException{
         App.setRoot("ScenarioSetScreen");
+        setWhiteNoiseOn(false);
     }
 
     @FXML
@@ -364,19 +385,86 @@ public class HamPracticeUIController extends HamUIController {
         }
     }
 
-//    @FXML
-//    public void saveFileAction(){
-//        String filename = "room.json";
-//        PracticeScenerio.serializeToFile(room, filename);
-//    }
-//
-//    @FXML
-//    public PracticeScenerio openFileAction(){
-//        String filename = "room.json";
-//        PracticeScenerio openedRoom = PracticeScenerio.deserializeFromFile(filename);
-//        return openedRoom;
-//
-//    }
+    @FXML
+    private void menuActionOpenUserData(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open User Data File");
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("JSON Files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(filter);
+
+        // Use the event's source to get the stage safely
+        Window mainWindow = ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
+        File chosenFile = fileChooser.showOpenDialog(mainWindow);
+
+        if (chosenFile != null) {
+            try {
+                // Load user preferences from the selected file
+                UserPreferences prefs = UserPreferences.loadFromJSONFile(chosenFile);
+                UserPreferences.setCurrentUserDataFile(chosenFile); // Update the current file reference
+
+                // Update application state with loaded preferences
+                applyLoadedPreferences(prefs);
+
+            } catch (Exception e) {
+                new Alert(Alert.AlertType.ERROR, "Error loading user data file: " + chosenFile).show();
+            }
+        }
+    }
+
+
+    private void applyLoadedPreferences(UserPreferences prefs) {
+        // Example of applying preferences to the application
+        System.out.println("User Name: " + prefs.getPrimaryUserName());
+        System.out.println("Number of Bots: " + prefs.getNumBot());
+        System.out.println("WPM: " + prefs.getWPM());
+
+        // Add any other logic to update UI or internal state with loaded preferences
+    }
+
+    @FXML
+    private void switchToWelcomeScreen() throws IOException {
+        setWhiteNoiseOn(false);
+        App.setRoot("WelcomeScreen");
+    }
+
+    @FXML
+    private void menuActionSaveUserData(ActionEvent event) {
+        if (UserPreferences.getCurrentUserDataFile() == null) {
+            menuActionSaveUserDataAs(event);
+        } else {
+            saveUserDataToFile(UserPreferences.getCurrentUserDataFile());
+        }
+    }
+
+    @FXML
+    private void menuActionSaveUserDataAs(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save User Data File");
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("JSON Files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(filter);
+
+        // Use the MenuItem's parent popup to get the owner window
+        Window mainWindow = ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
+        File chosenFile = fileChooser.showSaveDialog(mainWindow);
+
+        if (chosenFile != null) {
+            UserPreferences.setCurrentUserDataFile(chosenFile); // Update the current file reference
+            saveUserDataToFile(chosenFile);
+        }
+    }
+
+    private void saveUserDataToFile(File chosenFile) {
+        if (chosenFile != null) {
+            try {
+                UserPreferences prefs = App.getUserPrefs();
+                // Save preferences to the chosen file
+                prefs.saveToJSONFile(chosenFile);
+            } catch (Exception e) {
+                new Alert(Alert.AlertType.ERROR, "Error saving user data file: " + chosenFile).show();
+            }
+        }
+    }
+
 
 
 
