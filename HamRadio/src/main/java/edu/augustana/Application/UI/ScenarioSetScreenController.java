@@ -1,7 +1,11 @@
 package edu.augustana.Application.UI;
+import edu.augustana.RadioModel.Practice.PracticeScenerio;
 import javafx.fxml.FXML;
 import java.io.IOException;
+import java.util.List;
+
 import edu.augustana.RadioModel.Practice.UserPreferences;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
@@ -12,11 +16,16 @@ public class ScenarioSetScreenController {
     private ComboBox<Integer> numBotBox;
     @FXML
     private ComboBox<Integer> wpmBox;
+    @FXML
+    private CheckBox whiteNoiseBox;
 
     UserPreferences prefs = App.getUserPrefs();
 
     @FXML
     private void initialize() {
+        List<PracticeScenerio> scenarioList = App.getPracticeScenerioList();
+        scenarioList.add(new PracticeScenerio());
+        App.changePracticeIndex();
         numBotBox.getItems().addAll(0, 1, 2, 3, 4, 5, 6, 7);
         wpmBox.getItems().addAll(5, 10, 15, 20, 25, 30);
     }
@@ -28,6 +37,7 @@ public class ScenarioSetScreenController {
         App.getUserPrefs().setPrimaryUserName(primaryUserName);
         App.getUserPrefs().setNumBot((int) numBotBox.getSelectionModel().getSelectedItem());
         App.getUserPrefs().setWPM((int) wpmBox.getSelectionModel().getSelectedItem());
+        App.getUserPrefs().setWhiteNoise(whiteNoiseBox.isSelected());
         //String serverIPAddress = serverAddressTextField.getText();
         //App.getUserPrefs().setServerAddress(serverIPAddress);
         App.getUserPrefs().saveToJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);

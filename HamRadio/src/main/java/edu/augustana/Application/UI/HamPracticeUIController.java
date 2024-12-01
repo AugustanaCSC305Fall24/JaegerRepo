@@ -111,10 +111,12 @@ public class HamPracticeUIController extends HamUIController {
         radio.setTransmitFrequency(transmitFreqSlider.getValue());
         addMessageToChatLogUI("Radio: Hello, welcome to HAM Practice!");
         addMessageToChatLogUI("Radio: Please first read our game's rules by hitting \"Rules \"");
-        System.out.println("Radio WPM in Controller Practice Innitialize: "+radio.getWPM());
+        System.out.println("Radio WPM in Controller Practice Innitialize: " + radio.getWPM());
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
         List<TaskForPractice> taskForPracticeList = new ArrayList<>();
-
+        System.out.println("In Controller: Num bots is....." + numBot);
+        System.out.println("In Controller: User name is...." + App.getUserPrefs().getPrimaryUserName());
+        System.out.println("In controller: WPM is..." + wpm);
         for (int i = 0; i < numBot; i++){
             String name = Bot.nameList[i];
             int level = Bot.getRandomLevel();
@@ -127,7 +129,6 @@ public class HamPracticeUIController extends HamUIController {
             System.out.println("For testing in initialize() Practice UI: " + newBot + ", Freq: " + newBot.getBotFrequency());
         }
         player = new MorseCodePlayer(wpm, radio);
-
     }
 
     @FXML
@@ -137,7 +138,9 @@ public class HamPracticeUIController extends HamUIController {
         statusTextArea.setText(displayTextString());
         botListView.getItems().addAll(room.getBotList());
         morseCodeHandlerManager.setBandSelected(true);
-        generateWhiteNoise();
+        if(App.getUserPrefs().getWhiteNoise()){
+            generateWhiteNoise();
+        }
         App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
     }
 
@@ -343,6 +346,7 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     public void switchToCustomizeScenario() throws IOException{
         App.setRoot("ScenarioSetScreen");
+        setWhiteNoiseOn(false);
     }
 
     @FXML
@@ -411,6 +415,12 @@ public class HamPracticeUIController extends HamUIController {
         System.out.println("WPM: " + prefs.getWPM());
 
         // Add any other logic to update UI or internal state with loaded preferences
+    }
+
+    @FXML
+    private void switchToWelcomeScreen() throws IOException {
+        setWhiteNoiseOn(false);
+        App.setRoot("WelcomeScreen");
     }
 
     @FXML

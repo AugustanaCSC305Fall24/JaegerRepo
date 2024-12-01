@@ -13,6 +13,7 @@ public class UserPreferences {
     private String serverAddress = "localhost";
     private int numBot = 0;
     private int wpm = 0;
+    private boolean isWhiteNoise = false;
 
     public UserPreferences() {
     }
@@ -49,6 +50,9 @@ public class UserPreferences {
     public void setWPM(int wpm){this.wpm = wpm;}
 
     public int getWPM(){return this.wpm;}
+
+    public boolean getWhiteNoise(){return isWhiteNoise;}
+    public void setWhiteNoise(boolean isOnorOff){isWhiteNoise = isOnorOff;}
 
     public String toJSON() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
