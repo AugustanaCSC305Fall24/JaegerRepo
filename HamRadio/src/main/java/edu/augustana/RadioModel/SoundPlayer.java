@@ -7,7 +7,7 @@ import java.util.Random;
 public class SoundPlayer {
     private double volume;
     private boolean isKeyReleased;
-    private boolean isWhiteNoiseOn;
+    private boolean isWhiteNoiseOn = true;
 
     public SoundPlayer(double volume) {
         this.isKeyReleased = true;

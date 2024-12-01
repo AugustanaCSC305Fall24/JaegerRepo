@@ -124,6 +124,7 @@ public class HamPracticeUIController extends HamUIController {
             room.getBotList().add(newBot);
             System.out.println("For testing in initialize() Practice UI: " + newBot + ", Freq: " + newBot.getBotFrequency());
         }
+        player = new MorseCodePlayer(wpm, radio);
 
     }
 
