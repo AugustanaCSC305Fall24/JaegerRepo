@@ -17,7 +17,7 @@ public class Dictionary {
     public Dictionary() {
         random = new Random();
         numOfTimes = 1;
-        difficulty = 0; // Default difficulty
+        difficulty = 1; // Default difficulty
 
         // Initialize the words array
         words = new String[] {
@@ -46,7 +46,7 @@ public class Dictionary {
 
     // Setter for difficulty
     public void setDifficulty(int difficulty) {
-        if (difficulty == 0 || difficulty == 1) {
+        if (difficulty == 1 || difficulty == 2) {
             this.difficulty = difficulty;
         } else {
             throw new IllegalArgumentException("Difficulty must be 0 or 1.");
@@ -71,7 +71,7 @@ public class Dictionary {
             return "B";
         } else {
             numOfTimes++;
-            if (difficulty == 0) {
+            if (difficulty == 1) {
                 // Difficulty 0: Pick a random word
                 return words[random.nextInt(words.length)];
             } else {

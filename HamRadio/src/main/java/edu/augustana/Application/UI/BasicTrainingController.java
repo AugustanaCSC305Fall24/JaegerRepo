@@ -35,6 +35,9 @@ public class BasicTrainingController {
     @FXML
     private Slider volumeSlider;
 
+    @FXML
+    private ComboBox levelComboBox;
+
     private int score = 0;
     private String result;
 
@@ -52,6 +55,7 @@ public class BasicTrainingController {
         radio.setVolume(50);
         System.out.println(volumeSlider.getValue());
         dictionary = new Dictionary();
+        levelComboBox.getItems().addAll(1,2);
     }
 
     @FXML
@@ -132,12 +136,13 @@ public class BasicTrainingController {
         App.setRoot("WelcomeScreen");
     }
 
-    private void setDifficulty(int difficulty) {
-        dictionary.setDifficulty(difficulty);
+    @FXML
+    private void setDifficulty() {
+        int level = (int) levelComboBox.getSelectionModel().getSelectedItem();
+        dictionary.setDifficulty(level);
     }
 
     public int getDifficulty() {
         return dictionary.getDifficulty();
     }
-
 }
