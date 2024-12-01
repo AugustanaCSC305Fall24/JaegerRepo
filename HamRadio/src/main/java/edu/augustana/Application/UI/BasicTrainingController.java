@@ -52,7 +52,7 @@ public class BasicTrainingController {
         radio =
                 new HamRadioSimulator(600.0, 500.0,
                 700.0, 600.0, 0.0, 0,
-                1, 10);
+                1, 20);
         radio.setVolume(50);
         System.out.println(volumeSlider.getValue());
         dictionary = new Dictionary();
