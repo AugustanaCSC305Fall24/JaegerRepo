@@ -11,6 +11,7 @@ import edu.augustana.RadioModel.Practice.PracticeScenerio;
 import edu.augustana.RadioModel.Practice.TaskForPractice;
 import edu.augustana.RadioModel.Practice.TransmittingTask;
 import edu.augustana.RadioModel.SoundPlayer;
+import edu.augustana.RadioModel.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -52,6 +53,7 @@ public class HamPracticeUIController extends HamUIController {
     public static final int TONE = 600;
     MorseCodeHandlerManager morseCodeHandlerManager;
     MorseCodePlayer player;
+    User user= new User();
 
     @FXML
     private TextArea statusTextArea;
@@ -204,7 +206,9 @@ public class HamPracticeUIController extends HamUIController {
         }
     }
 
+    //method to give task
     private void givingTask() {
+        //setting up
         System.out.println("-----------------");
         System.out.println("Start Giving Task.");
         List<Bot> botList = room.getBotList();
@@ -212,7 +216,10 @@ public class HamPracticeUIController extends HamUIController {
         double radioBandwidth = radio.getBandWidth();
         double receivableMin = radioFreq - radioBandwidth/2;
         double receivableMax = radioFreq + radioBandwidth/2;
+
+        //traverse the bot list
         for (Bot bot: botList){
+            //check if bot is in the frequency
             if(bot.getBotFrequency() < receivableMax && bot.getBotFrequency() > receivableMin){
                 bot.setDiscovered();
                 if(bot.isDiscovered()){
@@ -223,6 +230,7 @@ public class HamPracticeUIController extends HamUIController {
                 }
                 MorseCodePlayer player1 = new MorseCodePlayer(radio.getWPM(), radio);
 
+                //play the morse code of that bot
                 String botTaskTranslated = MorseCodeTranslator.textToMorse(bot.getTask().getDescription());
                 player1.playMorseForBot(botTaskTranslated, bot);
                 //player1.playMorse(botTaskTranslated);

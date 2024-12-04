@@ -1,5 +1,8 @@
 package edu.augustana.RadioModel;
 
+import sun.misc.Signal;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +10,26 @@ public class SignalProcessor {
     private double transmitFrequency;
     private double receiveFrequency;
     private double bandWidth;
+    private double volume;
+    private int wpm;
+    private SignalGenerator signalGenerator;
+    private SignalFilter signalFilter;
+    private SignalMixer signalMixer;
+    private SoundPlayer soundPlayer = new SoundPlayer(volume);
 
-    public SignalProcessor(double transmitFrequency, double receiveFrequency, double bandWidth) {
+    public SignalProcessor(double transmitFrequency, double receiveFrequency, double bandWidth, int wpm, double volume) {
+        int sampleRate = 44100;
+        double lowCutoff = receiveFrequency - (bandWidth/2);
+        double highCutoff = receiveFrequency + (bandWidth/2);
+        int filterOrder = 101;
+
         this.transmitFrequency = transmitFrequency;
         this.receiveFrequency = receiveFrequency;
         this.bandWidth = bandWidth;
+        this.wpm = wpm;
+        this.volume = volume;
+        signalGenerator = new SignalGenerator();
+        signalFilter = new SignalFilter(sampleRate, lowCutoff, highCutoff, filterOrder);
     }
 
     public void setTransmitFrequency(double transmitFrequency) {
@@ -42,6 +60,17 @@ public class SignalProcessor {
         //filtering...
     }
 
+    public void process(ChatMessage chatMessage) {
+        String message = chatMessage.getText();
+        byte[] byteBuffer = signalGenerator.generateByteSignal(message, Math.abs(transmitFrequency - receiveFrequency), wpm);
+        signalMixer.mix(byteBuffer);
+
+    }
+
+    private void continue_process(byte[] byteBuffer) {
+        //soundPlayer.playSound(signalFilter.filter(byteBuffer));
+    }
+
     //private helper methods:
     public byte[] createSignalArray(double duration) {
         List<Byte> buffer = new ArrayList<>();
@@ -56,6 +85,25 @@ public class SignalProcessor {
         System.out.println("created success");
 
         return result;
+    }
+
+    public byte[] generateSignalFromChatMessage(ChatMessage chatMessage) {
+        if (chatMessage.getText() == ".") {
+            return fromDotToSignal();
+        } else if (chatMessage.getText() == "-") {
+            return fromDashToSignal();
+        } else {
+            System.out.println("Invalid message");
+            return new byte[0];
+        }
+    }
+
+    private byte[] fromDotToSignal() {
+        return new byte[1];
+    }
+
+    private byte[] fromDashToSignal() {
+        return new byte[1];
     }
 
     private byte[] generateSineWave(double frequency, double samplingRate, int samples) {

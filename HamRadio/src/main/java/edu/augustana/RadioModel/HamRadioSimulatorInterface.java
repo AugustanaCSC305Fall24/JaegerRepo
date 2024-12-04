@@ -7,10 +7,13 @@ import java.io.IOException;
 public interface HamRadioSimulatorInterface {
     //methods for sending and receiving
     //send a dot
-    void sendDot() throws IOException;
+    void sendDot() throws Exception;
 
     //send a dash
-    void sendDash() throws IOException;
+    void sendDash() throws Exception;
+
+    //
+    void startRadio() throws Exception;
 
     //getter of transmit frequency
     double getTransmitFrequency();
@@ -66,6 +69,12 @@ public interface HamRadioSimulatorInterface {
     //playTone
     void playTone(double frequency);
 
+    //
+    void broadcastCWSignal(ChatMessage chatMessage);
+
     //stopTone
     void stopTone();
+
+    //setlistener
+    void setOnChatMessage(ServerSignalListener listener);
 }

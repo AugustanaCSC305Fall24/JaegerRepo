@@ -6,6 +6,8 @@ module edu.augustana {
     requires java.desktop;
     requires jdk.jfr;
     requires com.google.gson;
+    requires jdk.unsupported;
+    requires com.github.psambit9791.jdsp;
 
     opens edu.augustana.Application.UI to javafx.fxml;
     exports edu.augustana.Application.UI;

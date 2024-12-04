@@ -32,7 +32,7 @@ public class Bot {
         return idCode;
     }
 
-    public void generateTask(){
+    public void generateTask() {
 
     }
 
