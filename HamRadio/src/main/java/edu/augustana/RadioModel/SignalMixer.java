@@ -1,5 +1,7 @@
 package edu.augustana.RadioModel;
 
+import javax.sound.sampled.LineUnavailableException;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -80,6 +82,10 @@ public class SignalMixer {
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+            } catch (LineUnavailableException e) {
+                System.out.println("Sorry, exception is in writting byte into ByteArrayOutputStream");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
     }

@@ -5,10 +5,10 @@ import java.util.Arrays;
 
 public class SignalFilter {
 
-    private final int sampleRate; // Sampling rate of the audio signal (e.g., 44100 Hz)
-    private final double lowCutoff; // Low cutoff frequency (Hz)
-    private final double highCutoff; // High cutoff frequency (Hz)
-    private final int filterOrder; // Order of the filter
+    private int sampleRate; // Sampling rate of the audio signal (e.g., 44100 Hz)
+    private double lowCutoff; // Low cutoff frequency (Hz)
+    private double highCutoff; // High cutoff frequency (Hz)
+    private int filterOrder; // Order of the filter
 
     /**
      * Constructor for SignalFilter.
@@ -71,5 +71,13 @@ public class SignalFilter {
             byteArray[i] = (byte) Math.min(Math.max(doubleArray[i] * 128, -128), 127); // Scale to [-128, 127]
         }
         return byteArray;
+    }
+
+    public void setHighCutoff(double high) {
+        this.highCutoff = high;
+    }
+
+    public void setLowCutoff(double low) {
+        this.lowCutoff = low;
     }
 }

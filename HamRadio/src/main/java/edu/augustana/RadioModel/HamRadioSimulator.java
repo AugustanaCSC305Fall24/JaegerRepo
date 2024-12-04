@@ -1,5 +1,7 @@
 package edu.augustana.RadioModel;
 
+import com.google.gson.Gson;
+
 import javax.sound.sampled.*;
 import java.io.IOException;
 
@@ -34,7 +36,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
         this.WPM = WPM;
 
         this.soundPlayer = new SoundPlayer(volume);
-        this.signalProcessor = new SignalProcessor(transmitFrequency, receiveFrequency, bandWidth, WPM, volume);
+        this.signalProcessor = new SignalProcessor(transmitFrequency, receiveFrequency, bandWidth, WPM, soundPlayer);
 
         //this.client.connectToServer("ws://localhost:8080/signal", this::processSignalFromServer);
     }
@@ -66,6 +68,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
     public void setTransmitFrequency(double frequency) {
         this.transmitFrequency =  frequency;
+        signalProcessor.setTransmitFrequency(frequency);
     }
 
     @Override
@@ -76,6 +79,8 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
     public void setMinReceiveFrequency(double frequency) {
         this.minimumReceiveFrequency = frequency;
+        double bandWidth = getMaxReceiveFrequency() - getMinReceiveFrequency();
+        setBandWidth(bandWidth);
     }
 
     @Override
@@ -86,6 +91,8 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
     public void setMaxReceiveFrequency(double frequency) {
         this.maximumReceiveFrequency = frequency;
+        double bandWidth = getMaxReceiveFrequency() - getMinReceiveFrequency();
+        setBandWidth(bandWidth);
     }
 
     @Override
@@ -96,6 +103,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
     public void setReceiveFrequency(double frequency) {
         this.receiveFrequency = frequency;
+        signalProcessor.setReceiveFrequency(frequency);
     }
 
     @Override
@@ -106,6 +114,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
     public void setBandWidth(double bandWidth) {
         this.bandWidth = bandWidth;
+        signalProcessor.setBandWidth(bandWidth);
     }
 
     @Override
@@ -159,12 +168,12 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     }
 
     @Override
-    public void broadcastCWSignal(ChatMessage message) {
-
+    public void broadcastCWSignal(ChatMessage chatMessage) {
+        client.sendChatMessageToServer(chatMessage);
     }
 
     private void processSignalFromServer(ChatMessage chatMessage) throws LineUnavailableException {
-        //signalProcessor.process(chatMessage.getSignal());
+        signalProcessor.process(chatMessage);
         listener.onSignalReceived(chatMessage);
     }
 

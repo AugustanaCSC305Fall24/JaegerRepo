@@ -8,4 +8,7 @@ public interface HamRadioClientInterface {
 
     //send byte array signal to server
     void sendBufferToServer(byte[] buffer) throws Exception;
+
+    //send chatMessage to server
+    void sendChatMessageToServer(ChatMessage chatMessage);
 }

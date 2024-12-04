@@ -22,7 +22,7 @@ public class HamGUIController {
     private WPMManager wpmManager;
     private boolean isStartClicked;
     private long timeOfLastPress;
-    User user = new User();
+    User user;
 
     @FXML
     private TextArea statusTextArea;
@@ -58,6 +58,7 @@ public class HamGUIController {
         wpmManager = new WPMManager(this);
         volumeManager = new VolumeManager(this);
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
+        user = new User();
     }
 
     //FXML Controller Actions

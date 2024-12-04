@@ -2,7 +2,9 @@ package edu.augustana.RadioModel;
 
 import sun.misc.Signal;
 
+import javax.sound.sampled.LineUnavailableException;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +17,9 @@ public class SignalProcessor {
     private SignalGenerator signalGenerator;
     private SignalFilter signalFilter;
     private SignalMixer signalMixer;
-    private SoundPlayer soundPlayer = new SoundPlayer(volume);
+    private SoundPlayer soundPlayer;
 
-    public SignalProcessor(double transmitFrequency, double receiveFrequency, double bandWidth, int wpm, double volume) {
+    public SignalProcessor(double transmitFrequency, double receiveFrequency, double bandWidth, int wpm, SoundPlayer soundPlayer) {
         int sampleRate = 44100;
         double lowCutoff = receiveFrequency - (bandWidth/2);
         double highCutoff = receiveFrequency + (bandWidth/2);
@@ -27,9 +29,11 @@ public class SignalProcessor {
         this.receiveFrequency = receiveFrequency;
         this.bandWidth = bandWidth;
         this.wpm = wpm;
-        this.volume = volume;
+        this.soundPlayer = soundPlayer;
+        this.volume = soundPlayer.getVolume();
         signalGenerator = new SignalGenerator();
         signalFilter = new SignalFilter(sampleRate, lowCutoff, highCutoff, filterOrder);
+        signalMixer = new SignalMixer(sampleRate, 50, this::continue_process);
     }
 
     public void setTransmitFrequency(double transmitFrequency) {
@@ -46,6 +50,8 @@ public class SignalProcessor {
 
     public void setReceiveFrequency(double receiveFrequency) {
         this.receiveFrequency = receiveFrequency;
+        signalFilter.setLowCutoff(receiveFrequency - (bandWidth/2));
+        signalFilter.setHighCutoff(receiveFrequency + (bandWidth/2));
     }
 
     public double getBandWidth() {
@@ -54,10 +60,8 @@ public class SignalProcessor {
 
     public void setBandWidth(double bandWidth) {
         this.bandWidth = bandWidth;
-    }
-
-    public void filterSignal(byte[] signal) {
-        //filtering...
+        signalFilter.setLowCutoff(receiveFrequency - (bandWidth/2));
+        signalFilter.setHighCutoff(receiveFrequency + (bandWidth/2));
     }
 
     public void process(ChatMessage chatMessage) {
@@ -67,8 +71,9 @@ public class SignalProcessor {
 
     }
 
-    private void continue_process(byte[] byteBuffer) {
-        //soundPlayer.playSound(signalFilter.filter(byteBuffer));
+    private void continue_process(byte[] byteBuffer) throws LineUnavailableException, IOException {
+        byte[] filteredSignal = signalFilter.filter(byteBuffer);
+        soundPlayer.playSound(filteredSignal);
     }
 
     //private helper methods:
@@ -85,25 +90,6 @@ public class SignalProcessor {
         System.out.println("created success");
 
         return result;
-    }
-
-    public byte[] generateSignalFromChatMessage(ChatMessage chatMessage) {
-        if (chatMessage.getText() == ".") {
-            return fromDotToSignal();
-        } else if (chatMessage.getText() == "-") {
-            return fromDashToSignal();
-        } else {
-            System.out.println("Invalid message");
-            return new byte[0];
-        }
-    }
-
-    private byte[] fromDotToSignal() {
-        return new byte[1];
-    }
-
-    private byte[] fromDashToSignal() {
-        return new byte[1];
     }
 
     private byte[] generateSineWave(double frequency, double samplingRate, int samples) {

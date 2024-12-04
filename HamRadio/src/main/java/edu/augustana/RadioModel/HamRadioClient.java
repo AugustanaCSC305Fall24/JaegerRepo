@@ -52,6 +52,7 @@ public class HamRadioClient implements HamRadioClientInterface {
         executor.shutdown();
     }
 
+    @Override
     public void sendBufferToServer(byte[] buffer) throws Exception {
         if (session != null && session.isOpen()) {
             ByteBuffer messageBuffer = ByteBuffer.wrap(buffer);
@@ -60,8 +61,11 @@ public class HamRadioClient implements HamRadioClientInterface {
             throw new IllegalStateException("Session is not open");
         }
     }
-
+    
+    @Override
     public void sendChatMessageToServer(ChatMessage chatMessage) {
-
+        Gson gson = new Gson();
+        String jsonText = gson.toJson(chatMessage);
+        session.getAsyncRemote().sendText(jsonText);
     }
 }
