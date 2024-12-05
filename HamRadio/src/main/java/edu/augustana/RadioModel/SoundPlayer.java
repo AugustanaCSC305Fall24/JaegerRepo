@@ -2,6 +2,7 @@ package edu.augustana.RadioModel;
 
 import javax.sound.sampled.*;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Random;
 
 public class SoundPlayer {
@@ -18,45 +19,37 @@ public class SoundPlayer {
         return volume;
     }
 
-    public void playSound(byte[] signal) throws LineUnavailableException {
-        System.out.println("It'll play");
-        System.out.println(signal);
+    public void playSound(byte[] signal) throws LineUnavailableException, IOException {
+        System.out.println("I'm working... playMorse in SoundPlayer");
+        System.out.println("My volume is... " + volume);
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        byteBuffer.write(signal);
+        AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 1, 2, 44100, false);
 
+        // Playback the generated Morse code using SourceDataLine
         try {
-            //Open audio data stream
-            byte[] buf = new byte[1];
-            AudioFormat af = new AudioFormat(42000, 8, 1, true, false);
-            SourceDataLine sdl = AudioSystem.getSourceDataLine(af);
-            sdl.open(af);
+            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+            SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(info);
+            sourceLine.open(format);
 
-            // Kiểm tra xem có hỗ trợ điều chỉnh âm lượng (MASTER_GAIN) không
-            /*if (sdl.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
-                FloatControl volumeControl = (FloatControl) sdl.getControl(FloatControl.Type.MASTER_GAIN);
-
-                // Lấy giá trị âm lượng tối thiểu và tối đa từ hệ thống
-                float minVolume = volumeControl.getMinimum(); // Thường là -80 dB
-                float maxVolume = volumeControl.getMaximum(); // Thường là 6.02 dB
-
-                // Chuyển đổi âm lượng từ phần trăm (0-100) sang giá trị dB
+            // Check if volume adjustment is supported and set it
+            if (sourceLine.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                FloatControl volumeControl = (FloatControl) sourceLine.getControl(FloatControl.Type.MASTER_GAIN);
+                float minVolume = volumeControl.getMinimum();
+                float maxVolume = volumeControl.getMaximum();
                 float volumeInDb = (float) ((volume / 100) * (maxVolume - minVolume) + minVolume);
-
-                volumeControl.setValue(volumeInDb);  // Điều chỉnh âm lượng sau khi quy đổi
+                volumeControl.setValue(volumeInDb);
             } else {
-                System.out.println("MASTER_GAIN control không được hỗ trợ trên hệ thống này.");
-            }*/
-
-            sdl.start();
-
-            //Play the sound
-            for (int i = 0; i < signal.length; i++) {
-                buf[0] = signal[i];
-                sdl.write(buf, 0, 1);
+                System.out.println("MASTER_GAIN control is not supported on this system.");
             }
+            sourceLine.start();
 
-            //End
-            sdl.drain();
-            sdl.stop();
-            sdl.close();
+            byte[] audioData = byteBuffer.toByteArray();
+            sourceLine.write(audioData, 0, audioData.length);
+
+            sourceLine.drain();
+            sourceLine.stop();
+            sourceLine.close();
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         }

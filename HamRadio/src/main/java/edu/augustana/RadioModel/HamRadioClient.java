@@ -1,65 +1,71 @@
 package edu.augustana.RadioModel;
 
-import javax.sound.sampled.LineUnavailableException;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
+import com.google.gson.Gson;
 
+import javax.websocket.*;
+import java.net.URI;
+import java.nio.ByteBuffer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+
+@ClientEndpoint
 public class HamRadioClient implements HamRadioClientInterface {
-    private Socket socket;
-    private DataInputStream inputHandler;
-    private DataOutputStream outputHandler;
-    ServerSignalListener listener;
+    private Session session;
+    private ServerSignalListener listener;
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    //establish a connection to server
-    public void connectToServer(String serverIp, int serverPort, ServerSignalListener listener) throws IOException {
-        this.socket = new Socket(serverIp, serverPort);
-        this.inputHandler = new DataInputStream(socket.getInputStream());
-        this.outputHandler = new DataOutputStream(socket.getOutputStream());
+    // Establish connection to the server
+    public void connectToServer(String serverUri, ServerSignalListener listener) throws Exception {
         this.listener = listener;
-
-        // Thread to receive signal from server
-        new Thread(new ReceiveSignalThread()).start();
+        WebSocketContainer container = ContainerProvider.getWebSocketContainer();
+        container.connectToServer(this, new URI(serverUri));
     }
 
-    //Thread to handle signals from server
-    class ReceiveSignalThread implements Runnable {
-        private volatile boolean running = true;
+    @OnOpen
+    public void onOpen(Session session) {
+        this.session = session;
+        System.out.println("Connected to server: " + session.getRequestURI());
+    }
 
-        public void stop() {
-            running = false;
-        }
-
-        @Override
-        public void run() {
+    @OnMessage
+    public void onMessage(String message) {
+        executor.execute(() -> {
             try {
-                int loop = 1;
-                while (running) {
-                    System.out.println(loop);
-                    int signalSize = inputHandler.readInt();
-                    byte[] receivedSignal = new byte[signalSize];
-                    inputHandler.readFully(receivedSignal);
-                    try {
-                        listener.onSignalReceived(receivedSignal);
-                        loop++;
-                    } catch (LineUnavailableException e) {
-                        e.printStackTrace();
-                        System.out.println("Error processing signal: " + e.getMessage());
-                        // Optionally stop the thread in case of this specific error
-                        stop();
-                    }
-                }
-            } catch (IOException e) {
+                ChatMessage chatMessage = new Gson().fromJson(message, ChatMessage.class);
+                listener.onSignalReceived(chatMessage);
+            } catch (Exception e) {
                 e.printStackTrace();
-                System.out.print(e.getMessage());
+                System.out.println("Error processing signal: " + e.getMessage());
             }
-        }
+        });
     }
 
-    public void sendBufferToServer(byte[] buffer) throws IOException {
-        outputHandler.writeInt(buffer.length);
-        outputHandler.write(buffer);
-        outputHandler.flush();
+    @OnError
+    public void onError(Session session, Throwable throwable) {
+        System.err.println("Error: " + throwable.getMessage());
+        throwable.printStackTrace();
+    }
+
+    @OnClose
+    public void onClose(Session session, CloseReason closeReason) {
+        System.out.println("Connection closed: " + closeReason.getReasonPhrase());
+        executor.shutdown();
+    }
+
+    @Override
+    public void sendBufferToServer(byte[] buffer) throws Exception {
+        if (session != null && session.isOpen()) {
+            ByteBuffer messageBuffer = ByteBuffer.wrap(buffer);
+            session.getAsyncRemote().sendBinary(messageBuffer);
+        } else {
+            throw new IllegalStateException("Session is not open");
+        }
+    }
+    
+    @Override
+    public void sendChatMessageToServer(ChatMessage chatMessage) {
+        Gson gson = new Gson();
+        String jsonText = gson.toJson(chatMessage);
+        session.getAsyncRemote().sendText(jsonText);
     }
 }

@@ -1,11 +1,9 @@
 package edu.augustana.RadioModel;
 
-import edu.augustana.Application.UI.HamPracticeUIController;
+import com.google.gson.Gson;
 
 import javax.sound.sampled.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class HamRadioSimulator implements HamRadioSimulatorInterface {
     private HamRadioClientInterface client;
@@ -21,6 +19,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     private SignalProcessor signalProcessor;
     private boolean isKeyReleased = true;
     private SourceDataLine sdl;
+    ServerSignalListener listener;
 
     //constructor
     public HamRadioSimulator(double transmitFrequency, double minimumReceiveFrequency,
@@ -37,20 +36,25 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
         this.WPM = WPM;
 
         this.soundPlayer = new SoundPlayer(volume);
-        this.signalProcessor = new SignalProcessor(transmitFrequency, receiveFrequency, bandWidth);
+        this.signalProcessor = new SignalProcessor(transmitFrequency, receiveFrequency, bandWidth, WPM, soundPlayer);
 
-        //this.client.connectToServer("localhost", 8080, this::processSignalFromServer);
+        //this.client.connectToServer("ws://localhost:8080/signal", this::processSignalFromServer);
     }
 
     @Override
-    public void sendDot() throws IOException {
+    public void startRadio() throws Exception {
+        this.client.connectToServer("ws://localhost:8080/signal", this::processSignalFromServer);
+    }
+
+    @Override
+    public void sendDot() throws Exception {
         double dotDuration = 100;
         byte[] buffer = signalProcessor.createSignalArray(dotDuration);
         this.client.sendBufferToServer(buffer);
     }
 
     @Override
-    public void sendDash() throws IOException {
+    public void sendDash() throws Exception {
         double dashDuration = 300;
         byte[] buffer = signalProcessor.createSignalArray(dashDuration);
         this.client.sendBufferToServer(buffer);
@@ -64,6 +68,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
     public void setTransmitFrequency(double frequency) {
         this.transmitFrequency =  frequency;
+        signalProcessor.setTransmitFrequency(frequency);
     }
 
     @Override
@@ -74,6 +79,8 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
     public void setMinReceiveFrequency(double frequency) {
         this.minimumReceiveFrequency = frequency;
+        double bandWidth = getMaxReceiveFrequency() - getMinReceiveFrequency();
+        setBandWidth(bandWidth);
     }
 
     @Override
@@ -84,6 +91,8 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
     public void setMaxReceiveFrequency(double frequency) {
         this.maximumReceiveFrequency = frequency;
+        double bandWidth = getMaxReceiveFrequency() - getMinReceiveFrequency();
+        setBandWidth(bandWidth);
     }
 
     @Override
@@ -94,6 +103,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
     public void setReceiveFrequency(double frequency) {
         this.receiveFrequency = frequency;
+        signalProcessor.setReceiveFrequency(frequency);
     }
 
     @Override
@@ -104,6 +114,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
     public void setBandWidth(double bandWidth) {
         this.bandWidth = bandWidth;
+        signalProcessor.setBandWidth(bandWidth);
     }
 
     @Override
@@ -136,6 +147,11 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
         this.WPM = WPM;
     }
 
+    @Override
+    public void setOnChatMessage(ServerSignalListener listener) {
+        this.listener = listener;
+    }
+
     // Adjusted `playTone` method with threading to avoid blocking the JavaFX UI thread
     @Override
     public void playTone(double frequency) {
@@ -151,9 +167,14 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
         }
     }
 
-    private void processSignalFromServer(byte[] signal) throws LineUnavailableException {
-        signalProcessor.filterSignal(signal);
-        soundPlayer.playSound(signal);
+    @Override
+    public void broadcastCWSignal(ChatMessage chatMessage) {
+        client.sendChatMessageToServer(chatMessage);
+    }
+
+    private void processSignalFromServer(ChatMessage chatMessage) throws LineUnavailableException {
+        signalProcessor.process(chatMessage);
+        listener.onSignalReceived(chatMessage);
     }
 
     @Override

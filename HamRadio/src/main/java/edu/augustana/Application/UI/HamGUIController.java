@@ -4,124 +4,211 @@ import java.io.IOException;
 
 import edu.augustana.Application.UIHelper.*;
 
+import edu.augustana.RadioModel.ChatMessage;
 import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
+import edu.augustana.RadioModel.User;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 
 public class HamGUIController {
-    @FXML
-    private ComboBox<String> rangeComboBox; //this class
-    @FXML
-    private ComboBox<String> bandComboBox; //this class
-    @FXML
-    private TextArea displayTextArea; //this class
-    @FXML
-    private Slider volumeSlider; //this class
-    @FXML
-    private TextField translateTextField; //this class
     private HamRadioSimulatorInterface radio;
-    MorseCodeHandlerManager morseCodeHandlerManager;
-
-    private boolean isBandSelected;
-    private boolean isStartClicked;
+    private String userOutput = "";
+    private String cleanMorse = "";
     private FrequencyManager frequencyManager;
-
-    private void setBandSelected(boolean bandSelected) {
-        isBandSelected = bandSelected;
-        morseCodeHandlerManager.setBandSelected(bandSelected);
-    }
-
-    private void setSimulator(HamRadioSimulatorInterface radio) {
-        this.radio = radio;
-    }
+    private VolumeManager volumeManager;
+    private WPMManager wpmManager;
+    private boolean isStartClicked;
+    private long timeOfLastPress;
+    User user;
 
     @FXML
-    private void switchToPrimary() throws IOException {
-        App.setRoot("primary");
-    }
+    private TextArea statusTextArea;
+
+    @FXML
+    private TextArea displayTextArea;
+
+    @FXML
+    private Slider volumeSlider;
+
+    @FXML
+    private Slider transmitFreqSlider;
+
+    @FXML
+    private Slider receiveFreqSlider;
+
+    @FXML
+    private Slider bandWitdhSlider;
+
+    @FXML
+    private ComboBox wpmComboBox;
 
     @FXML
     public void initialize() throws IOException {
-        this.radio = new HamRadioSimulator(0,0,0,
-                0, 0,0,0,0);
-        rangeComboBox.getItems().addAll("HF", "VHF", "UHF");
+        System.out.println("\ninitialization started");
+        this.radio = new HamRadioSimulator(0,0,0,0,
+                3.0,0,1.0,10);
         radio.setVolume(volumeSlider.getValue());
-        frequencyManager = new FrequencyManager(radio, rangeComboBox, bandComboBox,
-                displayTextArea, this::setBandSelected);
-        //morseCodeHandlerController = new MorseCodeHandlerController();
+        radio.setReceiveFrequency(receiveFreqSlider.getValue());
+        radio.setTransmitFrequency(transmitFreqSlider.getValue());
+        radio.setOnChatMessage(this::handleIncomingChatMessage);
+        frequencyManager = new FrequencyManager(this);
+        wpmManager = new WPMManager(this);
+        volumeManager = new VolumeManager(this);
+        wpmComboBox.getItems().addAll(5,10,15,20,25,30);
+        user = new User();
     }
 
-    @FXML private void selectRangeAction(){ //Frequency controller
-
-    }
-
+    //FXML Controller Actions
     @FXML
-    private void startButton() throws IOException {
-        if (!isBandSelected){
-            String message = "Please select a frequency range and band before starting to transmit!";
-            new Alert(Alert.AlertType.INFORMATION, message).show();
-        }
+    private void startButton() throws Exception {
         isStartClicked = true;
-        this.frequencyManager.setStartClicked(true);
-        //displayTextArea.setText(displayTextString() + "\nYou are transmitting: " + userOutput);
-    }
-
-    @FXML public void volumeSliderAction(){ //volumeController
-
+        statusTextArea.setText(displayTextString());
+        //start connecting to server
+        radio.startRadio();
     }
 
     @FXML
-    private void tuneRUpButton() { //freqController
-
+    public void volumeSliderAction(){ //volumeController
+        volumeManager.volumeSliderAction();
     }
 
     @FXML
-    private void tuneRDownButton() { //freqCOntroller
-
+    private void changeTransmittedFrequency(){
+        frequencyManager.changeTransmittedFrequencyController();
     }
 
     @FXML
-    private void tuneTDownButton() {
-
+    private void changeReceivedFrequency(){
+        frequencyManager.changeReceivedFrequencyController();
     }
 
     @FXML
-    private void tuneTUpButton() {
-
+    private void selectWPMAction() {
+        wpmManager.selectWPMAction();
     }
 
     @FXML
-    public void speedDownAction() { //speed controller
-
+    private void bandWidthAction() {
+        frequencyManager.bandWidthAction();
     }
 
     @FXML
-    public void speedUpAction() { //speed controller
+    private void switchToWelcomeScreen() throws IOException {
+        App.setRoot("WelcomeScreen");
+    }
+
+    //API
+    public void setDisplayTextControl(String text) {
+        displayTextArea.setText(text);
+    }
+    public String getDisplayTextControl() {
+        return displayTextArea.getText();
+    }
+    public void setVolume(double volume) {
+        volumeSlider.setValue(volume);
+    }
+    public double getVolume() {
+        return volumeSlider.getValue();
+    }
+    public void setTransmitFrequencyControl(double freq) {
+        transmitFreqSlider.setValue(freq);
+    }
+    public double getTransmitFrequencyControl() {
+        return transmitFreqSlider.getValue();
+    }
+    public void setReceivedFrequencyControl(double freq) {
+        receiveFreqSlider.setValue(freq);
+    }
+    public double getReceivedFrequencyControl() {
+        return receiveFreqSlider.getValue();
+    }
+    public void setBandwidthControl(double bandwidth) {
+        bandWitdhSlider.setValue(bandwidth);
+    }
+    public double getBandwidthControl() {
+        return bandWitdhSlider.getValue();
+    }
+    public void setStatusTextControl(String text) {
+        statusTextArea.setText(text);
+    }
+    public String getStatusTextControl() {
+        return statusTextArea.getText();
+    }
+    public int getWPMControl() {
+        return (int) wpmComboBox.getSelectionModel().getSelectedItem();
+    }
+    public void setVolumeControl(double vol) {
+        volumeSlider.setValue(vol);
+    }
+    public double getVolumeControl() {
+        return volumeSlider.getValue();
+    }
+
+    //Getter and setter
+    public HamRadioSimulatorInterface getRadio() {
+        return radio;
+    }
+    public void setRadio(HamRadioSimulatorInterface radio) {
+        this.radio = radio;
+    }
+    public void setIsStartClicked(boolean isStartClicked) {
+        this.isStartClicked = isStartClicked;
+    }
+    public boolean setIsStartClicked() {
+        return this.isStartClicked;
+    }
+
+    //helper methods
+    private void onPress() {
+        radio.setIsKeyReleased(false);
+        System.out.println("onPress");
+        timeOfLastPress = System.currentTimeMillis();
+        radio.playTone(600);  // Starts playing tone in a separate thread
+    }
+
+    private void onRelease() {
+        long timeSinceLastPress = System.currentTimeMillis() - timeOfLastPress;
+        if (timeSinceLastPress <= 3 * HelperClass.unitOfTime(radio.getWPM())) {
+            radio.broadcastCWSignal(new ChatMessage(".", user));
+        } else {
+            radio.broadcastCWSignal(new ChatMessage("-", user));
+        }
+        radio.setIsKeyReleased(true);// Signals playTone loop to end
+
 
     }
 
-    @FXML
-    public void bandwidthUpAction(){ //freq controller
+    public void pushToTalkButton(ActionEvent actionEvent) {
+        App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
+    }
+
+    private void handleIncomingChatMessage(ChatMessage chatMessage) {
 
     }
 
-    @FXML
-    public void bandwidthDownAction(){ //freq controller
+    public String displayTextString() { //TextFieldController
+        String radioStatus = "Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +
+                "Your transmit frequency: " + radio.getTransmitFrequency() + "MHz \n"+
+                "Radio Status: Connected. You can start transmitting right now." +
+                "\n" + "Radio Volume: " + radio.getVolume() +
+                "\n" + "Radio Playback Speed: " + radio.getPlaybackSpeed() +
+                "\n" + "Frequency Bandwidth: " + radio.getBandWidth();
 
-    }
-
-    @FXML
-    public void morseToTextAction() {
-        morseCodeHandlerManager.morseToTextAction();
-    }
-
-    @FXML
-    public void textToMorseAction() { //morse code controller
-        morseCodeHandlerManager.textToMorseAction();
-    }
-
-    public void playBackAction() { //playback controller
-
+        return radioStatus;
     }
 }
+
+//implementation of User, ChatMessage, broadcastCWSignal(), processSignalFromServer() -> Networking for client side
+//implementation of SignalMixer, SignalFilter, SoundPlayer.playSound() -> Done of signal processing client side
+//Rework the UI Component for HamGUI
+//implementation of userListManager/chatLogManager: updateState(chatMessage)
+//implementation of handleIncomingChatMessage(): String/ChatMessage -> userListManager.updateState(ChatMessage) -> chatLogTextField.setText();
+//-> Done client code (For basic features)
+
+//Server code
+//fast api
+
+//test and debug: Test scenario: 3 computers, 2 transmit signal at 2 different frequency, 1 listen at each of the frequency, and both frequencies.
