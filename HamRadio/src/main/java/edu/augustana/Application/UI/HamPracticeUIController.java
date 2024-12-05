@@ -410,7 +410,6 @@ public class HamPracticeUIController extends HamUIController {
                 // Update application state with loaded preferences
                 applyLoadedPreferences(prefs);
 
-
             } catch (Exception e) {
                 new Alert(Alert.AlertType.ERROR, "Error loading user data file: " + chosenFile).show();
             }
