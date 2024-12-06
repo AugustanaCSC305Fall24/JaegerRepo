@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import edu.augustana.Application.UIHelper.*;
 
-import edu.augustana.RadioModel.ChatMessage;
+import edu.augustana.RadioModel.CWMessage;
 import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.RadioModel.User;
@@ -58,7 +58,7 @@ public class HamGUIController {
         wpmManager = new WPMManager(this);
         volumeManager = new VolumeManager(this);
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
-        user = new User();
+        user = new User("Hello world");
     }
 
     //FXML Controller Actions
@@ -170,22 +170,23 @@ public class HamGUIController {
     }
 
     private void onRelease() {
+        radio.setIsKeyReleased(true);// Signals playTone loop to end
         long timeSinceLastPress = System.currentTimeMillis() - timeOfLastPress;
         if (timeSinceLastPress <= 3 * HelperClass.unitOfTime(radio.getWPM())) {
-            radio.broadcastCWSignal(new ChatMessage(".", user));
+            radio.broadcastCWSignal(new CWMessage(".", user.getName(), radio.getTransmitFrequency()));
         } else {
-            radio.broadcastCWSignal(new ChatMessage("-", user));
+            radio.broadcastCWSignal(new CWMessage("-", user.getName(), radio.getTransmitFrequency()));
         }
-        radio.setIsKeyReleased(true);// Signals playTone loop to end
 
 
     }
 
+    @FXML
     public void pushToTalkButton(ActionEvent actionEvent) {
         App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
     }
 
-    private void handleIncomingChatMessage(ChatMessage chatMessage) {
+    private void handleIncomingChatMessage(CWMessage chatMessage) {
 
     }
 

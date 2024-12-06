@@ -1,9 +1,5 @@
 package edu.augustana.RadioModel;
 
-import edu.augustana.Application.UI.HamPracticeUIController;
-
-import java.io.IOException;
-
 public interface HamRadioSimulatorInterface {
     //methods for sending and receiving
     //send a dot
@@ -70,7 +66,7 @@ public interface HamRadioSimulatorInterface {
     void playTone(double frequency);
 
     //
-    void broadcastCWSignal(ChatMessage chatMessage);
+    void broadcastCWSignal(CWMessage chatMessage);
 
     //stopTone
     void stopTone();

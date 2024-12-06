@@ -1,9 +1,6 @@
 package edu.augustana.RadioModel;
 
-import sun.misc.Signal;
-
 import javax.sound.sampled.LineUnavailableException;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +61,7 @@ public class SignalProcessor {
         signalFilter.setHighCutoff(receiveFrequency + (bandWidth/2));
     }
 
-    public void process(ChatMessage chatMessage) {
+    public void process(CWMessage chatMessage) {
         String message = chatMessage.getText();
         byte[] byteBuffer = signalGenerator.generateByteSignal(message, Math.abs(transmitFrequency - receiveFrequency), wpm);
         signalMixer.mix(byteBuffer);

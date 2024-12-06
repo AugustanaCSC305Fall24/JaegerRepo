@@ -53,7 +53,7 @@ public class HamPracticeUIController extends HamUIController {
     public static final int TONE = 600;
     MorseCodeHandlerManager morseCodeHandlerManager;
     MorseCodePlayer player;
-    User user= new User();
+    User user= new User("Hello world");
 
     @FXML
     private TextArea statusTextArea;

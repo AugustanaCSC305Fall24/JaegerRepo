@@ -31,7 +31,7 @@ public class HamRadioClient implements HamRadioClientInterface {
     public void onMessage(String message) {
         executor.execute(() -> {
             try {
-                ChatMessage chatMessage = new Gson().fromJson(message, ChatMessage.class);
+                CWMessage chatMessage = new Gson().fromJson(message, CWMessage.class);
                 listener.onSignalReceived(chatMessage);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -61,9 +61,9 @@ public class HamRadioClient implements HamRadioClientInterface {
             throw new IllegalStateException("Session is not open");
         }
     }
-    
+
     @Override
-    public void sendChatMessageToServer(ChatMessage chatMessage) {
+    public void sendChatMessageToServer(CWMessage chatMessage) {
         Gson gson = new Gson();
         String jsonText = gson.toJson(chatMessage);
         session.getAsyncRemote().sendText(jsonText);

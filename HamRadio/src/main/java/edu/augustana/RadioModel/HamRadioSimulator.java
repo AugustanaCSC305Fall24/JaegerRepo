@@ -1,7 +1,5 @@
 package edu.augustana.RadioModel;
 
-import com.google.gson.Gson;
-
 import javax.sound.sampled.*;
 import java.io.IOException;
 
@@ -43,7 +41,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
 
     @Override
     public void startRadio() throws Exception {
-        this.client.connectToServer("ws://localhost:8080/signal", this::processSignalFromServer);
+        this.client.connectToServer("ws://34.133.2.6:8000/ws/username", this::processSignalFromServer);
     }
 
     @Override
@@ -168,12 +166,12 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     }
 
     @Override
-    public void broadcastCWSignal(ChatMessage chatMessage) {
+    public void broadcastCWSignal(CWMessage chatMessage) {
         client.sendChatMessageToServer(chatMessage);
     }
 
-    private void processSignalFromServer(ChatMessage chatMessage) throws LineUnavailableException {
-        signalProcessor.process(chatMessage);
+    private void processSignalFromServer(CWMessage chatMessage) throws LineUnavailableException {
+        new Thread(() -> {signalProcessor.process(chatMessage);}).run();
         listener.onSignalReceived(chatMessage);
     }
 

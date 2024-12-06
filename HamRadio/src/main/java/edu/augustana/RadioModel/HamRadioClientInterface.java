@@ -1,7 +1,5 @@
 package edu.augustana.RadioModel;
 
-import java.io.IOException;
-
 public interface HamRadioClientInterface {
     //connect to server
     void connectToServer(String serverUri, ServerSignalListener listener) throws Exception;
@@ -10,5 +8,5 @@ public interface HamRadioClientInterface {
     void sendBufferToServer(byte[] buffer) throws Exception;
 
     //send chatMessage to server
-    void sendChatMessageToServer(ChatMessage chatMessage);
+    void sendChatMessageToServer(CWMessage chatMessage);
 }
