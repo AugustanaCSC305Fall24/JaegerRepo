@@ -72,7 +72,7 @@ public class HamGUIController {
         statusTextArea.setText(displayTextString());
         //start connecting to server
         radio.startRadio(usernameTextField.getText());
-
+        setName(usernameTextField.getText());
     }
 
     @FXML
@@ -151,6 +151,7 @@ public class HamGUIController {
     public double getVolumeControl() {
         return volumeSlider.getValue();
     }
+    public void setName(String input) { user.setUsername(input);}
 
     //Getter and setter
     public HamRadioSimulatorInterface getRadio() {
