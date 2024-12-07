@@ -63,7 +63,8 @@ public class SignalProcessor {
 
     public void process(CWMessage chatMessage) {
         String message = chatMessage.getText();
-        byte[] byteBuffer = signalGenerator.generateByteSignal(message, Math.abs(transmitFrequency - receiveFrequency), wpm);
+        double freq = chatMessage.getFrequency();
+        byte[] byteBuffer = signalGenerator.generateByteSignal(message, Math.abs(freq - receiveFrequency), wpm);
         signalMixer.mix(byteBuffer);
 
     }
@@ -71,6 +72,15 @@ public class SignalProcessor {
     private void continue_process(byte[] byteBuffer) throws LineUnavailableException, IOException {
         byte[] filteredSignal = signalFilter.filter(byteBuffer);
         soundPlayer.playSound(filteredSignal);
+    }
+
+    public void processMultithread(CWMessage cwMessage) throws IOException {
+        String morseCode = cwMessage.getText();
+        double frequency = cwMessage.getFrequency();
+        double minBand = receiveFrequency - (bandWidth/2);
+        double maxBand = receiveFrequency + (bandWidth/2);
+        byte[] signal = signalGenerator.generateByteSignal(morseCode, frequency, wpm);
+        soundPlayer.playMorseCode(signal, frequency, minBand, maxBand);
     }
 
     //private helper methods:

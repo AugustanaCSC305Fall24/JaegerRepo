@@ -41,8 +41,10 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     }
 
     @Override
+
     public void startRadio(String username) throws Exception {
-        this.client.connectToServer("ws://34.133.2.6:8000/ws/" + username, this::processSignalFromServer);
+        this.client.connectToServer("ws://34.133.2.6:8000/ws/" + username, this::processSignalFromServerByMixing);
+
     }
 
     @Override
@@ -172,9 +174,19 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
         client.sendChatMessageToServer(chatMessage);
     }
 
-    private void processSignalFromServer(CWMessage chatMessage) throws LineUnavailableException {
+    private void processSignalFromServerByMixing(CWMessage chatMessage) throws LineUnavailableException {
         new Thread(() -> {signalProcessor.process(chatMessage);}).run();
         listener.onSignalReceived(chatMessage);
+    }
+
+    private void processSignalFromServerByMultithreading(CWMessage chatMessage) {
+        new Thread(() -> {
+            try {
+                signalProcessor.processMultithread(chatMessage);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).run();
     }
 
     @Override
