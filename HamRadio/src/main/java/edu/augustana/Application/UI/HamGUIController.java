@@ -46,6 +46,9 @@ public class HamGUIController {
     private ComboBox wpmComboBox;
 
     @FXML
+    private TextField usernameTextField;
+
+    @FXML
     public void initialize() throws IOException {
         System.out.println("\ninitialization started");
         this.radio = new HamRadioSimulator(0,0,0,0,
@@ -59,6 +62,7 @@ public class HamGUIController {
         volumeManager = new VolumeManager(this);
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
         user = new User("Hello world");
+
     }
 
     //FXML Controller Actions
@@ -67,7 +71,8 @@ public class HamGUIController {
         isStartClicked = true;
         statusTextArea.setText(displayTextString());
         //start connecting to server
-        radio.startRadio();
+        radio.startRadio(usernameTextField.getText());
+
     }
 
     @FXML
@@ -184,6 +189,7 @@ public class HamGUIController {
     @FXML
     public void pushToTalkButton(ActionEvent actionEvent) {
         App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
+
     }
 
     private void handleIncomingChatMessage(CWMessage chatMessage) {

@@ -9,7 +9,7 @@ public interface HamRadioSimulatorInterface {
     void sendDash() throws Exception;
 
     //
-    void startRadio() throws Exception;
+    void startRadio(String username) throws Exception;
 
     //getter of transmit frequency
     double getTransmitFrequency();
@@ -73,4 +73,5 @@ public interface HamRadioSimulatorInterface {
 
     //setlistener
     void setOnChatMessage(ServerSignalListener listener);
+
 }

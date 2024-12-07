@@ -13,6 +13,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     private double volume;
     private double playbackSpeed;
     private int WPM = 10;
+//    private String userName;
     private SoundPlayer soundPlayer;
     private SignalProcessor signalProcessor;
     private boolean isKeyReleased = true;
@@ -40,8 +41,8 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     }
 
     @Override
-    public void startRadio() throws Exception {
-        this.client.connectToServer("ws://34.133.2.6:8000/ws/username", this::processSignalFromServer);
+    public void startRadio(String username) throws Exception {
+        this.client.connectToServer("ws://34.133.2.6:8000/ws/" + username, this::processSignalFromServer);
     }
 
     @Override
@@ -167,6 +168,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
 
     @Override
     public void broadcastCWSignal(CWMessage chatMessage) {
+
         client.sendChatMessageToServer(chatMessage);
     }
 
@@ -180,5 +182,6 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
         this.isKeyReleased = isKeyReleased;
         soundPlayer.setIsKeyRelease(isKeyReleased);
     }
+
 
 }
