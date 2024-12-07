@@ -322,4 +322,40 @@ public class SoundPlayer {
     public void setIsKeyRelease(boolean isKeyReleased) {
         this.isKeyReleased = isKeyReleased;
     }
+
+    public void playMorseCode(byte[] signal, double frequency, double minBand, double maxBand) throws IOException {
+        System.out.println("I'm working... playMorse in SoundPlayer");
+        System.out.println("My volume is... " + volume);
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        byteBuffer.write(signal);
+        AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 1, 2, 44100, false);
+
+        // Playback the generated Morse code using SourceDataLine
+        try {
+            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+            SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(info);
+            sourceLine.open(format);
+
+            // Check if volume adjustment is supported and set it
+            if (sourceLine.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                FloatControl volumeControl = (FloatControl) sourceLine.getControl(FloatControl.Type.MASTER_GAIN);
+                float minVolume = volumeControl.getMinimum();
+                float maxVolume = volumeControl.getMaximum();
+                float volumeInDb = (float) ((volume / 100) * (maxVolume - minVolume) + minVolume);
+                volumeControl.setValue(volumeInDb);
+            } else {
+                System.out.println("MASTER_GAIN control is not supported on this system.");
+            }
+            sourceLine.start();
+
+            byte[] audioData = byteBuffer.toByteArray();
+            sourceLine.write(audioData, 0, audioData.length);
+
+            sourceLine.drain();
+            sourceLine.stop();
+            sourceLine.close();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
 }
