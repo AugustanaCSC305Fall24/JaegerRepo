@@ -43,7 +43,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
 
     public void startRadio(String username) throws Exception {
-        this.client.connectToServer("ws://34.133.2.6:8000/ws/" + username, this::processSignalFromServerByMixing);
+        this.client.connectToServer("ws://34.133.2.6:8000/ws/" + username, this::processSignalFromServerByMultithreading);
 
     }
 
