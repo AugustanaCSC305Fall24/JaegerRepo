@@ -28,7 +28,7 @@ public class App extends Application {
     private static final KeyBindManager keyBindManager = new KeyBindManager();
     private UserPreferences userPrefs = UserPreferences.loadFromJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);
     private static FileManager fileManager = new FileManager();
-    private static App returnApp(){return app;}
+    static App returnApp(){return app;}
     public static UserPreferences getUserPrefs() {
         return app.userPrefs;
     }
@@ -51,6 +51,10 @@ public class App extends Application {
 
     public static void changePracticeIndex(){
         practiceIndex++;
+    }
+
+    public void setUserPrefs(UserPreferences userPrefs){
+        this.userPrefs = userPrefs;
     }
 
     public static List<PracticeScenerio> getPracticeScenerioList(){

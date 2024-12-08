@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextArea layoutX="10.0" layoutY="65.0" prefHeight="307.0" prefWidth="380.0" style="-fx-border-color: #D8E2DC;" text="If you have a .scenario file and you want to open it, click Open An Existing Scenario.&#10;&#10;If you want to play our scripted scenario with challenging storyline and tasks, click Play Scripted Scenario. &#10;&#10;Or, you can build a scenario to practice HAM Radio yourself! Have fun!&#10;&#10;" wrapText="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextArea>
+      <Label layoutX="129.0" layoutY="22.0" text="GAME RULES" textFill="#466854">
+         <font>
+            <Font name="System Bold" size="23.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

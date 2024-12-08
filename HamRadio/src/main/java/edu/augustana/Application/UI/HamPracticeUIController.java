@@ -102,15 +102,17 @@ public class HamPracticeUIController extends HamUIController {
     private String serverAddress;
     private int numBot;
     private int wpm;
+    private UserPreferences userPreferences;
 
     @Override
     @FXML
     public void initialize() throws IOException {
         System.out.println("\ninitialize is running.....");
-        primaryUserName = App.getUserPrefs().getPrimaryUserName();
-        String serverAddress = App.getUserPrefs().getServerAddress();
-        int numBot = App.getUserPrefs().getNumBot();
-        int wpm = App.getUserPrefs().getWPM();
+        userPreferences = App.getUserPrefs();
+        primaryUserName = userPreferences.getPrimaryUserName();
+        serverAddress = userPreferences.getServerAddress();
+        numBot = userPreferences.getNumBot();
+        wpm = userPreferences.getWPM();
         this.radio = new HamRadioSimulator(0,0,0,0
                 ,3.0,0,1.0,wpm);
         this.room = App.getCurrentPracticeScenerio();
@@ -123,9 +125,9 @@ public class HamPracticeUIController extends HamUIController {
         System.out.println("Radio WPM in Controller Practice Innitialize: " + radio.getWPM());
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
         List<TaskForPractice> taskForPracticeList = new ArrayList<>();
-        System.out.println("In Controller: Num bots is....." + numBot);
-        System.out.println("In Controller: User name is...." + App.getUserPrefs().getPrimaryUserName());
-        System.out.println("In controller: WPM is..." + wpm);
+        System.out.println("In Initialize controller: Num bots is....." + numBot);
+        System.out.println("In Initialize controller: User name is...." + App.getUserPrefs().getPrimaryUserName());
+        System.out.println("In Initialize controller: WPM is..." + wpm);
         for (int i = 0; i < numBot; i++){
             String name = Bot.nameList[i];
             int level = Bot.getRandomLevel();
@@ -144,9 +146,12 @@ public class HamPracticeUIController extends HamUIController {
     private void startButton() throws IOException {
         isStartClicked = true;
         statusConnect = " Connected";
-        statusTextArea.setText(displayTextString());
         botListView.getItems().clear();
         botListView.getItems().addAll(room.getBotList());
+        System.out.println("In startButton in Controller:....." +
+                "\n botListView is....... " + room.getBotList() +
+                "\n is WhiteNoise on......." + App.getUserPrefs().getWhiteNoise());
+        statusTextArea.setText(displayTextString());
         morseCodeHandlerManager.setBandSelected(true);
 
         if(App.getUserPrefs().getWhiteNoise() && !isStartClickedTwice){
@@ -369,41 +374,23 @@ public class HamPracticeUIController extends HamUIController {
 
     @FXML
     public void rulesButtonAction() {
-        popUpWindow("GameRules", 400, 500, "Game Rules");
+        PopUpManager pop = new PopUpManager();
+        pop.popUpWindow("GameRules", 400, 500, "Game Rules");
     }
 
-    private void popUpWindow(String fxmlFile, int windowWidth, int windowHeight, String title){
-        try {
-            // Load the FXML file for GameRules
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/edu/augustana/Application/UI/" + fxmlFile + ".fxml"));
-            Parent root = fxmlLoader.load();
-
-            // Create a new scene and stage for the window
-            Scene scene = new Scene(root, windowWidth, windowHeight);
-            Stage gameRulesStage = new Stage();
-            gameRulesStage.setScene(scene);
-
-            // Set the title for the new window
-            gameRulesStage.setTitle(title);
-
-            // Show the new window
-            gameRulesStage.show();
-        } catch (IOException ex) {
-            System.err.println("Can't find FXML file GameRules.fxml");
-            ex.printStackTrace();
-        }
-    }
 
     @FXML
-    private void menuActionOpenUserData(ActionEvent event) {
+    private void menuActionOpenUserData(ActionEvent event) throws IOException {
         fileManager.menuActionOpenUserData(event);
+        cleanUpForNewPrefs();
+
     }
 
-
-    private void applyLoadedPreferences(UserPreferences prefs) throws IOException {
-        // Example of applying preferences to the application
+    private void cleanUpForNewPrefs() throws IOException{
+        room.getBotList().clear();
+        setWhiteNoiseOn(false);
+        statusTextArea.setText("");
         initialize();
-        fileManager.applyLoadedPreferences(prefs);
     }
 
     @FXML
@@ -413,8 +400,9 @@ public class HamPracticeUIController extends HamUIController {
     }
 
     @FXML
-    private void menuActionSaveUserData(ActionEvent event) {
+    private void menuActionSaveUserData(ActionEvent event) throws IOException {
         fileManager.menuActionSaveUserData(event);
+        initialize();
     }
 
     @FXML

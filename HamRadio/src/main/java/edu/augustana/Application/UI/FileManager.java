@@ -1,6 +1,7 @@
 package edu.augustana.Application.UI;
 
 import edu.augustana.RadioModel.Practice.UserPreferences;
+import edu.augustana.RadioModel.User;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
@@ -8,6 +9,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class FileManager {
@@ -28,25 +30,19 @@ public class FileManager {
                 // Load user preferences from the selected file
                 UserPreferences prefs = UserPreferences.loadFromJSONFile(chosenFile);
                 UserPreferences.setCurrentUserDataFile(chosenFile); // Update the current file reference
-
-                // Update application state with loaded preferences
-                applyLoadedPreferences(prefs);
+                App.returnApp().setUserPrefs(UserPreferences.loadFromJSONFile(chosenFile));
+                System.out.println("This is a big string test from File Manager: " +
+                         "\nUser Name is.........." + App.getUserPrefs().getPrimaryUserName() +
+                        "\nNum Bots is.........." + App.getUserPrefs().getNumBot());
 
             } catch (Exception e) {
                 new Alert(Alert.AlertType.ERROR, "Error loading user data file: " + chosenFile).show();
             }
+        } else {
+            System.out.println("Null File..........");
         }
     }
 
-
-    public void applyLoadedPreferences(UserPreferences prefs) throws IOException {
-        // Example of applying preferences to the application
-        System.out.println("User Name: " + prefs.getPrimaryUserName());
-        System.out.println("Number of Bots: " + prefs.getNumBot());
-        System.out.println("WPM: " + prefs.getWPM());
-        System.out.println("White noise: " + prefs.getWhiteNoise());
-
-    }
 
     public void menuActionSaveUserData(ActionEvent event) {
         if (UserPreferences.getCurrentUserDataFile() == null) {
