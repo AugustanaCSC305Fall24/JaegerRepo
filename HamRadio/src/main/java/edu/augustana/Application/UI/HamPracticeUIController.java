@@ -54,6 +54,7 @@ public class HamPracticeUIController extends HamUIController {
     MorseCodeHandlerManager morseCodeHandlerManager;
     MorseCodePlayer player;
     User user= new User("Hello world");
+    FileManager fileManager = App.getFileManager();
 
     @FXML
     private TextArea statusTextArea;
@@ -367,11 +368,6 @@ public class HamPracticeUIController extends HamUIController {
     }
 
     @FXML
-    private void helpPeopleAction(){
-        popUpWindow("HelpPeople", 400, 500, "Choose who to help!");
-    }
-
-    @FXML
     public void rulesButtonAction() {
         popUpWindow("GameRules", 400, 500, "Game Rules");
     }
@@ -400,39 +396,14 @@ public class HamPracticeUIController extends HamUIController {
 
     @FXML
     private void menuActionOpenUserData(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open User Data File");
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("JSON Files (*.json)", "*.json");
-        fileChooser.getExtensionFilters().add(filter);
-
-        // Use the event's source to get the stage safely
-        Window mainWindow = ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
-        File chosenFile = fileChooser.showOpenDialog(mainWindow);
-
-        if (chosenFile != null) {
-            try {
-                // Load user preferences from the selected file
-                UserPreferences prefs = UserPreferences.loadFromJSONFile(chosenFile);
-                UserPreferences.setCurrentUserDataFile(chosenFile); // Update the current file reference
-
-                // Update application state with loaded preferences
-                applyLoadedPreferences(prefs);
-
-            } catch (Exception e) {
-                new Alert(Alert.AlertType.ERROR, "Error loading user data file: " + chosenFile).show();
-            }
-        }
+        fileManager.menuActionOpenUserData(event);
     }
 
 
     private void applyLoadedPreferences(UserPreferences prefs) throws IOException {
         // Example of applying preferences to the application
         initialize();
-        System.out.println("User Name: " + prefs.getPrimaryUserName());
-        System.out.println("Number of Bots: " + prefs.getNumBot());
-        System.out.println("WPM: " + prefs.getWPM());
-        System.out.println("White noise: " + prefs.getWhiteNoise());
-
+        fileManager.applyLoadedPreferences(prefs);
     }
 
     @FXML
@@ -443,43 +414,16 @@ public class HamPracticeUIController extends HamUIController {
 
     @FXML
     private void menuActionSaveUserData(ActionEvent event) {
-        if (UserPreferences.getCurrentUserDataFile() == null) {
-            menuActionSaveUserDataAs(event);
-        } else {
-            saveUserDataToFile(UserPreferences.getCurrentUserDataFile());
-        }
+        fileManager.menuActionSaveUserData(event);
     }
 
     @FXML
     private void menuActionSaveUserDataAs(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save User Data File");
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("JSON Files (*.json)", "*.json");
-        fileChooser.getExtensionFilters().add(filter);
-
-        // Use the MenuItem's parent popup to get the owner window
-        Window mainWindow = ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
-        File chosenFile = fileChooser.showSaveDialog(mainWindow);
-
-        if (chosenFile != null) {
-            UserPreferences.setCurrentUserDataFile(chosenFile); // Update the current file reference
-            saveUserDataToFile(chosenFile);
-        }
+        fileManager.menuActionSaveUserDataAs(event);
     }
 
     private void saveUserDataToFile(File chosenFile) {
-        if (chosenFile != null) {
-            try {
-                UserPreferences prefs = App.getUserPrefs();
-                // Save preferences to the chosen file
-                prefs.saveToJSONFile(chosenFile);
-            } catch (Exception e) {
-                new Alert(Alert.AlertType.ERROR, "Error saving user data file: " + chosenFile).show();
-            }
-        }
+        fileManager.saveUserDataToFile(chosenFile);
     }
-
-
-
 
 }

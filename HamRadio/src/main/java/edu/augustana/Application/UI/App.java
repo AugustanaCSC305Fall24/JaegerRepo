@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.input.KeyEvent;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class App extends Application {
     private static int practiceIndex = -1;
     private static final KeyBindManager keyBindManager = new KeyBindManager();
     private UserPreferences userPrefs = UserPreferences.loadFromJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);
-
+    private static FileManager fileManager = new FileManager();
     private static App returnApp(){return app;}
     public static UserPreferences getUserPrefs() {
         return app.userPrefs;
@@ -90,6 +91,8 @@ public class App extends Application {
     public static void switchToMainView() {
         switchToView("WelcomeScreen.fxml");
     }
+
+    public static FileManager getFileManager(){return fileManager;}
 
     public static void main(String[] args) {
         launch();
