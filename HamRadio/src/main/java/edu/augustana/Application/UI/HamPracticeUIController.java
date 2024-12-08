@@ -104,20 +104,17 @@ public class HamPracticeUIController extends HamUIController {
     public void initialize() throws IOException {
         System.out.println("\ninitialize is running.....");
         userPreferences = App.getUserPrefs();
-        room = App.getCurrentPracticeScenerio();
-        RoomBuilder roomBuilder = new RoomBuilder(room, userPreferences);
-        roomBuilder.buildRoom();
+        this.room = App.getCurrentPracticeScenerio();
+//        RoomBuilder roomBuilder = new RoomBuilder(room, userPreferences);
+//        roomBuilder.buildRoom();
         primaryUserName = userPreferences.getPrimaryUserName();
         serverAddress = userPreferences.getServerAddress();
-        //numBot = userPreferences.getNumBot();
         wpm = userPreferences.getWPM();
         this.radio = new HamRadioSimulator(0,0,0,0
                 ,3.0,0,1.0,wpm);
-        this.room = App.getCurrentPracticeScenerio();
         morseCodeHandlerManager = new MorseCodeHandlerManager(inputTextArea, radio);
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
-        radio.setTransmitFrequency(transmitFreqSlider.getValue());
         addMessageToChatLogUI("Radio: Hello, welcome to HAM Practice!");
         addMessageToChatLogUI("Radio: Please first read our game's rules by hitting \"Rules \"");
         System.out.println("Radio WPM in Controller Practice Innitialize: " + radio.getWPM());
@@ -126,19 +123,22 @@ public class HamPracticeUIController extends HamUIController {
         System.out.println("In Initialize controller: WPM is..." + wpm);
 
         player = new MorseCodePlayer(wpm, radio);
+        System.out.println("Print botList from innitialize----------------" + room.getBotList());
     }
 
     @FXML
     private void startButton() throws IOException {
-        isStartClicked = true;
         statusConnect = " Connected";
-        botListView.getItems().clear();
+        if(isStartClicked){
+            room.getBotList().clear();
+        }
         botListView.getItems().addAll(room.getBotList());
         System.out.println("In startButton in Controller:....." +
                 "\n botListView is....... " + room.getBotList() +
                 "\n is WhiteNoise on......." + App.getUserPrefs().getWhiteNoise());
         statusTextArea.setText(displayTextString());
         morseCodeHandlerManager.setBandSelected(true);
+        isStartClicked = true;
 
         if(App.getUserPrefs().getWhiteNoise() && !isStartClickedTwice){
             generateWhiteNoise();
