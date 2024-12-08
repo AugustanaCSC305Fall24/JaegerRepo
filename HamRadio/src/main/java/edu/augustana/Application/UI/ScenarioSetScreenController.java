@@ -15,7 +15,6 @@ import javafx.scene.control.TextField;
 public class ScenarioSetScreenController {
     @FXML
     private TextField primaryUserNameTextField;
-
     @FXML
     private ComboBox<Integer> wpmBox;
     @FXML
@@ -37,9 +36,9 @@ public class ScenarioSetScreenController {
         } else {
             listener = ScriptedScenarioOptionController.scriptedSceneListener;
         }
-        List<PracticeScenario> scenarioList = App.getPracticeScenerioList();
-        scenarioList.add(new PracticeScenario());
-        App.changePracticeIndex();
+//        List<PracticeScenario> scenarioList = App.getPracticeScenerioList();
+//        scenarioList.add(new PracticeScenario());
+//        App.changePracticeIndex();
         ScenarioSetSceneBuilder scenarioSetSceneBuilder =
                 new ScenarioSetSceneBuilder(primaryUserNameTextField, wpmBox,
                         whiteNoiseBox, scenarioTypeBox, scenarioNameTextField, listener);
@@ -54,7 +53,7 @@ public class ScenarioSetScreenController {
 
     @FXML
     public void nextAction() throws IOException {
-        App.setRoot("HamPracticeUI");
+        App.setRoot("ScenarioCustomizeBotScreen");
     }
 
     @FXML

@@ -1,11 +1,15 @@
 package edu.augustana.Application.UIHelper;
 
 import edu.augustana.Application.UI.App;
+import edu.augustana.RadioModel.Practice.PracticeScenario;
 import edu.augustana.RadioModel.Practice.UserPreferences;
+import edu.augustana.RadioModel.Practice.BotCollections.Bot;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import java.util.*;
 
 public class ScenarioSetSceneBuilder {
     @FXML
@@ -18,9 +22,12 @@ public class ScenarioSetSceneBuilder {
     private ComboBox<String> scenarioTypeBox;
     @FXML
     private TextField scenarioNameTextField;
+    @FXML
+    private ListView<Bot> botListView;
 
     private String listener;
     UserPreferences prefs;
+    PracticeScenario room;
 
     public ScenarioSetSceneBuilder(TextField primaryUserNameTextField,
                                    ComboBox<Integer> wpmBox, CheckBox whiteNoiseBox,
@@ -34,6 +41,17 @@ public class ScenarioSetSceneBuilder {
         this.scenarioNameTextField = scenarioNameTextField;
         this.listener = listener;
         prefs = App.getUserPrefs();
+    }
+
+    public ScenarioSetSceneBuilder(ListView<Bot> botListView, PracticeScenario room){
+        this.room = room;
+        this.botListView = botListView;
+        prefs = App.getUserPrefs();
+    }
+
+    public void buildBotCustomizeUI(){
+        botListView.getItems().addAll(room.getBotList());
+        System.out.println(room.getBotList());
     }
 
     public void buildUI(){

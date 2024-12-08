@@ -96,7 +96,6 @@ public class HamPracticeUIController extends HamUIController {
 
     private String primaryUserName;
     private String serverAddress;
-    private int numBot;
     private int wpm;
     private UserPreferences userPreferences;
 
@@ -105,6 +104,7 @@ public class HamPracticeUIController extends HamUIController {
     public void initialize() throws IOException {
         System.out.println("\ninitialize is running.....");
         userPreferences = App.getUserPrefs();
+        room = App.getCurrentPracticeScenerio();
         RoomBuilder roomBuilder = new RoomBuilder(room, userPreferences);
         roomBuilder.buildRoom();
         primaryUserName = userPreferences.getPrimaryUserName();
@@ -113,10 +113,8 @@ public class HamPracticeUIController extends HamUIController {
         wpm = userPreferences.getWPM();
         this.radio = new HamRadioSimulator(0,0,0,0
                 ,3.0,0,1.0,wpm);
-
         this.room = App.getCurrentPracticeScenerio();
         morseCodeHandlerManager = new MorseCodeHandlerManager(inputTextArea, radio);
-
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
         radio.setTransmitFrequency(transmitFreqSlider.getValue());
@@ -124,9 +122,6 @@ public class HamPracticeUIController extends HamUIController {
         addMessageToChatLogUI("Radio: Please first read our game's rules by hitting \"Rules \"");
         System.out.println("Radio WPM in Controller Practice Innitialize: " + radio.getWPM());
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
-
-        List<TaskForPractice> taskForPracticeList = new ArrayList<>();
-        System.out.println("In Initialize controller: Num bots is....." + numBot);
         System.out.println("In Initialize controller: User name is...." + App.getUserPrefs().getPrimaryUserName());
         System.out.println("In Initialize controller: WPM is..." + wpm);
 

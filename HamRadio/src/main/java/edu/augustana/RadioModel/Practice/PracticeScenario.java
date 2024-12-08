@@ -69,4 +69,10 @@ public class PracticeScenario {
     public SceneType getSceneType(){
         return sceneType;
     }
+
+    public String toString(){
+        return "\nPrinting The room....."+
+                "\nBotList: ..............." + botList+
+                "\n SceneType: ............" + sceneType;
+    }
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="480.0" prefWidth="900.0" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.ScenarioSetScreenController">
+<AnchorPane prefHeight="480.0" prefWidth="900.0" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.ScenarioCustomizeBotScreen">
    <children>
       <Label layoutX="141.0" layoutY="39.0" text="CUSTOMIZE YOUR SCENARIO" textFill="#466854">
          <font>
@@ -25,12 +25,12 @@
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="373.0" layoutY="410.0" mnemonicParsing="false" prefWidth="102.0" style="-fx-background-color: #466854;" text="NEXT" textFill="WHITE">
+      <Button layoutX="373.0" layoutY="410.0" mnemonicParsing="false" onAction="#nextAction" prefWidth="102.0" style="-fx-background-color: #466854;" text="NEXT" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <Button layoutX="493.0" layoutY="410.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="102.0" style="-fx-background-color: #466854;" text="EXIT" textFill="WHITE">
+      <Button layoutX="493.0" layoutY="410.0" mnemonicParsing="false" onAction="#backAction" prefHeight="25.0" prefWidth="102.0" style="-fx-background-color: #466854;" text="BACK" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -40,15 +40,15 @@
             <Font name="System Bold Italic" size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="primaryUserNameTextField1" layoutX="267.0" layoutY="171.0" prefHeight="25.0" prefWidth="183.0" />
-      <ComboBox layoutX="267.0" layoutY="216.0" prefHeight="25.0" prefWidth="183.0" />
-      <Button layoutX="253.0" layoutY="305.0" mnemonicParsing="false" prefWidth="102.0" style="-fx-background-color: #466854;" text="Add Bot" textFill="WHITE">
+      <TextField fx:id="botNameTextField" layoutX="267.0" layoutY="171.0" prefHeight="25.0" prefWidth="183.0" />
+      <ComboBox fx:id="botTypeBox" layoutX="267.0" layoutY="216.0" prefHeight="25.0" prefWidth="183.0" />
+      <Button layoutX="253.0" layoutY="305.0" mnemonicParsing="false" onAction="#addBotAction" prefWidth="102.0" style="-fx-background-color: #466854;" text="Add Bot" textFill="WHITE">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <ListView layoutX="514.0" layoutY="120.0" prefHeight="200.0" prefWidth="341.0" />
-      <Button layoutX="610.0" layoutY="334.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="150.0" style="-fx-background-color: #466854;" text="Kick Selected Bot" textFill="WHITE">
+      <ListView fx:id="botListView" layoutX="514.0" layoutY="120.0" prefHeight="200.0" prefWidth="341.0" />
+      <Button layoutX="610.0" layoutY="334.0" mnemonicParsing="false" onAction="#kickSelectedBotAction" prefHeight="29.0" prefWidth="150.0" style="-fx-background-color: #466854;" text="Kick Selected Bot" textFill="WHITE">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
