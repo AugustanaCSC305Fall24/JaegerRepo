@@ -6,16 +6,14 @@ import edu.augustana.Application.UIHelper.MorseCodeTranslator;
 import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.RadioModel.Practice.*;
-import edu.augustana.RadioModel.Practice.Bot;
-import edu.augustana.RadioModel.Practice.PracticeScenerio;
-import edu.augustana.RadioModel.Practice.TaskForPractice;
-import edu.augustana.RadioModel.Practice.TransmittingTask;
-import edu.augustana.RadioModel.SoundPlayer;
+import edu.augustana.RadioModel.Practice.BotCollections.Bot;
+import edu.augustana.RadioModel.Practice.PracticeScenario;
+import edu.augustana.RadioModel.Practice.SceneBuilderFactory.RoomBuilder;
+import edu.augustana.RadioModel.Practice.TaskCollection.TaskForPractice;
+import edu.augustana.RadioModel.Practice.TaskCollection.TransmittingTask;
 import edu.augustana.RadioModel.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
@@ -24,9 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -39,7 +35,7 @@ public class HamPracticeUIController extends HamUIController {
     Scene scene;
     Stage stage;
     HamRadioSimulatorInterface radio;
-    PracticeScenerio room;
+    PracticeScenario room;
     private String userOutput = "";
     private String cleanMorse = "";
     private boolean isStartClicked = false;
@@ -109,14 +105,18 @@ public class HamPracticeUIController extends HamUIController {
     public void initialize() throws IOException {
         System.out.println("\ninitialize is running.....");
         userPreferences = App.getUserPrefs();
+        RoomBuilder roomBuilder = new RoomBuilder(room, userPreferences);
+        roomBuilder.buildRoom();
         primaryUserName = userPreferences.getPrimaryUserName();
         serverAddress = userPreferences.getServerAddress();
-        numBot = userPreferences.getNumBot();
+        //numBot = userPreferences.getNumBot();
         wpm = userPreferences.getWPM();
         this.radio = new HamRadioSimulator(0,0,0,0
                 ,3.0,0,1.0,wpm);
+
         this.room = App.getCurrentPracticeScenerio();
         morseCodeHandlerManager = new MorseCodeHandlerManager(inputTextArea, radio);
+
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
         radio.setTransmitFrequency(transmitFreqSlider.getValue());
@@ -124,21 +124,12 @@ public class HamPracticeUIController extends HamUIController {
         addMessageToChatLogUI("Radio: Please first read our game's rules by hitting \"Rules \"");
         System.out.println("Radio WPM in Controller Practice Innitialize: " + radio.getWPM());
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
+
         List<TaskForPractice> taskForPracticeList = new ArrayList<>();
         System.out.println("In Initialize controller: Num bots is....." + numBot);
         System.out.println("In Initialize controller: User name is...." + App.getUserPrefs().getPrimaryUserName());
         System.out.println("In Initialize controller: WPM is..." + wpm);
-        for (int i = 0; i < numBot; i++){
-            String name = Bot.nameList[i];
-            int level = Bot.getRandomLevel();
-            double frequency = Bot.getRandomFreq();
-            Bot newBot = new Bot(level, name, frequency);
-            TaskForPractice task = new TransmittingTask(newBot.getIDCode() + " " + TransmittingTask.desscriptionOptions[i], newBot);
-            taskForPracticeList.add(task);
-            newBot.setTask(task);
-            room.getBotList().add(newBot);
-            System.out.println("For testing in initialize() Practice UI: " + newBot + ", Freq: " + newBot.getBotFrequency());
-        }
+
         player = new MorseCodePlayer(wpm, radio);
     }
 

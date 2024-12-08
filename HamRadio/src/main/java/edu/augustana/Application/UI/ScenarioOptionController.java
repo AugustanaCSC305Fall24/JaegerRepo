@@ -1,6 +1,5 @@
 package edu.augustana.Application.UI;
 
-import edu.augustana.RadioModel.Practice.UserPreferences;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -9,6 +8,7 @@ import java.io.IOException;
 
 public class ScenarioOptionController {
     private PopUpManager pop = new PopUpManager();
+    public static String sceneOptionListener;
 
     @FXML
     void backAction(ActionEvent event) throws IOException {
@@ -16,7 +16,9 @@ public class ScenarioOptionController {
     }
 
     @FXML
-    void buildSceneAction(ActionEvent event) {
+    void buildSceneAction(ActionEvent event) throws IOException {
+        sceneOptionListener = "build";
+        App.setRoot("ScenarioSetScreen");
 
     }
 
@@ -26,13 +28,17 @@ public class ScenarioOptionController {
     }
 
     @FXML
-    void openScenarioAction(ActionEvent event) {
+    void openScenarioAction(ActionEvent event) throws IOException{
+        sceneOptionListener = "open";
         App.getFileManager().menuActionOpenUserData(event);
-
+        System.out.println(App.getUserPrefs());
+        App.setRoot("ScenarioSetScreen");
     }
 
     @FXML
-    void playScriptedSceneAction(ActionEvent event) {
+    void playScriptedSceneAction(ActionEvent event) throws IOException {
+        sceneOptionListener = "scripted";
+        App.setRoot("ScriptedScenarioOption");
 
     }
 }

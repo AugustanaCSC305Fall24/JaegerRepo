@@ -13,5 +13,11 @@ module edu.augustana {
     exports edu.augustana.Application.UI;
     exports edu.augustana.RadioModel; // Exporting the package
     opens edu.augustana.RadioModel.Practice;
+    exports edu.augustana.RadioModel.Practice.SceneBuilderFactory;
+    opens edu.augustana.RadioModel.Practice.SceneBuilderFactory to javafx.fxml;
+    opens edu.augustana.RadioModel.Practice.BotCollections;
+    opens edu.augustana.RadioModel.Practice.TaskCollection;
+    opens edu.augustana.RadioModel.Practice.TaskCollection.DetectiveScriptedGame;
+    opens edu.augustana.RadioModel.Practice.TaskCollection.ForrestScriptedGame;
 
 }

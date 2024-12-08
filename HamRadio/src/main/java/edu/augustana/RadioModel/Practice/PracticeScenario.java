@@ -2,20 +2,22 @@ package edu.augustana.RadioModel.Practice;
 
 //import com.google.gson.Gson;
 //import com.google.gson.GsonBuilder;
-import javafx.concurrent.Task;
+import edu.augustana.RadioModel.Practice.BotCollections.Bot;
+import edu.augustana.RadioModel.Practice.SceneBuilderFactory.SceneType;
+import edu.augustana.RadioModel.Practice.TaskCollection.TaskForPractice;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PracticeScenerio {
+public class PracticeScenario {
     private List<Bot> botList;
     private List<TaskForPractice> taskList;
     private List<Bot> identifiedBotList;
     private List<TaskForPractice> transmitTaskList;
+    private SceneType sceneType;
     private int score = 0;
 
-    public PracticeScenerio(){
+    public PracticeScenario(){
         botList = new ArrayList<>();
         taskList = new ArrayList<>();
         identifiedBotList = new ArrayList<>();
@@ -23,21 +25,15 @@ public class PracticeScenerio {
 
     private void addBot(Bot botToAdd){
         botList.add(botToAdd);
-
     }
 
     private void deleteBot(Bot botToRemove){
         botList.remove(botToRemove);
-
     }
 
-    private void addTask(){
+    private void addTask(){}
 
-    }
-
-    private void removeTask(){
-
-    }
+    private void removeTask(){}
 
     public List<Bot> getBotList(){
         return botList;
@@ -62,33 +58,15 @@ public class PracticeScenerio {
         return transmitTaskList;
     }
 
-    public void addPeopleToHelpList(Bot bot){
-        return;
-    }
-
     public int getScore() {
         return score;
     }
 
-//    public static void serializeToFile(PracticeScenerio game, String filename) {
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//        try (Writer writer = new FileWriter(filename)) {
-//            gson.toJson(game, writer);
-//            System.out.println("Serialized SoundPlayer object to " + filename);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public static PracticeScenerio deserializeFromFile(String filename) {
-//        Gson gson = new Gson();
-//        try (Reader reader = new FileReader(filename)) {
-//            PracticeScenerio game = gson.fromJson(reader, PracticeScenerio.class);
-//            System.out.println("Deserialized SoundPlayer object from " + filename);
-//            return game;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
+    public void setSceneType(SceneType sceneType) {
+        this.sceneType = sceneType;
+    }
+
+    public SceneType getSceneType(){
+        return sceneType;
+    }
 }

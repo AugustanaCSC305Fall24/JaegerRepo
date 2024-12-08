@@ -1,9 +1,8 @@
 package edu.augustana.Application.UI;
 
 import edu.augustana.Application.UIHelper.KeyBindManager;
-import edu.augustana.RadioModel.Practice.PracticeScenerio;
+import edu.augustana.RadioModel.Practice.PracticeScenario;
 import edu.augustana.RadioModel.Practice.UserPreferences;
-import edu.augustana.RadioModel.SoundPlayer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +11,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.input.KeyEvent;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ import java.util.List;
 public class App extends Application {
     private static App app;
     private static Scene scene;
-    private static List<PracticeScenerio> practiceScenerioList = new ArrayList<>();
+    private static List<PracticeScenario> practiceScenerioList = new ArrayList<>();
     private static int practiceIndex = -1;
     private static final KeyBindManager keyBindManager = new KeyBindManager();
     private UserPreferences userPrefs = UserPreferences.loadFromJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);
@@ -37,7 +35,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         App.app = this;
         scene = new Scene(new BorderPane(), 900, 480);
-        practiceScenerioList.add(new PracticeScenerio());
+        practiceScenerioList.add(new PracticeScenario());
         practiceIndex = 0;
         stage.setScene(scene);
         switchToMainView();
@@ -57,11 +55,11 @@ public class App extends Application {
         this.userPrefs = userPrefs;
     }
 
-    public static List<PracticeScenerio> getPracticeScenerioList(){
+    public static List<PracticeScenario> getPracticeScenerioList(){
         return practiceScenerioList;
     }
 
-    public static PracticeScenerio getCurrentPracticeScenerio(){
+    public static PracticeScenario getCurrentPracticeScenerio(){
         if (practiceIndex >= 0 && practiceIndex < practiceScenerioList.size()) {
             return practiceScenerioList.get(practiceIndex);
         } else {

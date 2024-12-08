@@ -2,6 +2,9 @@ package edu.augustana.RadioModel.Practice;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import edu.augustana.RadioModel.Practice.SceneBuilderFactory.HamRadioSceneTypeFactory;
+import edu.augustana.RadioModel.Practice.SceneBuilderFactory.SceneBuilderFactory;
+import edu.augustana.RadioModel.Practice.SceneBuilderFactory.SceneType;
 
 import java.io.File;
 import java.io.FileReader;
@@ -11,11 +14,28 @@ public class UserPreferences {
     public static File DEFAULT_USER_PREFERENCES_FILE = new File("user_preferences2.json");
     private String primaryUserName = "User";
     private String serverAddress = "localhost";
-    private int numBot = 0;
     private int wpm = 0;
+    private String sceneTypeString = "forrest";
+    private SceneBuilderFactory sceneBuilderFactory;
     private boolean isWhiteNoise = false;
+    private SceneType sceneType;
+    private int numBaseBot;
+    private int numHintBot;
+    private int numConvoBot;
 
-    public UserPreferences() {
+    public UserPreferences(){
+    }
+
+    public UserPreferences(String primaryUserName, int wpm, String sceneTypeString, boolean isWhiteNoise) {
+        this.primaryUserName = primaryUserName;
+        this.wpm = wpm;
+        this.sceneTypeString = sceneTypeString;
+        this.isWhiteNoise = isWhiteNoise;
+        sceneBuilderFactory = new HamRadioSceneTypeFactory(sceneTypeString);
+        sceneType = sceneBuilderFactory.build();
+        numBaseBot = sceneType.getNumBaseBot();
+        numHintBot = sceneType.getNumHintBot();
+        numConvoBot = sceneType.getNumConversationalBot();
     }
 
     public static File getCurrentUserDataFile() {
@@ -26,7 +46,6 @@ public class UserPreferences {
         DEFAULT_USER_PREFERENCES_FILE = chosenFile;
     }
 
-
     public String getPrimaryUserName() {
         return primaryUserName;
     }
@@ -35,9 +54,6 @@ public class UserPreferences {
         this.primaryUserName = primaryUserName;
     }
 
-    public int getNumBot() {return numBot;}
-
-    public void setNumBot(int numBot) {this.numBot = numBot;}
 
     public String getServerAddress() {
         return serverAddress;
@@ -52,7 +68,24 @@ public class UserPreferences {
     public int getWPM(){return this.wpm;}
 
     public boolean getWhiteNoise(){return isWhiteNoise;}
+
     public void setWhiteNoise(boolean isOnorOff){isWhiteNoise = isOnorOff;}
+
+    public int getNumBaseBot(){
+        return numBaseBot;
+    }
+    public int getNumHintBot(){
+        return numHintBot;
+    }
+    public int getNumConvoBot(){
+        return numConvoBot;
+    }
+    public SceneType getSceneType(){
+        return sceneType;
+    }
+    public void setSceneTypeString(String sceneTypeString){
+        this.sceneTypeString = sceneTypeString;
+    }
 
     public String toJSON() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -81,7 +114,6 @@ public class UserPreferences {
 
     public String toString(){
         return "From Reference: UserName...." + getPrimaryUserName()
-                + "\nFrom Reference: Num of Bots...." + getNumBot()
                 + "\nFrom Reference: WPM...." + getWPM()
                 + "\nFrom Reference: White Noise.... " + getWhiteNoise();
     }

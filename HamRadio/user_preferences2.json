@@ -1,7 +1,10 @@
 {
-  "primaryUserName": "Nhat Minh",
+  "primaryUserName": "Default Preference 2",
   "serverAddress": "localhost",
-  "numBot": 1,
   "wpm": 5,
-  "isWhiteNoise": false
+  "sceneTypeString": "forrest",
+  "isWhiteNoise": false,
+  "numBaseBot": 0,
+  "numHintBot": 0,
+  "numConvoBot": 0
 }

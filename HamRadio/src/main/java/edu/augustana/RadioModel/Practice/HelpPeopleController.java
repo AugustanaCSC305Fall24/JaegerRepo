@@ -1,6 +1,7 @@
 package edu.augustana.RadioModel.Practice;
 
 import edu.augustana.Application.UI.App;
+import edu.augustana.RadioModel.Practice.BotCollections.Bot;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,7 +19,7 @@ public class HelpPeopleController {
     @FXML
     private ListView peopleList;
 
-    private PracticeScenerio room;
+    private PracticeScenario room;
 
     @FXML
     private void initialize(){

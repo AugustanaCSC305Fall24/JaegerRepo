@@ -1,6 +1,8 @@
-package edu.augustana.RadioModel.Practice;
+package edu.augustana.RadioModel.Practice.TaskCollection;
 
-public class TransmittingTask implements TaskForPractice{
+import edu.augustana.RadioModel.Practice.BotCollections.Bot;
+
+public class TransmittingTask implements TaskForPractice {
     private String description;
     private Bot sender;
     public static String[] desscriptionOptions = {"Augustana", "Ambrose",

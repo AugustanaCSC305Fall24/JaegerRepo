@@ -1,6 +1,8 @@
-package edu.augustana.RadioModel.Practice;
+package edu.augustana.RadioModel.Practice.TaskCollection;
 
-public class ReceivingMessageTask implements TaskForPractice{
+import edu.augustana.RadioModel.Practice.BotCollections.Bot;
+
+public class ReceivingMessageTask implements TaskForPractice {
 
     private String description;
     private Bot sender;

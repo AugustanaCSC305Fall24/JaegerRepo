@@ -1,5 +1,8 @@
 package edu.augustana.Application.UI;
-import edu.augustana.RadioModel.Practice.PracticeScenerio;
+import edu.augustana.Application.UIHelper.ScenarioSetSceneBuilder;
+import edu.augustana.RadioModel.Practice.SceneBuilderFactory.HamRadioSceneTypeFactory;
+import edu.augustana.RadioModel.Practice.SceneBuilderFactory.SceneBuilderFactory;
+import edu.augustana.RadioModel.Practice.PracticeScenario;
 import javafx.fxml.FXML;
 import java.io.IOException;
 import java.util.List;
@@ -12,30 +15,52 @@ import javafx.scene.control.TextField;
 public class ScenarioSetScreenController {
     @FXML
     private TextField primaryUserNameTextField;
-    @FXML
-    private ComboBox<Integer> numBotBox;
+
     @FXML
     private ComboBox<Integer> wpmBox;
     @FXML
     private CheckBox whiteNoiseBox;
+    @FXML
+    private ComboBox<String> scenarioTypeBox;
+    @FXML
+    private TextField scenarioNameTextField;
+
+    private String listener;
 
     UserPreferences prefs = App.getUserPrefs();
+    SceneBuilderFactory sceneFactory;
 
     @FXML
     private void initialize() {
-        List<PracticeScenerio> scenarioList = App.getPracticeScenerioList();
-        scenarioList.add(new PracticeScenerio());
+        if(!ScenarioOptionController.sceneOptionListener.equalsIgnoreCase("scripted")){
+            listener = ScenarioOptionController.sceneOptionListener;
+        } else {
+            listener = ScriptedScenarioOptionController.scriptedSceneListener;
+        }
+        List<PracticeScenario> scenarioList = App.getPracticeScenerioList();
+        scenarioList.add(new PracticeScenario());
         App.changePracticeIndex();
-        numBotBox.getItems().addAll(0, 1, 2, 3, 4, 5, 6, 7);
-        wpmBox.getItems().addAll(5, 10, 15, 20, 25, 30);
+        ScenarioSetSceneBuilder scenarioSetSceneBuilder =
+                new ScenarioSetSceneBuilder(primaryUserNameTextField, wpmBox,
+                        whiteNoiseBox, scenarioTypeBox, scenarioNameTextField, listener);
+        scenarioSetSceneBuilder.buildUI();
+        SceneBuilderFactory builderFactory = new HamRadioSceneTypeFactory(ScenarioOptionController.sceneOptionListener);
+    }
+
+    @FXML
+    public void backAction() throws IOException {
+        App.setRoot("ScenarioOption");
+    }
+
+    @FXML
+    public void nextAction() throws IOException {
+        App.setRoot("HamPracticeUI");
     }
 
     @FXML
     public void actionStartChatting() throws IOException {
         String primaryUserName = primaryUserNameTextField.getText();
-        System.out.println("Debug in Controller:............." + App.getUserPrefs());
         App.getUserPrefs().setPrimaryUserName(primaryUserName);
-        App.getUserPrefs().setNumBot((int) numBotBox.getSelectionModel().getSelectedItem());
         App.getUserPrefs().setWPM((int) wpmBox.getSelectionModel().getSelectedItem());
         App.getUserPrefs().setWhiteNoise(whiteNoiseBox.isSelected());
         //String serverIPAddress = serverAddressTextField.getText();

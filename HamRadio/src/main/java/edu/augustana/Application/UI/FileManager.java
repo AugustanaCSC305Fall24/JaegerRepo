@@ -4,7 +4,9 @@ import edu.augustana.RadioModel.Practice.UserPreferences;
 import edu.augustana.RadioModel.User;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToggleButton;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
@@ -22,7 +24,7 @@ public class FileManager {
         fileChooser.getExtensionFilters().add(filter);
 
         // Use the event's source to get the stage safely
-        Window mainWindow = ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
+        Window mainWindow = ((ToggleButton) event.getSource()).getParent().getScene().getWindow();
         File chosenFile = fileChooser.showOpenDialog(mainWindow);
 
         if (chosenFile != null) {
@@ -32,8 +34,7 @@ public class FileManager {
                 UserPreferences.setCurrentUserDataFile(chosenFile); // Update the current file reference
                 App.returnApp().setUserPrefs(UserPreferences.loadFromJSONFile(chosenFile));
                 System.out.println("This is a big string test from File Manager: " +
-                         "\nUser Name is.........." + App.getUserPrefs().getPrimaryUserName() +
-                        "\nNum Bots is.........." + App.getUserPrefs().getNumBot());
+                         "\nUser Name is.........." + App.getUserPrefs().getPrimaryUserName());
 
             } catch (Exception e) {
                 new Alert(Alert.AlertType.ERROR, "Error loading user data file: " + chosenFile).show();
@@ -58,8 +59,7 @@ public class FileManager {
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("JSON Files (*.json)", "*.json");
         fileChooser.getExtensionFilters().add(filter);
 
-        // Use the MenuItem's parent popup to get the owner window
-        Window mainWindow = ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow();
+        Window mainWindow = ((MenuItem) event.getSource()).getParentPopup().getOwnerWindow().getScene().getWindow();
         File chosenFile = fileChooser.showSaveDialog(mainWindow);
 
         if (chosenFile != null) {

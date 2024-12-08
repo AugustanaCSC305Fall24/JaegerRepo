@@ -1,10 +1,10 @@
-package edu.augustana.RadioModel.Practice;
+package edu.augustana.RadioModel.Practice.BotCollections;
 
-import javafx.concurrent.Task;
+import edu.augustana.RadioModel.Practice.TaskCollection.TaskForPractice;
 
 import java.util.Random;
 
-public class Bot {
+public abstract class Bot implements Bots{
     private int level;
     private String idCode;
     private double frequency;
@@ -12,6 +12,7 @@ public class Bot {
     private boolean askedForHelp = false;
     private boolean isAddedToIdentifiedList = false;
     private TaskForPractice task;
+    private String botType;
 
     public static final String[] nameList = {"Andy", "Mason", "Hoang", "Hieu",
                                             "Minh", "Unknown", "Yike", "Beef", "Cow",
@@ -30,14 +31,6 @@ public class Bot {
 
     public String getIDCode(){
         return idCode;
-    }
-
-    public void generateTask() {
-
-    }
-
-    public void generateResponse(){
-
     }
 
     public String getRandomBotName() {
@@ -92,9 +85,9 @@ public class Bot {
     public void setTask(TaskForPractice task){
         this.task = task;
     }
-
-
-
+    public String getBotType(){
+        return botType;
+    }
     public String toString(){
         return "Name: " + idCode + ", Level: " + level;
     }

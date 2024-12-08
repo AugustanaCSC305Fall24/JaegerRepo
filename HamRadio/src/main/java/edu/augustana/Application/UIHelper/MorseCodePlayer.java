@@ -2,7 +2,7 @@ package edu.augustana.Application.UIHelper;
 
 import edu.augustana.Application.UI.HamPracticeUIController;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
-import edu.augustana.RadioModel.Practice.Bot;
+import edu.augustana.RadioModel.Practice.BotCollections.Bot;
 import edu.augustana.RadioModel.SoundPlayer;
 
 import javax.sound.sampled.*;
