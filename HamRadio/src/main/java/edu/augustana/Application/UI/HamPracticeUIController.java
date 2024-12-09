@@ -116,8 +116,8 @@ public class HamPracticeUIController extends HamUIController {
             addMessageToChatLogUI(message);
         }
 
-        addMessageToChatLogUI(" Hello, welcome to HAM Practice!");
-        addMessageToChatLogUI(" Please first read our game's rules by hitting \"Rules \"");
+        addMessageToChatLogUI("Radio", " Hello, welcome to HAM Practice!");
+        addMessageToChatLogUI("Radio", " Please first read our game's rules by hitting \"Rules \"");
         System.out.println("Radio WPM in Controller Practice Innitialize: " + radio.getWPM());
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
         System.out.println("In Initialize controller: User name is...." + App.getUserPrefs().getPrimaryUserName());
@@ -172,9 +172,14 @@ public class HamPracticeUIController extends HamUIController {
         Platform.runLater(()->addMessageToChatLogUI(msg));
     }
 
-    private void addMessageToChatLogUI(String message){
-        ChatMessage newMessage = new ChatMessage(message, "System", Color.GREEN, true);
+    private void addMessageToChatLogUI(String sender, String message){
+        ChatMessage newMessage = new ChatMessage(message, sender, Color.GREEN, true);
         addMessageToChatLogUI(newMessage);
+    }
+
+    private void addMessageToChatLogUI(TaskForPractice task){
+        String message = task.getDescription();
+        addMessageToChatLogUI(task.getSender().getIDCode(),message);
     }
 
     private void addMessageToChatLogUI(ChatMessage radioMessage) {
@@ -229,12 +234,6 @@ public class HamPracticeUIController extends HamUIController {
     }
 
     @FXML
-    private void changeTransmittedFrequency(){
-        radio.setTransmitFrequency(transmitFreqSlider.getValue());
-        statusTextArea.setText(displayTextString());
-    }
-
-    @FXML
     private void changeReceivedFrequency(){
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
         statusTextArea.setText(displayTextString());
@@ -272,7 +271,7 @@ public class HamPracticeUIController extends HamUIController {
                 String botTaskTranslated = MorseCodeTranslator.textToMorse(bot.getTask().getDescription());
                 player1.playMorseForBot(botTaskTranslated, bot);
                 //player1.playMorse(botTaskTranslated);
-                addMessageToChatLogUI(bot.getIDCode() + ": " + bot.getTask().getDescription());
+                addMessageToChatLogUI(bot.getTask());
             }
         }
         System.out.println("No Loop");
@@ -298,7 +297,7 @@ public class HamPracticeUIController extends HamUIController {
                 }
                 player = new MorseCodePlayer(radio.getWPM(), radio);
                 player.playMorse(bot.getTask().getDescription());
-                addMessageToChatLogUI(bot.getIDCode() + ": " + bot.getTask().getDescription());
+                addMessageToChatLogUI(bot.getTask());
                 String botTaskTranslated = MorseCodeTranslator.textToMorse(bot.getTask().getDescription());
 //                new Thread(() -> {
 //                    MorseCodePlayer new_player = new MorseCodePlayer((int) radio.getWPM(), radio);

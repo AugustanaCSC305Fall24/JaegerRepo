@@ -17,7 +17,7 @@ public class GeminiBirdBot extends Bot {
 
 
     public GeminiBirdBot(String name, Color textColor, PracticeScenario room, String systemPromptText) {
-        super(0, "BirdAI", 1720.4);
+        super(0, name, Bot.getRandomFreq());
         this.systemPromptText = systemPromptText;
         this.parser = new GsonJsonParser();
         this.genAi = new GenAi(GeminiAPITest.getGeminiApiKey(), parser);

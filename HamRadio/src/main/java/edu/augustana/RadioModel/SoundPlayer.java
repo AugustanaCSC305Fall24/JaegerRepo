@@ -9,6 +9,7 @@ public class SoundPlayer {
     private double volume;
     private boolean isKeyReleased;
     private boolean isWhiteNoiseOn = true;
+    private int DOT_CONSTANT = calculateDotDuration(20);
 
     public SoundPlayer(double volume) {
         this.isKeyReleased = true;
@@ -377,10 +378,10 @@ public class SoundPlayer {
         for (int i = 0; i < morseString.length(); i++) {
             char symbol = morseString.charAt(i);
             if (symbol == '.') {
-                generateToneWithVolume(600, dotDuration, format, byteBuffer, volumeScale);
+                generateToneWithVolume(600, DOT_CONSTANT, format, byteBuffer, volumeScale);
                 generateSilence(dotDuration, format, byteBuffer);
             } else if (symbol == '-') {
-                generateToneWithVolume(600, 3 * dotDuration, format, byteBuffer, volumeScale);
+                generateToneWithVolume(600, 3 * DOT_CONSTANT, format, byteBuffer, volumeScale);
                 generateSilence(dotDuration, format, byteBuffer);
             } else if (symbol == ' ') {
                 generateSilence(3 * dotDuration, format, byteBuffer);

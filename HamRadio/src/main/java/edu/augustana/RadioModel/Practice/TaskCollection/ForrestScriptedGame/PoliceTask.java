@@ -4,7 +4,7 @@ import edu.augustana.RadioModel.Practice.BotCollections.Bot;
 import edu.augustana.RadioModel.Practice.TaskCollection.TaskForPractice;
 
 public class PoliceTask implements TaskForPractice {
-    private String introduction = "Change frequency. Collect info.";
+    private String introduction = "Change frequency. Collect info";
     private String taskDescription = "Send address. Send num people.";
     private Bot sender;
 
@@ -14,7 +14,7 @@ public class PoliceTask implements TaskForPractice {
 
     @Override
     public String getDescription() {
-        return taskDescription;
+        return getIntroduction() + "..." + taskDescription ;
     }
 
     @Override

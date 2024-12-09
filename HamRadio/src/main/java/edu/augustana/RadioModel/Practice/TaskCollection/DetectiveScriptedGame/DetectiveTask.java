@@ -13,8 +13,9 @@ public class DetectiveTask implements TaskForPractice {
     }
     @Override
     public String getDescription() {
-        return taskDescription;
+        return getIntroduction() + "..." + taskDescription;
     }
+
     public String getIntroduction(){
         return introduction;
     }
