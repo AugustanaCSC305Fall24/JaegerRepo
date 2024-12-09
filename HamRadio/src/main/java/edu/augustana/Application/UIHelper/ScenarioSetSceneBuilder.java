@@ -58,7 +58,7 @@ public class ScenarioSetSceneBuilder {
         primaryUserNameTextField.setText(prefs.getPrimaryUserName());
         wpmBox.setValue(prefs.getWPM());
         whiteNoiseBox.setSelected(prefs.getWhiteNoise());
-        if(listener.equalsIgnoreCase("scripted")){
+        if(listener.equalsIgnoreCase("forrest") | listener.equalsIgnoreCase("detective")){
             scenarioTypeBox.getItems().addAll("Detective America", "Forrest Burning");
             if(listener.equalsIgnoreCase("detective")){
                 buildUIForDetective();

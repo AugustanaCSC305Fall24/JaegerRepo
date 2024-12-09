@@ -3,6 +3,7 @@ import edu.augustana.Application.UIHelper.ScenarioSetSceneBuilder;
 import edu.augustana.RadioModel.Practice.SceneBuilderFactory.HamRadioSceneTypeFactory;
 import edu.augustana.RadioModel.Practice.SceneBuilderFactory.SceneBuilderFactory;
 import edu.augustana.RadioModel.Practice.PracticeScenario;
+import edu.augustana.RadioModel.Practice.UserPrefBuilder;
 import javafx.fxml.FXML;
 import java.io.IOException;
 import java.util.List;
@@ -30,15 +31,12 @@ public class ScenarioSetScreenController {
     SceneBuilderFactory sceneFactory;
 
     @FXML
-    private void initialize() {
+    private void initialize() throws IOException {
         if(!ScenarioOptionController.sceneOptionListener.equalsIgnoreCase("scripted")){
             listener = ScenarioOptionController.sceneOptionListener;
         } else {
             listener = ScriptedScenarioOptionController.scriptedSceneListener;
         }
-//        List<PracticeScenario> scenarioList = App.getPracticeScenerioList();
-//        scenarioList.add(new PracticeScenario());
-//        App.changePracticeIndex();
         ScenarioSetSceneBuilder scenarioSetSceneBuilder =
                 new ScenarioSetSceneBuilder(primaryUserNameTextField, wpmBox,
                         whiteNoiseBox, scenarioTypeBox, scenarioNameTextField, listener);
@@ -53,19 +51,16 @@ public class ScenarioSetScreenController {
 
     @FXML
     public void nextAction() throws IOException {
-        App.setRoot("ScenarioCustomizeBotScreen");
-    }
+        prefs.setWhiteNoise(whiteNoiseBox.isSelected());
+        prefs.setWPM(wpmBox.getValue());
+        prefs.setSceneTypeString(scenarioTypeBox.getValue());
+        prefs.setPrimaryUserName(primaryUserNameTextField.getText());
+        if(listener.equalsIgnoreCase("forrest") | listener.equalsIgnoreCase("detective")){
+            App.setRoot("HamPracticeUI");
+        } else {
+            App.setRoot("ScenarioCustomizeBotScreen");
+        }
 
-    @FXML
-    public void actionStartChatting() throws IOException {
-        String primaryUserName = primaryUserNameTextField.getText();
-        App.getUserPrefs().setPrimaryUserName(primaryUserName);
-        App.getUserPrefs().setWPM((int) wpmBox.getSelectionModel().getSelectedItem());
-        App.getUserPrefs().setWhiteNoise(whiteNoiseBox.isSelected());
-        //String serverIPAddress = serverAddressTextField.getText();
-        //App.getUserPrefs().setServerAddress(serverIPAddress);
-        //App.getUserPrefs().saveToJSONFile(UserPreferences.DEFAULT_USER_PREFERENCES_FILE);
-        App.setRoot("HamPracticeUI");
     }
 
 }

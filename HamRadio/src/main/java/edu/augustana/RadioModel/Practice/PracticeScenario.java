@@ -86,7 +86,6 @@ public class PracticeScenario {
     }
 
 
-
     public String toString(){
         return "\nPrinting The room....."+
                 "\nBotList: ..............." + botList+

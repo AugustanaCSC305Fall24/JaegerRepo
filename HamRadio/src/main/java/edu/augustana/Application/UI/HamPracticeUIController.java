@@ -100,12 +100,9 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     public void initialize() throws IOException {
         System.out.println("\ninitialize is running.....");
-
         userPreferences = App.getUserPrefs();
         this.room = App.getCurrentPracticeScenerio();
         room.setNewMessageEventListener(msg -> handleNewMessage(msg));
-//        RoomBuilder roomBuilder = new RoomBuilder(room, userPreferences);
-//        roomBuilder.buildRoom();
         primaryUserName = userPreferences.getPrimaryUserName();
         serverAddress = userPreferences.getServerAddress();
         wpm = userPreferences.getWPM();
@@ -125,9 +122,9 @@ public class HamPracticeUIController extends HamUIController {
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
         System.out.println("In Initialize controller: User name is...." + App.getUserPrefs().getPrimaryUserName());
         System.out.println("In Initialize controller: WPM is..." + wpm);
-
         player = new MorseCodePlayer(wpm, radio);
         System.out.println("Print botList from innitialize----------------" + room.getBotList());
+        System.out.println("\n" + userPreferences);
     }
 
 

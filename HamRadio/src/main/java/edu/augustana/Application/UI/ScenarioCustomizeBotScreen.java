@@ -2,6 +2,7 @@ package edu.augustana.Application.UI;
 import edu.augustana.Application.UIHelper.ScenarioSetSceneBuilder;
 import edu.augustana.RadioModel.Practice.BotCollections.Bot;
 import edu.augustana.RadioModel.Practice.PracticeScenario;
+import edu.augustana.RadioModel.Practice.UserPreferences;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
@@ -18,6 +19,7 @@ public class ScenarioCustomizeBotScreen {
     @FXML
     private ListView<Bot> botListView;
     PracticeScenario room = App.getCurrentPracticeScenerio();
+    UserPreferences prefs = App.getUserPrefs();
     private String listener;
 
     @FXML
@@ -33,7 +35,6 @@ public class ScenarioCustomizeBotScreen {
             botTypeBox.getItems().add("AI Bots...");
 
         }
-
         ScenarioSetSceneBuilder scenarioSetSceneBuilder = new ScenarioSetSceneBuilder(botListView,room);
         scenarioSetSceneBuilder.buildBotCustomizeUI();
     }

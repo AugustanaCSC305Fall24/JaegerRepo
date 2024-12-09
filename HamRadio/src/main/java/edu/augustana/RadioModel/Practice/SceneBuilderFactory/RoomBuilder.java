@@ -32,6 +32,7 @@ public class RoomBuilder {
             Bot baseBot = new BaseBot(0, sceneType.getNameBaseBot(), Bot.getRandomFreq());
             room.getBotList().add(baseBot);
             room.getTaskList().add(taskFactory.buildTask(baseBot));
+            baseBot.setTask(taskFactory.buildTask(baseBot));
             debugRoom(baseBot);
         }
 
@@ -39,6 +40,7 @@ public class RoomBuilder {
             Bot hintBot = new HintBot(0, sceneType.getNameHintBotList()[i], Bot.getRandomFreq());
             room.getBotList().add(hintBot);
             room.getTaskList().add(taskFactory.buildTask(hintBot));
+            hintBot.setTask(taskFactory.buildTask(hintBot));
             debugRoom(hintBot);
 
         }
@@ -47,8 +49,13 @@ public class RoomBuilder {
             Bot convoBot = new ConversationalBot(0, Bot.nameList[i],Bot.getRandomFreq());
             room.getBotList().add(convoBot);
             room.getTaskList().add(taskFactory.buildTask(convoBot));
+            convoBot.setTask(taskFactory.buildTask(convoBot));
             debugRoom(convoBot);
         }
+    }
+
+    public void reBuild(){
+
     }
 
     private void debugRoom(Bot newBot){

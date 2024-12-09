@@ -113,8 +113,13 @@ public class UserPreferences {
     }
 
     public String toString(){
-        return "From Reference: UserName...." + getPrimaryUserName()
-                + "\nFrom Reference: WPM...." + getWPM()
-                + "\nFrom Reference: White Noise.... " + getWhiteNoise();
+        return "From UserPreference: UserName...." + getPrimaryUserName()
+                + "\nFrom UserPreference: WPM...." + getWPM()
+                + "\nFrom UserPreference: White Noise.... " + getWhiteNoise()
+                + "\nFrom UserPreference: SceneTypeString..." + sceneTypeString
+                + "\nFrom UserPreference: NumBaseBot..." + numBaseBot
+                + "\nFrom UserPreference: NumHintBot..." + numHintBot
+                + "\nFrom UserPreference: NumConvoBot..." + numConvoBot;
+
     }
 }
