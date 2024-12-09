@@ -17,13 +17,13 @@ public class TaskFactory {
 
    public TaskForPractice buildTask(Bot bot){
        if (sceneType.toString().equalsIgnoreCase("DetectiveSceneType")){
-           if(bot.getBotType().equalsIgnoreCase("detective")){
+           if(bot.getBotType().equalsIgnoreCase("base")){
                return new DetectiveTask(bot);
            } else {
                return new HintDetectiveTask(bot);
            }
        } else if (sceneType.toString().equalsIgnoreCase("ForrestSceneType")){
-           if(bot.getBotType().equalsIgnoreCase("forrest")){
+           if(bot.getBotType().equalsIgnoreCase("base")){
                return new PoliceTask(bot);
            } else {
                return new HintPoliceTask(bot);

@@ -58,22 +58,21 @@ public class ScenarioSetSceneBuilder {
         primaryUserNameTextField.setText(prefs.getPrimaryUserName());
         wpmBox.setValue(prefs.getWPM());
         whiteNoiseBox.setSelected(prefs.getWhiteNoise());
-        if(listener.equalsIgnoreCase("forrest") | listener.equalsIgnoreCase("detective")){
-            scenarioTypeBox.getItems().addAll("Detective America", "Forrest Burning");
-            if(listener.equalsIgnoreCase("detective")){
-                buildUIForDetective();
-            } else if (listener.equals("forrest")){
-                buildUIForForrest();
-            }
+        if(listener.equalsIgnoreCase("detective")){
+            scenarioTypeBox.getItems().addAll("Detective America");
+            buildUIForDetective();
+        } else if (listener.equals("forrest")){
+            scenarioTypeBox.getItems().addAll("Detective America");
+            buildUIForForrest();
         } else {
-            scenarioTypeBox.getItems().addAll("Build Yours", "Open yours",
-                    "Detective America", "Forrest Burning");
-            scenarioNameTextField.setText("Your Fancy HAM Radio");
-            if(listener.equalsIgnoreCase("build")){
-                buildUIForBuild();
-            } else if (listener.equals("open")){
-                buildUIForOpened();
-            }
+        scenarioTypeBox.getItems().addAll("Build Yours", "Open yours",
+                "Detective America", "Forrest Burning");
+        scenarioNameTextField.setText("Your Fancy HAM Radio");
+        if(listener.equalsIgnoreCase("build")){
+            buildUIForBuild();
+        } else if (listener.equals("open")){
+            buildUIForOpened();
+        }
 
         }
         wpmBox.getItems().addAll(5, 10, 15, 20,25, 30);

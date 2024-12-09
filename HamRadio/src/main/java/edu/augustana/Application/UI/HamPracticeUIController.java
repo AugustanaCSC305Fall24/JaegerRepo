@@ -268,6 +268,7 @@ public class HamPracticeUIController extends HamUIController {
                 MorseCodePlayer player1 = new MorseCodePlayer(radio.getWPM(), radio);
 
                 //play the morse code of that bot
+                System.out.println("Bot info: " + bot + "Task: " + bot.getTask());
                 String botTaskTranslated = MorseCodeTranslator.textToMorse(bot.getTask().getDescription());
                 player1.playMorseForBot(botTaskTranslated, bot);
                 //player1.playMorse(botTaskTranslated);

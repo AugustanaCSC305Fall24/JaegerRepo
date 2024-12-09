@@ -23,4 +23,8 @@ public class DetectiveTask implements TaskForPractice {
     public Bot getSender() {
         return sender;
     }
+
+    public String toString(){
+        return introduction + "..." + taskDescription;
+    }
 }

@@ -26,4 +26,8 @@ public class PoliceTask implements TaskForPractice {
         return introduction;
     }
 
+    public String toString(){
+        return introduction + "..." + taskDescription;
+    }
+
 }
