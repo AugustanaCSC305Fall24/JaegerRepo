@@ -175,19 +175,19 @@ public class SoundPlayer {
             char symbol = morseString.charAt(i);
             if (symbol == '.') {
                 if (addNoise) {
-                    generateNoiseWithPitch(dotDuration, format, byteBuffer, frequencyDifference);
+                    generateNoiseWithPitch(DOT_CONSTANT, format, byteBuffer, frequencyDifference);
                 } else {
                     // Generate "dit" sound (600 Hz for dot)
-                    generateTone(600, dotDuration, format, byteBuffer);
+                    generateTone(600, DOT_CONSTANT, format, byteBuffer);
                 }
                 // Add silence (gap between symbols)
                 generateSilence(dotDuration, format, byteBuffer);
             } else if (symbol == '-') {
                 if (addNoise) {
-                    generateNoiseWithPitch(3 * dotDuration, format, byteBuffer, frequencyDifference);
+                    generateNoiseWithPitch(3 * DOT_CONSTANT, format, byteBuffer, frequencyDifference);
                 } else {
                     // Generate "dah" sound (600 Hz for dash)
-                    generateTone(600, 3 * dotDuration, format, byteBuffer);
+                    generateTone(600, 3 * DOT_CONSTANT, format, byteBuffer);
                 }
                 // Add silence (gap between symbols)
                 generateSilence(dotDuration, format, byteBuffer);
