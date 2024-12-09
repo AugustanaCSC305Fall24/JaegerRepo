@@ -51,6 +51,10 @@ public class SignalFilter {
         return doubleArrayToByteArray(filteredSignal);
     }
 
+    public boolean filterCWMessageByMultithreading(CWMessage cwMessage, double minBand, double maxBand) {
+        return (cwMessage.getFrequency() >= minBand && cwMessage.getFrequency() <= maxBand);
+    }
+
     /**
      * Converts a byte array to a double array, normalizing values to the range [-1, 1].
      */

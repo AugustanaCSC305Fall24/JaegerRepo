@@ -230,57 +230,6 @@ public class SoundPlayer {
 
     }
 
-    public void generateWhiteNoise(float volumePercentage) {
-        Thread whiteNoiseThread = new Thread(() -> {
-            float sampleRate = 44100.0f;
-            int sampleSizeInBits = 16;
-            int channels = 1;
-            boolean signed = true;
-            boolean bigEndian = false;
-
-            // Define the audio format
-            AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
-
-            try {
-                //Get and open the source data line
-                DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
-                SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(info);
-                sourceLine.open(format);
-
-                // Adjust volume if support
-                if (sourceLine.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
-                    FloatControl volumeControl = (FloatControl) sourceLine.getControl(FloatControl.Type.MASTER_GAIN);
-                    float minVolume = volumeControl.getMinimum();
-                    float maxVolume = volumeControl.getMaximum();
-                    float volumeInDb = (volumePercentage / 100.0f) * (maxVolume - minVolume) + minVolume;
-                    volumeControl.setValue(volumeInDb);
-                } else {
-                    System.out.println("MASTER_GAIN control is not supported on this system.");
-                }
-
-                //Start the line
-                sourceLine.start();
-
-                // Generate and play white noise continuously
-                byte[] buffer = new byte[1024]; // Buffer size
-                Random random = new Random();
-
-                while (isWhiteNoiseOn) {
-                    for (int i = 0; i < buffer.length; i++) {
-                        buffer[i] = (byte) (random.nextInt(256) - 128);
-                    }
-                    sourceLine.write(buffer, 0, buffer.length);
-                }
-            } catch (LineUnavailableException e) {
-                e.printStackTrace();
-            }
-
-        });
-
-        // Start the white noise thread
-        whiteNoiseThread.start();
-    }
-
     private static int calculateDotDuration(int wordsPerMinute) {
         // The standard word used for WPM calculation in Morse is "PARIS" which has 50 units
         // 1200 ms / wordsPerMinute gives the duration of one dot in milliseconds
@@ -359,4 +308,124 @@ public class SoundPlayer {
             e.printStackTrace();
         }
     }
+
+    public void generateWhiteNoise(float volumePercentage) {
+        Thread whiteNoiseThread = new Thread(() -> {
+            float sampleRate = 44100.0f;
+            int sampleSizeInBits = 16;
+            int channels = 1;
+            boolean signed = true;
+            boolean bigEndian = false;
+
+            // Define the audio format
+            AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
+
+            try {
+                //Get and open the source data line
+                DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+                SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(info);
+                sourceLine.open(format);
+
+                // Adjust volume if support
+                if (sourceLine.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                    FloatControl volumeControl = (FloatControl) sourceLine.getControl(FloatControl.Type.MASTER_GAIN);
+                    float minVolume = volumeControl.getMinimum();
+                    float maxVolume = volumeControl.getMaximum();
+                    float volumeInDb = (volumePercentage / 100.0f) * (maxVolume - minVolume) + minVolume;
+                    volumeControl.setValue(volumeInDb);
+                } else {
+                    System.out.println("MASTER_GAIN control is not supported on this system.");
+                }
+
+                //Start the line
+                sourceLine.start();
+
+                // Generate and play white noise continuously
+                byte[] buffer = new byte[1024]; // Buffer size
+                Random random = new Random();
+
+                while (isWhiteNoiseOn) {
+                    for (int i = 0; i < buffer.length; i++) {
+                        buffer[i] = (byte) (random.nextInt(256) - 128);
+                    }
+                    sourceLine.write(buffer, 0, buffer.length);
+                }
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        // Start the white noise thread
+        whiteNoiseThread.start();
+    }
+
+    public void playMorseWithDynamicVolume(String morseString, double transmitFrequency, double receivedFrequency, double bandWidth, int wordsPerMinute) {
+        int dotDuration = calculateDotDuration(wordsPerMinute);
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 44100, 16, 1, 2, 44100, false);
+
+        // Tính khoảng cách tần số
+        double frequencyDifference = Math.abs(receivedFrequency - transmitFrequency);
+        System.out.println("Frequency difference: " + frequencyDifference);
+
+        // Tính volume dựa trên khoảng cách tần số
+        double volumeScale = Math.max(0.0, 1.0 - (frequencyDifference / bandWidth));
+        System.out.println("Volume scale based on frequency difference: " + volumeScale);
+
+        // Xử lý Morse code và thêm âm thanh
+        for (int i = 0; i < morseString.length(); i++) {
+            char symbol = morseString.charAt(i);
+            if (symbol == '.') {
+                generateToneWithVolume(600, dotDuration, format, byteBuffer, volumeScale);
+                generateSilence(dotDuration, format, byteBuffer);
+            } else if (symbol == '-') {
+                generateToneWithVolume(600, 3 * dotDuration, format, byteBuffer, volumeScale);
+                generateSilence(dotDuration, format, byteBuffer);
+            } else if (symbol == ' ') {
+                generateSilence(3 * dotDuration, format, byteBuffer);
+            } else if (symbol == '/') {
+                generateSilence(7 * dotDuration, format, byteBuffer);
+            }
+        }
+
+        // Phát lại âm thanh qua SourceDataLine
+        try {
+            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+            SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(info);
+            sourceLine.open(format);
+
+            if (sourceLine.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                FloatControl volumeControl = (FloatControl) sourceLine.getControl(FloatControl.Type.MASTER_GAIN);
+                volumeControl.setValue((float) (20 * Math.log10(volumeScale))); // Chuyển đổi thành decibel
+            } else {
+                System.out.println("MASTER_GAIN control is not supported on this system.");
+            }
+
+            sourceLine.start();
+            byte[] audioData = byteBuffer.toByteArray();
+            sourceLine.write(audioData, 0, audioData.length);
+
+            sourceLine.drain();
+            sourceLine.stop();
+            sourceLine.close();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generateToneWithVolume(int frequency, int durationMs, AudioFormat format, ByteArrayOutputStream byteBuffer, double volumeScale) {
+        int sampleRate = (int) format.getSampleRate();
+        int numSamples = (int) ((durationMs / 1000.0) * sampleRate);
+        byte[] toneBuffer = new byte[2 * numSamples];
+
+        for (int i = 0; i < numSamples; i++) {
+            double angle = 2.0 * Math.PI * i * frequency / sampleRate;
+            short sample = (short) (Math.sin(angle) * Short.MAX_VALUE * volumeScale);
+            toneBuffer[2 * i] = (byte) (sample & 0xff);
+            toneBuffer[2 * i + 1] = (byte) ((sample >> 8) & 0xff);
+        }
+        byteBuffer.write(toneBuffer, 0, toneBuffer.length);
+    }
+
 }
