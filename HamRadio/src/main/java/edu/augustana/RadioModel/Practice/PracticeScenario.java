@@ -13,7 +13,10 @@ public class PracticeScenario {
     private List<Bot> botList;
     private List<TaskForPractice> taskList;
     private List<Bot> identifiedBotList;
+
     private List<TaskForPractice> transmitTaskList;
+    private List<ChatMessage> chatLogMessageList;
+    private NewMessageEventListener newMessageEventListener = null;
     private SceneType sceneType;
     private int score = 0;
 
@@ -21,6 +24,7 @@ public class PracticeScenario {
         botList = new ArrayList<>();
         taskList = new ArrayList<>();
         identifiedBotList = new ArrayList<>();
+        chatLogMessageList = new ArrayList<>();
     }
 
     private void addBot(Bot botToAdd){
@@ -29,6 +33,14 @@ public class PracticeScenario {
 
     private void deleteBot(Bot botToRemove){
         botList.remove(botToRemove);
+    }
+
+    public List<ChatMessage> getChatLogMessageList() {
+        return chatLogMessageList;
+    }
+
+    public void addChatMessage(ChatMessage message){
+        chatLogMessageList.add(message);
     }
 
     private void addTask(){}
@@ -69,6 +81,11 @@ public class PracticeScenario {
     public SceneType getSceneType(){
         return sceneType;
     }
+    public void setNewMessageEventListener(NewMessageEventListener listener) {
+        newMessageEventListener = listener;
+    }
+
+
 
     public String toString(){
         return "\nPrinting The room....."+
