@@ -1,13 +1,16 @@
 package edu.augustana.Application.UI;
 import edu.augustana.Application.UIHelper.ScenarioSetSceneBuilder;
 import edu.augustana.RadioModel.Practice.BotCollections.Bot;
+import edu.augustana.RadioModel.Practice.BotCollections.GeminiBirdBot;
 import edu.augustana.RadioModel.Practice.PracticeScenario;
 import edu.augustana.RadioModel.Practice.UserPreferences;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 
 import java.io.IOException;
 
@@ -32,23 +35,46 @@ public class ScenarioCustomizeBotScreen {
             botTypeBox.getSelectionModel().select(0);
         } else {
             listener = ScriptedScenarioOptionController.scriptedSceneListener;
-            botTypeBox.getItems().add("AI Bots...");
+            botTypeBox.getItems().add("GeminiBirdWatcher");
+            botTypeBox.getSelectionModel().select(0);
+            botNameTextField.setText(Bot.getRandomBotNameFromList());
 
         }
         ScenarioSetSceneBuilder scenarioSetSceneBuilder = new ScenarioSetSceneBuilder(botListView,room);
         scenarioSetSceneBuilder.buildBotCustomizeUI();
     }
 
+
     @FXML
-    void addBotAction(ActionEvent event) {
-    }
-    @FXML
-    void botListView(ActionEvent event) {
+    private void randomNameAction() {botNameTextField.setText(Bot.getRandomBotNameFromList());
     }
 
     @FXML
-    void kickSelectedBotAction(ActionEvent event) {
+    private void addBotAction(ActionEvent event) {
+        String name = botNameTextField.getText();
+        String botType = botTypeBox.getValue();
+        Bot newBot;
+        switch (botType) {
+            case "GeminiBirdWatcher":
+                final String systemPromptText = "You are an avid bird watcher in a chatroom.  Respond to other chat users' messages by making bird-related puns or jokes, or telling anecdotes about birds that you've seen.";
+                newBot = new GeminiBirdBot(name, Color.RED, App.getCurrentPracticeScenerio(), systemPromptText);
+                break;
+            default:
+                throw new IllegalStateException("Invalid personality type: " + botType);
+        }
+        App.getCurrentPracticeScenerio().getBotList().add(newBot);
+        botListView.getItems().add(newBot);
+    }
 
+    @FXML
+    private void kickSelectedBotAction() {
+        Bot botToDelete = botListView.getSelectionModel().getSelectedItem();
+        if (botToDelete != null) {
+            App.getCurrentPracticeScenerio().getBotList().remove(botToDelete);
+            botListView.getItems().remove(botToDelete);
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Select a bot to kick out first!").show();
+        }
     }
 
     @FXML
@@ -56,6 +82,7 @@ public class ScenarioCustomizeBotScreen {
         room.getBotList().clear();
         App.setRoot("ScenarioSetScreen");
     }
+
 
     @FXML
     public void nextAction() throws IOException {

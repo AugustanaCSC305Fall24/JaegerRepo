@@ -20,4 +20,8 @@ module edu.augustana {
     opens edu.augustana.RadioModel.Practice.TaskCollection.DetectiveScriptedGame;
     opens edu.augustana.RadioModel.Practice.TaskCollection.ForrestScriptedGame;
 
+    requires java.net.http;
+    requires swiss.ameri.gemini.api;
+    requires swiss.ameri.gemini.gson;
+
 }

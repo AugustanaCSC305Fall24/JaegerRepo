@@ -52,6 +52,16 @@
             <artifactId>jdsp</artifactId>
             <version>3.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>swiss.ameri</groupId>
+            <artifactId>gemini-api</artifactId>
+            <version>1beta.0.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>swiss.ameri</groupId>
+            <artifactId>gemini-gson</artifactId>
+            <version>1beta.0.2.4</version>
+        </dependency>
 
     </dependencies>
     <build>
@@ -61,7 +71,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <release>11</release>
+                    <release>16</release>
                 </configuration>
             </plugin>
             <plugin>

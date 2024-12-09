@@ -92,4 +92,17 @@ public abstract class Bot implements Bots{
         return "Name: " + idCode + ", Level: " + level;
     }
 
+    public static String getRandomBotNameFromList() {
+        String[] names = {"Alice", "Bubba", "Candy", "Doodles", "Egbert", "Fifi", "Gus", "Holly", "Iggy",
+                "Jasper", "Kiki", "Lulu", "Mimi", "Noodles", "Oscar", "Penny", "Quincy", "Rufus", "Sally",
+                "Toby", "Ursula", "Violet", "Wally", "Xander", "Yolanda", "Zelda"};
+        String[] adjectives = {"Awesome", "Bodacious", "Clunker", "Dude", "Eery", "Funky", "Goosey", "Happy",
+                "Hippy", "Irritable", "Jolly", "Kooky", "Lunker", "Messy", "Nut", "Optometrist", "Punky",
+                "Quirky", "Rumpled", "Snarky", "Tree", "Unknown", "Vixen", "Wonk", "Xenial", "Yummy",
+                "Zany"};
+        String name =names[randomGen.nextInt(names.length)];
+        String adjective = adjectives[randomGen.nextInt(adjectives.length)];
+        return  name + " the " + adjective;
+    }
+
 }
