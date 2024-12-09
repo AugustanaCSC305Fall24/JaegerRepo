@@ -32,8 +32,6 @@ import java.util.List;
 //import com.google.gson.GsonBuilder;
 
 public class HamPracticeUIController extends HamUIController {
-    Scene scene;
-    Stage stage;
     HamRadioSimulatorInterface radio;
     PracticeScenario room;
     private String userOutput = "";
@@ -41,8 +39,6 @@ public class HamPracticeUIController extends HamUIController {
     private boolean isStartClicked = false;
     boolean isStartClickedTwice = false;
     private String statusConnect = " Not Connected";
-    private boolean isPushedToTalk = false;
-    private boolean isEnglishOn = false;
     private static final double DEFAULT_MIN_FREQ = 7000;
     private static final double DEFAULT_MAX_FREQ = 7067;
     private static final double DEFAULT_TUNE = 1.0;
@@ -99,12 +95,15 @@ public class HamPracticeUIController extends HamUIController {
     private int wpm;
     private UserPreferences userPreferences;
 
+
     @Override
     @FXML
     public void initialize() throws IOException {
         System.out.println("\ninitialize is running.....");
+
         userPreferences = App.getUserPrefs();
         this.room = App.getCurrentPracticeScenerio();
+        room.setNewMessageEventListener(msg -> handleNewMessage(msg));
 //        RoomBuilder roomBuilder = new RoomBuilder(room, userPreferences);
 //        roomBuilder.buildRoom();
         primaryUserName = userPreferences.getPrimaryUserName();
@@ -115,8 +114,13 @@ public class HamPracticeUIController extends HamUIController {
         morseCodeHandlerManager = new MorseCodeHandlerManager(inputTextArea, radio);
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
-        addMessageToChatLogUI("Radio: Hello, welcome to HAM Practice!");
-        addMessageToChatLogUI("Radio: Please first read our game's rules by hitting \"Rules \"");
+
+        for (ChatMessage message : room.getChatLogMessageList()) {
+            addMessageToChatLogUI(message);
+        }
+
+        addMessageToChatLogUI(" Hello, welcome to HAM Practice!");
+        addMessageToChatLogUI(" Please first read our game's rules by hitting \"Rules \"");
         System.out.println("Radio WPM in Controller Practice Innitialize: " + radio.getWPM());
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
         System.out.println("In Initialize controller: User name is...." + App.getUserPrefs().getPrimaryUserName());
@@ -125,6 +129,8 @@ public class HamPracticeUIController extends HamUIController {
         player = new MorseCodePlayer(wpm, radio);
         System.out.println("Print botList from innitialize----------------" + room.getBotList());
     }
+
+
 
     @FXML
     private void startButton() throws IOException {
@@ -165,8 +171,17 @@ public class HamPracticeUIController extends HamUIController {
         radio.setIsKeyReleased(true);  // Signals playTone loop to end
     }
 
-    private void addMessageToChatLogUI(String radioMessage) {
-        Label label = new Label(radioMessage);
+    private void handleNewMessage(ChatMessage msg) {
+        Platform.runLater(()->addMessageToChatLogUI(msg));
+    }
+
+    private void addMessageToChatLogUI(String message){
+        ChatMessage newMessage = new ChatMessage(message, "System", Color.GREEN, true);
+        addMessageToChatLogUI(newMessage);
+    }
+
+    private void addMessageToChatLogUI(ChatMessage radioMessage) {
+        Label label = new Label( radioMessage.getSender() + ": "+ radioMessage.getText());
         label.setTextFill(Color.RED);
         label.setWrapText(true);
         FontWeight fontWeight = FontWeight.BOLD;
@@ -174,6 +189,39 @@ public class HamPracticeUIController extends HamUIController {
         chatLogVBox.getChildren().add(label);
 
         Platform.runLater(() -> chatLogScrollPane.setVvalue(1.0)); // scroll the scrollpane to the bottom
+    }
+
+    @FXML
+    private void sendMessageAction() {
+        String msgText = inputTextArea.getText();
+        if (!msgText.isBlank()) {
+            ChatMessage newMessageFromUser = new ChatMessage(msgText,
+                    App.getUserPrefs().getPrimaryUserName(),
+                    Color.DARKGREEN, true);
+            App.getCurrentPracticeScenerio().addChatMessage(newMessageFromUser);
+            inputTextArea.clear();
+        }
+    }
+
+    @FXML
+    private void removeMessageAction(){
+        morseCodeHandlerManager.clearMorse();
+        inputTextArea.clear();
+    }
+
+    @FXML
+    private void clearChatAction(){
+        ChatMessage firstSystemPost;
+        List<ChatMessage> messages = App.getCurrentPracticeScenerio().getChatLogMessageList();
+        if(!messages.isEmpty()){
+            firstSystemPost = messages.get(0);
+            messages.clear();
+            chatLogVBox.getChildren().clear();
+            messages.add(firstSystemPost);
+        } else {
+            System.out.println("The chatMessage is null in clearChatAction");
+        }
+
     }
 
     @Override
@@ -344,18 +392,12 @@ public class HamPracticeUIController extends HamUIController {
         userOutput = morseCodeHandlerManager.textToMorseAction();
     }
 
-    public void pushToTalkButton(ActionEvent actionEvent) {
-        isPushedToTalk = true;
-    }
-
-    public void englishOnButton(ActionEvent actionEvent) {
-        isEnglishOn = true;
-    }
-
     @FXML
     public void switchToCustomizeScenario() throws IOException{
-        App.setRoot("ScenarioSetScreen");
         setWhiteNoiseOn(false);
+        App.setRoot("ScenarioSetScreen");
+
+
     }
 
     @FXML

@@ -114,4 +114,8 @@ public class Morse2TextManager {
         translateTextField.setFont(Font.font(18));
         translateTextField.setText(userOutput);
     }
+
+    public void clearMorse(){
+        userOutput = "";
+    }
 }

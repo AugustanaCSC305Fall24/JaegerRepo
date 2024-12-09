@@ -9,4 +9,6 @@ public class ConversationalBot extends Bot{
     public String getBotType() {
         return botType;
     }
+
+    
 }

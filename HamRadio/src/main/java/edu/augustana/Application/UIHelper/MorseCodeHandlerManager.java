@@ -40,6 +40,10 @@ public class MorseCodeHandlerManager {
         morse2TextManager.morseToTextAction();
     }
 
+    public void clearMorse(){
+        morse2TextManager.clearMorse();
+    }
+
     public String textToMorseAction() {
         return text2MorseManager.textToMorseAction();
     }

@@ -11,6 +11,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -23,13 +24,15 @@
             <font>
                 <Font name="Leelawadee UI Bold" size="12.0" />
             </font></Label>
-        <Button fx:id="helpBtn" layoutX="86.0" layoutY="252.0" onAction="#playBackAction" prefHeight="0.0" prefWidth="100" style="-fx-background-color: #466854;" text="PLAY RECEIVED " textFill="WHITE">
+        <Button fx:id="helpBtn" layoutX="86.0" layoutY="252.0" onAction="#playBackAction" prefHeight="0.0" prefWidth="100" style="-fx-background-color: #466854;" text="PLAY BACK" textFill="WHITE">
             <font>
-                <Font size="11.5" />
+                <Font name="System Bold" size="12.0" />
             </font></Button>
-        <Button fx:id="morseToTextButton" layoutX="86.0" layoutY="288.0" onAction="#morseToTextAction" prefHeight="0.0" prefWidth="100" style="-fx-background-color: #466854;" text="RESPOND" textFill="WHITE" />
+        <Button fx:id="morseToTextButton" layoutX="86.0" layoutY="288.0" onAction="#morseToTextAction" prefHeight="0.0" prefWidth="100" style="-fx-background-color: #466854;" text="RESPOND" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
         <Slider fx:id="volumeSlider" layoutX="791.0" layoutY="68.0" majorTickUnit="10.0" max="100" min="0" onMouseReleased="#volumeSliderAction" orientation="VERTICAL" prefHeight="283.0" prefWidth="86.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
-        <Button layoutX="86.0" layoutY="215.0" onAction="#startButton" prefHeight="0.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="START" textFill="WHITE" />
         <Label layoutX="80.0" layoutY="130.0" text="Filtering Bandwidth">
             <font>
                 <Font name="Leelawadee UI Bold" size="12.0" />
@@ -55,7 +58,7 @@
             </VBox>
          </content>
       </ScrollPane>
-      <TextArea fx:id="inputTextArea" layoutX="278.0" layoutY="378.0" prefHeight="71.0" prefWidth="345.0" promptText="Your input appears here: " text="&#10;" />
+      <TextArea fx:id="inputTextArea" layoutX="278.0" layoutY="378.0" prefHeight="51.0" prefWidth="345.0" promptText="Your input appears here: " text="&#10;" />
       <Label layoutX="661.0" layoutY="40.0" text="RADIO STATUS">
          <font>
             <Font name="Leelawadee UI Bold" size="12.0" />
@@ -67,9 +70,15 @@
             <Font name="Leelawadee UI Bold" size="12.0" />
          </font>
       </Label>
-      <Button fx:id="rulesButton" layoutX="86.0" layoutY="321.0" onAction="#rulesButtonAction" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="RULES" textFill="WHITE" />
+      <Button fx:id="rulesButton" layoutX="86.0" layoutY="321.0" onAction="#rulesButtonAction" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="RULES" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
       <ComboBox fx:id="wpmComboBox" layoutX="797.0" layoutY="374.0" onAction="#selectWPMAction" prefHeight="26.0" prefWidth="73.0" promptText="10" />
-      <Button fx:id="rulesButton1" layoutX="86.0" layoutY="361.0" onAction="#switchToCustomizeScenario" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="EXIT" textFill="WHITE" />
+      <Button fx:id="rulesButton1" layoutX="86.0" layoutY="387.0" onAction="#switchToCustomizeScenario" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="EXIT" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
       <Slider fx:id="bandWitdhSlider" blockIncrement="1.0" layoutX="22.0" layoutY="147.0" majorTickUnit="5.0" max="35.0" minorTickCount="1" onMouseReleased="#bandWidthAction" prefHeight="37.0" prefWidth="228.0" showTickLabels="true" showTickMarks="true" value="3.0" />
       <MenuBar layoutX="4.0" layoutY="6.0" prefHeight="25.0" prefWidth="893.0" style="-fx-background-color: #466854;">
          <menus>
@@ -87,6 +96,26 @@
       </MenuBar>
         <!-- Top Label for Simulation Mode -->
         <Label layoutX="41.0" layoutY="423.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="PRACTICE MODE" textFill="#466854" />
+      <Button layoutX="86.0" layoutY="352.0" mnemonicParsing="false" onAction="#clearChatAction" prefHeight="26.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="CLEAR CHAT" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button layoutX="459.0" layoutY="438.0" mnemonicParsing="false" onAction="#removeMessageAction" style="-fx-background-color: #466854;" text="Remove Message" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button layoutX="579.0" layoutY="438.0" mnemonicParsing="false" onAction="#sendMessageAction" style="-fx-background-color: #466854;" text="Send" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <ToggleButton layoutX="86.0" layoutY="214.0" mnemonicParsing="false" onAction="#startButton" prefHeight="25.0" prefWidth="100.0" text="START">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </ToggleButton>
 
     </children>
 
