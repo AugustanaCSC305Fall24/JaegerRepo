@@ -75,8 +75,11 @@ public class SignalProcessor {
     }
 
     public void processMultithread(CWMessage cwMessage) throws IOException {
-        double frequency = cwMessage.getFrequency();
-        soundPlayer.playMorse(cwMessage.getText(), wpm, frequency, frequency);
+        double minBand = receiveFrequency - (bandWidth/2);
+        double maxBand = receiveFrequency + (bandWidth/2);
+        if (signalFilter.filterCWMessageByMultithreading(cwMessage, minBand, maxBand)) {
+            soundPlayer.playMorseWithDynamicVolume(cwMessage.getText(), receiveFrequency, cwMessage.getFrequency(), bandWidth, wpm);
+        }
     }
 
     //private helper methods:
