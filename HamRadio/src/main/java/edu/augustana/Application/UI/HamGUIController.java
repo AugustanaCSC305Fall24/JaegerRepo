@@ -55,12 +55,15 @@ public class HamGUIController {
                 3.0,0,1.0,10);
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
+        radio.setTransmitFrequency(receiveFreqSlider.getValue());
         radio.setOnChatMessage(this::handleIncomingChatMessage);
         frequencyManager = new FrequencyManager(this);
         wpmManager = new WPMManager(this);
         volumeManager = new VolumeManager(this);
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
         user = new User("Hello world");
+        System.out.println(radio.getReceiveFrequency());
+        System.out.println(radio.getTransmitFrequency());
 
     }
 
