@@ -55,7 +55,6 @@ public class HamGUIController {
                 3.0,0,1.0,10);
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
-        radio.setTransmitFrequency(transmitFreqSlider.getValue());
         radio.setOnChatMessage(this::handleIncomingChatMessage);
         frequencyManager = new FrequencyManager(this);
         wpmManager = new WPMManager(this);
@@ -76,19 +75,16 @@ public class HamGUIController {
     }
 
     @FXML
-    public void volumeSliderAction(){ //volumeController
+    public void volumeSliderAction() { //volumeController
         volumeManager.volumeSliderAction();
     }
 
     @FXML
-    private void changeTransmittedFrequency(){
+    private void changeReceivedFrequency() {
         frequencyManager.changeTransmittedFrequencyController();
-    }
-
-    @FXML
-    private void changeReceivedFrequency(){
         frequencyManager.changeReceivedFrequencyController();
     }
+
 
     @FXML
     private void selectWPMAction() {
@@ -117,12 +113,6 @@ public class HamGUIController {
     }
     public double getVolume() {
         return volumeSlider.getValue();
-    }
-    public void setTransmitFrequencyControl(double freq) {
-        transmitFreqSlider.setValue(freq);
-    }
-    public double getTransmitFrequencyControl() {
-        return transmitFreqSlider.getValue();
     }
     public void setReceivedFrequencyControl(double freq) {
         receiveFreqSlider.setValue(freq);
