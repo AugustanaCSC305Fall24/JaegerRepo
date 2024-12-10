@@ -85,6 +85,10 @@ public class PracticeScenario {
         newMessageEventListener = listener;
     }
 
+    public void clearChatLogMessageList(){
+        chatLogMessageList.clear();
+    }
+
 
     public String toString(){
         return "\nPrinting The room....."+

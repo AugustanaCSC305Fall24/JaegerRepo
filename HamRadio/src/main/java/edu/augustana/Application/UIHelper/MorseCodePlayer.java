@@ -16,7 +16,6 @@ public class MorseCodePlayer{
     private int BASE_WORD_PAUSE ;
     private SoundPlayer soundPlayer;
 
-    private double speedFactor;
     private HamRadioSimulatorInterface radio;
 
     public MorseCodePlayer(int wpm, HamRadioSimulatorInterface radio) {
@@ -28,10 +27,6 @@ public class MorseCodePlayer{
         this.BASE_LETTER_PAUSE = BASE_DASH_DURATION;
         this.BASE_WORD_PAUSE = 7*BASE_DOT_DURATION;
         soundPlayer = new SoundPlayer(radio.getVolume());
-    }
-
-    public void setSpeedFactor(double speedFactor) {
-        this.speedFactor = speedFactor;
     }
 
     private int adjustDuration(int baseDuration) {

@@ -51,43 +51,20 @@ public class HamPracticeUIController extends HamUIController {
 
     @FXML
     private TextArea statusTextArea;
-
     @FXML
     private Slider volumeSlider;
-
-    @FXML
-    private Slider transmitFreqSlider;
-
     @FXML
     private Slider receiveFreqSlider;
-
-    @FXML
-    private Button pushToTalkButton;
-
-    @FXML
-    private Button englishOnButton;
-
     @FXML
     private VBox chatLogVBox;
-
     @FXML
     private ScrollPane chatLogScrollPane;
-
     @FXML
     private TextArea inputTextArea;
-
     @FXML
     private ListView<Bot> botListView;
-
-    @FXML
-    private Button rulesButton;
-
-    @FXML
-    private Button helpPeopleButton;
-
     @FXML
     private ComboBox wpmComboBox;
-
     @FXML
     private Slider bandWitdhSlider;
 
@@ -113,12 +90,11 @@ public class HamPracticeUIController extends HamUIController {
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
 
+        addMessageToChatLogUI("Radio", " Hello, welcome to HAM Practice!");
+        addMessageToChatLogUI("Radio", " Please first read our game's rules by hitting \"Rules \"");
         for (ChatMessage message : room.getChatLogMessageList()) {
             addMessageToChatLogUI(message);
         }
-
-        addMessageToChatLogUI("Radio", " Hello, welcome to HAM Practice!");
-        addMessageToChatLogUI("Radio", " Please first read our game's rules by hitting \"Rules \"");
         System.out.println("Radio WPM in Controller Practice Innitialize: " + radio.getWPM());
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
         System.out.println("In Initialize controller: User name is...." + App.getUserPrefs().getPrimaryUserName());
@@ -137,13 +113,18 @@ public class HamPracticeUIController extends HamUIController {
             room.getBotList().clear();
         }
         botListView.getItems().addAll(room.getBotList());
-        System.out.println("In startButton in Controller:....." +
-                "\n botListView is....... " + room.getBotList() +
-                "\n is WhiteNoise on......." + App.getUserPrefs().getWhiteNoise());
+//        System.out.println("In startButton in Controller:....." +
+//                "\n botListView is....... " + room.getBotList() +
+//                "\n is WhiteNoise on......." + App.getUserPrefs().getWhiteNoise());
+        if(!isStartClicked){
+            clearChatAction();
+            for (ChatMessage message : room.getChatLogMessageList()) {
+                addMessageToChatLogUI(message);
+            }
+        }
         statusTextArea.setText(displayTextString());
         morseCodeHandlerManager.setBandSelected(true);
         isStartClicked = true;
-
         if(App.getUserPrefs().getWhiteNoise() && !isStartClickedTwice){
             generateWhiteNoise();
             isStartClickedTwice = true;
@@ -196,14 +177,20 @@ public class HamPracticeUIController extends HamUIController {
 
     @FXML
     private void sendMessageAction() {
-        String msgText = inputTextArea.getText();
-        if (!msgText.isBlank()) {
-            ChatMessage newMessageFromUser = new ChatMessage(msgText,
-                    App.getUserPrefs().getPrimaryUserName(),
-                    Color.DARKGREEN, true);
-            App.getCurrentPracticeScenerio().addChatMessage(newMessageFromUser);
-            inputTextArea.clear();
+        if(isStartClicked){
+            String msgText = inputTextArea.getText();
+            if (!msgText.isBlank()) {
+                ChatMessage newMessageFromUser = new ChatMessage(msgText,
+                        App.getUserPrefs().getPrimaryUserName(),
+                        Color.DARKGREEN, true);
+                App.getCurrentPracticeScenerio().addChatMessage(newMessageFromUser);
+                addMessageToChatLogUI(App.getUserPrefs().getPrimaryUserName(),msgText);
+                inputTextArea.clear();
+            }
+        } else {
+            showAlert();
         }
+
     }
 
     @FXML
@@ -396,6 +383,9 @@ public class HamPracticeUIController extends HamUIController {
     @FXML
     public void switchToCustomizeScenario() throws IOException{
         setWhiteNoiseOn(false);
+        room.getBotList().clear();
+        room.clearChatLogMessageList();
+        clearChatAction();
         App.setRoot("ScenarioSetScreen");
     }
 

@@ -62,7 +62,7 @@ public class ScenarioSetSceneBuilder {
             scenarioTypeBox.getItems().addAll("Detective America");
             buildUIForDetective();
         } else if (listener.equals("forrest")){
-            scenarioTypeBox.getItems().addAll("Detective America");
+            scenarioTypeBox.getItems().addAll("Forest Burning");
             buildUIForForrest();
         } else {
         scenarioTypeBox.getItems().addAll("Build Yours", "Open yours",
@@ -88,7 +88,7 @@ public class ScenarioSetSceneBuilder {
     }
 
     private void buildUIForForrest() {
-        scenarioTypeBox.getSelectionModel().select(1);
+        scenarioTypeBox.getSelectionModel().select(0);
         scenarioNameTextField.setText("Help save the forest");
     }
 
