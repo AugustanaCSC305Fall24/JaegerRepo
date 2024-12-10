@@ -49,7 +49,6 @@ public class Morse2TextManager {
     }
 
     public void morseToTextAction() {
-        System.out.println("morseToTextAction runs");
         //set the algoithm to bind with "enter" and "shift"
         App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onKeyPressed, this::onKeyReleased);
 
@@ -58,7 +57,7 @@ public class Morse2TextManager {
 //        if (!cleanMorse.isEmpty() && morseToText.isEmpty()) {
 //            morseToText = "Invalid Morse Code";
 //        }
-        translateTextField.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
+        //translateTextField.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
     }
 
     private void onKeyPressed() {
@@ -75,7 +74,6 @@ public class Morse2TextManager {
     }
 
     private void displayMorseCode(long pressDuration) {
-        System.out.println("displayMorseCode runs");
         long timeSinceLastPress;
         if (isFirstTime) {
             timeSinceLastPress = 0;
@@ -112,10 +110,19 @@ public class Morse2TextManager {
     private void updateTranslateTextField() {
         System.out.println("textfield updated");
         translateTextField.setFont(Font.font(18));
-        translateTextField.setText(userOutput);
+        String morseToText = translator.morseToText(cleanMorse);
+        System.out.println("Stonedahl like birds");
+        // System.out.println(morseToText);
+//        if (!cleanMorse.isEmpty() && morseToText.isEmpty()) {
+//            morseToText = "Invalid Morse Code";
+//        }
+        translateTextField.setText("You typed: " + userOutput + "\n" + "Translated as: " + morseToText);
     }
 
     public void clearMorse(){
+        App.getKeyBindManager().removeKeyPressAction(KeyCode.SHIFT, this::onKeyPressed);
+        App.getKeyBindManager().removeKeyReleaseAction(KeyCode.SHIFT, this::onKeyReleased);
+        System.out.println("message is removed");
         userOutput = "";
     }
 }
