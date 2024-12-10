@@ -30,9 +30,6 @@ public class HamGUIController {
     private TextArea statusTextArea;
 
     @FXML
-    private TextArea displayTextArea;
-
-    @FXML
     private Slider volumeSlider;
 
     @FXML
@@ -66,6 +63,7 @@ public class HamGUIController {
         user = new User("Hello world");
         System.out.println(radio.getReceiveFrequency());
         System.out.println(radio.getTransmitFrequency());
+
 
     }
 
@@ -107,12 +105,6 @@ public class HamGUIController {
     }
 
     //API
-    public void setDisplayTextControl(String text) {
-        displayTextArea.setText(text);
-    }
-    public String getDisplayTextControl() {
-        return displayTextArea.getText();
-    }
     public void setVolume(double volume) {
         volumeSlider.setValue(volume);
     }
