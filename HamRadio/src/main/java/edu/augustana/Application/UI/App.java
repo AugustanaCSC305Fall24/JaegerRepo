@@ -91,6 +91,7 @@ public class App extends Application {
         return keyBindManager;
     }
 
+    //this function will switch to main view
     public static void switchToMainView() {
         switchToView("WelcomeScreen.fxml");
     }
