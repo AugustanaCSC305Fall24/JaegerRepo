@@ -47,6 +47,7 @@ public class HamPracticeUIController extends HamUIController {
     MorseCodePlayer player;
     User user= new User("Hello world");
     FileManager fileManager = App.getFileManager();
+    boolean isRespondActive = false;
 
     @FXML
     private TextArea statusTextArea;
@@ -381,7 +382,10 @@ public class HamPracticeUIController extends HamUIController {
 
     @FXML
     public void morseToTextAction() { //morsecode controller
-        morseCodeHandlerManager.morseToTextAction();
+        if (!isRespondActive) {
+            isRespondActive = true;
+            morseCodeHandlerManager.morseToTextAction();
+        }
     }
 
     @FXML
