@@ -124,5 +124,7 @@ public class Morse2TextManager {
         App.getKeyBindManager().removeKeyReleaseAction(KeyCode.SHIFT, this::onKeyReleased);
         System.out.println("message is removed");
         userOutput = "";
+        cleanMorse = "";
+        isFirstTime = true;
     }
 }
