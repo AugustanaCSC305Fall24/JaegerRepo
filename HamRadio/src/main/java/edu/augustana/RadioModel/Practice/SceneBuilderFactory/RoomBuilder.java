@@ -63,7 +63,7 @@ public class RoomBuilder {
     }
 
 
-    private void debugRoom(Bot newBot){
+    public void debugRoom(Bot newBot){
         System.out.println("For testing in RoomBuilder Practice UI: " + newBot + ", Freq: " + newBot.getBotFrequency() + ", Task: " + newBot.getTask());
         System.out.println(room.getTaskList());
     }

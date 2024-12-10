@@ -29,6 +29,7 @@ public class GeminiBirdBot extends Bot {
     private PracticeScenario getRoom(){
         return App.getCurrentPracticeScenerio();
     }
+
     public void requestMessage() {
         StringBuilder transcript = new StringBuilder();
         for (ChatMessage message : App.getCurrentPracticeScenerio().getChatLogMessageList()) {

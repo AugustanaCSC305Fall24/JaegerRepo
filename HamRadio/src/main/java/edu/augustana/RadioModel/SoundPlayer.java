@@ -145,7 +145,7 @@ public class SoundPlayer {
                 sourceLine.flush();
                 sourceLine.stop();
                 System.out.println("Stop");
-                sourceLine.close();
+                //sourceLine.close();
             } catch (LineUnavailableException e) {
                 e.printStackTrace();
             }
@@ -224,7 +224,7 @@ public class SoundPlayer {
 
             sourceLine.drain();
             sourceLine.stop();
-            sourceLine.close();
+            //sourceLine.close();
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         }
