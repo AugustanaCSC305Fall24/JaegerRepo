@@ -23,6 +23,8 @@ public class HamGUIController {
     private boolean isStartClicked;
     private long timeOfLastPress;
     User user;
+    private boolean isPTT = false;
+
 
     @FXML
     private TextArea statusTextArea;
@@ -182,7 +184,11 @@ public class HamGUIController {
 
     @FXML
     public void pushToTalkButton(ActionEvent actionEvent) {
-        App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
+        if (!isPTT) {
+            App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
+            isPTT = true;
+        }
+
 
     }
 
