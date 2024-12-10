@@ -393,8 +393,6 @@ public class HamPracticeUIController extends HamUIController {
     public void switchToCustomizeScenario() throws IOException{
         setWhiteNoiseOn(false);
         App.setRoot("ScenarioSetScreen");
-
-
     }
 
     @FXML
