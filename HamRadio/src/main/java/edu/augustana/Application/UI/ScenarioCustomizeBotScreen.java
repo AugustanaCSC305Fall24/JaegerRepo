@@ -56,13 +56,19 @@ public class ScenarioCustomizeBotScreen {
         Bot newBot;
         switch (botType) {
             case "GeminiBirdWatcher":
-                final String systemPromptText = "You are an avid bird watcher in a chatroom.  Respond to other chat users' messages by making bird-related puns or jokes, or telling anecdotes about birds that you've seen.";
+                final String systemPromptText = "You are an avid bird watcher in a chatroom.  " +
+                        "Respond to other chat users' messages by making bird-related puns or jokes, " +
+                        "or telling anecdotes about birds that you've seen." +
+                        "LIMIT YOUR RESPONSE WITHIN 5 WORDS";
                 newBot = new GeminiBirdBot(name, Color.RED, App.getCurrentPracticeScenerio(), systemPromptText);
+                //room.getBotList().add(newBot);
                 break;
             default:
                 throw new IllegalStateException("Invalid personality type: " + botType);
         }
         App.getCurrentPracticeScenerio().getBotList().add(newBot);
+        System.out.println("For testing in RoomBuilder Practice UI: " + newBot + ", Freq: " + newBot.getBotFrequency() + ", Task: " + newBot.getTask());
+        System.out.println(room.getTaskList());
         botListView.getItems().add(newBot);
     }
 

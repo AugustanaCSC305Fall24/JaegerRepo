@@ -81,7 +81,7 @@ public class Morse2TextManager {
         } else {
             timeSinceLastPress = currentPressTime - lastPressTime;
         }
-        if (pressDuration <= 3 * HelperClass.unitOfTime(radio.getWPM())) {
+        if (pressDuration <= 1.5 * HelperClass.unitOfTime(radio.getWPM())) {
             display(".", timeSinceLastPress);
         } else { //then display dash
             display("-", timeSinceLastPress);
@@ -94,7 +94,7 @@ public class Morse2TextManager {
         if (timeSinceLastPress < 6 * HelperClass.unitOfTime(radio.getWPM())) {
             cleanMorse += nextMorseCode;
             userOutput += nextMorseCode;
-        } else if (timeSinceLastPress < 30 * HelperClass.unitOfTime(radio.getWPM())) {
+        } else if (timeSinceLastPress < 7 * HelperClass.unitOfTime(radio.getWPM())) {
             cleanMorse += " " + nextMorseCode;
             userOutput += "  " + nextMorseCode;
         } else {
