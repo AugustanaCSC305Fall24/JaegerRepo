@@ -15,7 +15,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="480.0" prefWidth="900.0" style="-fx-background-color: #2c3f33;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.HamGUIController">
+<AnchorPane prefHeight="480.0" prefWidth="900.0" style="-fx-background-color: #2c3f33;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.HamGUIController">
     <children>
         <TextArea fx:id="statusTextArea" layoutX="632.0" layoutY="57.0" prefHeight="200.0" prefWidth="143.0" style="-fx-border-color: black; -fx-background-color: a6baad;" />
 
@@ -127,7 +127,10 @@
                 </VBox>
             </content>
         </ScrollPane>
-        <TextArea fx:id="inputTextArea" layoutX="278.0" layoutY="353.0" prefHeight="65.0" prefWidth="345.0" promptText="Your input appears here: " style="-fx-border-color: black; -fx-background-color: a6baad;" text="&#10;" />
+        <TextArea fx:id="inputTextArea" layoutX="278.0" layoutY="353.0" prefHeight="65.0" prefWidth="345.0" promptText="Your input appears here: " style="-fx-border-color: black; -fx-background-color: a6baad;" text="&#10;">
+         <font>
+            <Font size="20.0" />
+         </font></TextArea>
         <Label layoutX="661.0" layoutY="40.0" text="RADIO STATUS">
             <font>
                 <Font name="Leelawadee UI Bold" size="12.0" />
