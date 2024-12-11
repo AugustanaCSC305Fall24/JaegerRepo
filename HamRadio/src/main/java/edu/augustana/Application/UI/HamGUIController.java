@@ -54,6 +54,9 @@ public class HamGUIController {
     private Button sendButton;
 
     @FXML
+    private TextArea inputTextArea;
+
+    @FXML
     public void initialize() throws IOException {
         System.out.println("\ninitialization started");
         this.radio = new HamRadioSimulator(0,0,0,0,
@@ -70,7 +73,7 @@ public class HamGUIController {
         System.out.println(radio.getReceiveFrequency());
         System.out.println(radio.getTransmitFrequency());
         timeOfLastRelease = System.currentTimeMillis();
-
+        inputTextArea.clear();
 
     }
 
@@ -117,6 +120,7 @@ public class HamGUIController {
         radio.broadcastCWSignal(message);
         morseMessage = "";
         isFirstPress = true;
+        inputTextArea.clear();
     }
 
     //API
@@ -201,6 +205,10 @@ public class HamGUIController {
         } else {
             morseMessage += "-";
         }
+
+
+
+        inputTextArea.setText(morseMessage);
 
 
     }
