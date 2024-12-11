@@ -15,6 +15,5 @@ public class VolumeManager {
         double customizedVolume = controller.getVolumeControl();
         radio.setVolume(customizedVolume);
         String displayText = controller.displayTextString();
-        controller.setDisplayTextControl(displayText);
     }
 }

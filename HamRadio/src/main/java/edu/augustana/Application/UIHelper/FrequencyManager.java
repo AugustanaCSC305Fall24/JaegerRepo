@@ -20,7 +20,7 @@ public class FrequencyManager {
     }
 
     public void changeTransmittedFrequencyController() {
-        controller.getRadio().setTransmitFrequency(controller.getTransmitFrequencyControl());
+        controller.getRadio().setTransmitFrequency(controller.getReceivedFrequencyControl());
         controller.setStatusTextControl(controller.displayTextString());
     }
 

@@ -23,12 +23,11 @@ public class HamGUIController {
     private boolean isStartClicked;
     private long timeOfLastPress;
     User user;
+    private boolean isPTT = false;
+
 
     @FXML
     private TextArea statusTextArea;
-
-    @FXML
-    private TextArea displayTextArea;
 
     @FXML
     private Slider volumeSlider;
@@ -55,13 +54,16 @@ public class HamGUIController {
                 3.0,0,1.0,10);
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
-        radio.setTransmitFrequency(transmitFreqSlider.getValue());
+        radio.setTransmitFrequency(receiveFreqSlider.getValue());
         radio.setOnChatMessage(this::handleIncomingChatMessage);
         frequencyManager = new FrequencyManager(this);
         wpmManager = new WPMManager(this);
         volumeManager = new VolumeManager(this);
         wpmComboBox.getItems().addAll(5,10,15,20,25,30);
         user = new User("Hello world");
+        System.out.println(radio.getReceiveFrequency());
+        System.out.println(radio.getTransmitFrequency());
+
 
     }
 
@@ -76,19 +78,16 @@ public class HamGUIController {
     }
 
     @FXML
-    public void volumeSliderAction(){ //volumeController
+    public void volumeSliderAction() { //volumeController
         volumeManager.volumeSliderAction();
     }
 
     @FXML
-    private void changeTransmittedFrequency(){
+    private void changeReceivedFrequency() {
         frequencyManager.changeTransmittedFrequencyController();
-    }
-
-    @FXML
-    private void changeReceivedFrequency(){
         frequencyManager.changeReceivedFrequencyController();
     }
+
 
     @FXML
     private void selectWPMAction() {
@@ -106,23 +105,11 @@ public class HamGUIController {
     }
 
     //API
-    public void setDisplayTextControl(String text) {
-        displayTextArea.setText(text);
-    }
-    public String getDisplayTextControl() {
-        return displayTextArea.getText();
-    }
     public void setVolume(double volume) {
         volumeSlider.setValue(volume);
     }
     public double getVolume() {
         return volumeSlider.getValue();
-    }
-    public void setTransmitFrequencyControl(double freq) {
-        transmitFreqSlider.setValue(freq);
-    }
-    public double getTransmitFrequencyControl() {
-        return transmitFreqSlider.getValue();
     }
     public void setReceivedFrequencyControl(double freq) {
         receiveFreqSlider.setValue(freq);
@@ -189,7 +176,11 @@ public class HamGUIController {
 
     @FXML
     public void pushToTalkButton(ActionEvent actionEvent) {
-        App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
+        if (!isPTT) {
+            App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
+            isPTT = true;
+        }
+
 
     }
 
