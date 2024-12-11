@@ -16,7 +16,7 @@ public abstract class Bot implements Bots{
     private boolean isAddedToIdentifiedList = false;
     private TaskForPractice task;
     private String botType;
-    boolean isThreadStop;
+    private volatile boolean isThreadStop;
     Thread thread;
 
     public static final String[] nameList = {"Andy", "Mason", "Hoang", "Hieu",
@@ -131,7 +131,7 @@ public abstract class Bot implements Bots{
             System.out.println("Bot info: " + this + "Task: " + this.getTask());
             String botTaskTranslated = MorseCodeTranslator.textToMorse(this.getTask().getDescription());
             while (!getIsThreadStop()) {
-                System.out.println("isThreadStop: " + getIsThreadStop());
+                System.out.println("isThreadStop: " + isThreadStop);
                 player1.playMorseForBot(botTaskTranslated, this);
             }
         }).start();
