@@ -8,12 +8,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="480.0" prefWidth="900.0" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.BasicTrainingController">
+<AnchorPane prefHeight="480.0" prefWidth="900.0" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.BasicTrainingController">
     <children>
         <!-- Title Label -->
-        <Label layoutX="343.0" prefHeight="91.0" prefWidth="269.0" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #466854;" text="CW Basic Trainer" textAlignment="CENTER">
+        <Label layoutX="288.0" prefHeight="91.0" prefWidth="380.0" style="-fx-font-size: 36; -fx-font-weight: bold; -fx-text-fill: #466854;" text="CW Basic Trainer" textAlignment="CENTER">
          <font>
-            <Font size="20.0" />
+            <Font size="24.0" />
          </font></Label>
 
         <!-- Play Button -->
@@ -23,9 +23,9 @@
          </font></Button>
 
         <!-- Text Input Label -->
-        <Label layoutX="28.0" layoutY="142.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="ENTER YOUR MORSE INTERPRETATION">
+        <Label layoutX="28.0" layoutY="142.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold'; -fx-font-style: bold;" text="ENTER IN CW CODE">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold Italic" size="14.0" />
          </font></Label>
 
         <!-- Text Input Field -->
@@ -50,14 +50,14 @@
         <!-- Volume Control (Slider) -->
         <Label layoutX="805.0" layoutY="101.0" prefHeight="25.0" prefWidth="61.0" style="-fx-font-family: 'Leelawadee UI Bold'; -fx-font-size: 12px;" text="VOLUME" />
         <Slider fx:id="volumeSlider" layoutX="816.0" layoutY="136.0" max="100" min="0" onMouseReleased="#adjustVolume" orientation="VERTICAL" prefHeight="220.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
-      <Label layoutX="28.0" layoutY="231.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="ENTER YOUR ENGLISH INTERPRETATION">
+      <Label layoutX="28.0" layoutY="231.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold'; -fx-font-style: Bold;" text="ENTER IN ENGLISH">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
       <TextField fx:id="englishInputField" layoutX="26.0" layoutY="251.0" prefHeight="51.0" prefWidth="761.0" promptText="Type what you heard" />
       <Button layoutX="32.0" layoutY="21.0" mnemonicParsing="false" onAction="#switchToWelcomeScreen" text="Back" />
-      <ComboBox fx:id="levelComboBox" layoutX="385.0" layoutY="65.0" onAction="#setDifficulty" prefHeight="18.0" prefWidth="81.0" promptText="Level" />
+      <ComboBox fx:id="levelComboBox" layoutX="398.0" layoutY="66.0" onAction="#setDifficulty" prefHeight="35.0" prefWidth="104.0" promptText="LEVEL" />
 
     </children>
 </AnchorPane>

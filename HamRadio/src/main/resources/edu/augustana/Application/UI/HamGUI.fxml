@@ -4,46 +4,121 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="480.0" prefWidth="900.0" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.HamGUIController">
+<AnchorPane prefHeight="480.0" prefWidth="900.0" style="-fx-background-color: #2c3f33;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.HamGUIController">
     <children>
-        <TextArea fx:id="statusTextArea" layoutX="632.0" layoutY="57.0" prefHeight="200.0" prefWidth="143.0" />
+        <TextArea fx:id="statusTextArea" layoutX="632.0" layoutY="57.0" prefHeight="200.0" prefWidth="143.0" style="-fx-border-color: black; -fx-background-color: a6baad;" />
 
         <Label layoutX="809.0" layoutY="40.0" text="VOLUME">
             <font>
                 <Font name="Leelawadee UI Bold" size="12.0" />
-            </font></Label>
+            </font>
+         <textFill>
+            <LinearGradient endX="0.9463722638151247" endY="1.0" startX="1.0" startY="0.3217665615141956">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.3245614171028137" green="0.4736842215061188" blue="0.37675437331199646" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.6281135082244873" green="0.8771929740905762" blue="0.7235939502716064" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill></Label>
 
         <!-- Bottom Buttons -->
-        <Button fx:id="returnBtn" layoutX="21.0" layoutY="291.0" onAction="#switchToWelcomeScreen" prefHeight="0.0" prefWidth="100" style="-fx-background-color: #466854;" text="STOP" textFill="WHITE" />
-        <Slider fx:id="volumeSlider" layoutX="809.0" layoutY="70.0" majorTickUnit="10.0" max="100" min="0" onMouseReleased="#volumeSliderAction" orientation="VERTICAL" prefHeight="243.0" prefWidth="50.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
-        <Button layoutX="21.0" layoutY="254.0" onAction="#startButton" prefHeight="0.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="START" textFill="WHITE" />
-        <Label layoutX="80.0" layoutY="167.0" text="Filtering Bandwidth">
+        <Button fx:id="returnBtn" layoutX="82.0" layoutY="373.0" onAction="#switchToWelcomeScreen" prefHeight="25.0" prefWidth="107.0" style="-fx-background-color: #60866f;" text="BACK" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+        <Slider fx:id="volumeSlider" layoutX="809.0" layoutY="70.0" majorTickUnit="10.0" max="100" min="0" onMouseReleased="#volumeSliderAction" orientation="VERTICAL" prefHeight="359.0" prefWidth="50.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-background-color: #60866f;" value="50.0" />
+        <Button layoutX="181.0" layoutY="282.0" onAction="#startButton" prefHeight="25.0" prefWidth="86.0" style="-fx-background-color: #60866f;" text="START" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+        <Label layoutX="71.0" layoutY="174.0" text="Filtering Bandwidth">
+            <font>
+                <Font name="Leelawadee UI Bold" size="14.0" />
+            </font>
+         <textFill>
+            <LinearGradient endX="0.12933756650810369" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.3245614171028137" green="0.4736842215061188" blue="0.37675437331199646" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.6281135082244873" green="0.8771929740905762" blue="0.7235939502716064" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
+        </Label>
+        <Label layoutX="688.0" layoutY="273.0" text="WPM">
             <font>
                 <Font name="Leelawadee UI Bold" size="12.0" />
             </font>
+         <textFill>
+            <LinearGradient endX="0.15141957340180318" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.3245614171028137" green="0.4736842215061188" blue="0.37675437331199646" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.6281135082244873" green="0.8771929740905762" blue="0.7235939502716064" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
         </Label>
-        <Label layoutX="174.0" layoutY="232.0" text="WPM">
+        <Button layoutX="82.0" layoutY="332.0" onAction="#pushToTalkButton" prefHeight="25.0" prefWidth="107.0" style="-fx-background-color: #60866f;" text="PUSH TO TALK" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+        <Label layoutX="68.0" layoutY="110.0" text="Receiving Frequency">
             <font>
-                <Font name="Leelawadee UI Bold" size="12.0" />
+                <Font name="Leelawadee UI Bold" size="14.0" />
             </font>
+         <textFill>
+            <LinearGradient endX="0.11041012171315101" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.3245614171028137" green="0.4736842215061188" blue="0.37675437331199646" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.6281135082244873" green="0.8771929740905762" blue="0.7235939502716064" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
         </Label>
-        <Button layoutX="147.0" layoutY="281.0" onAction="#pushToTalkButton" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="PUSH TO TALK" textFill="WHITE" />
-        <Label layoutX="78.0" layoutY="104.0" text="Receiving Frequency">
-            <font>
-                <Font name="Leelawadee UI Bold" size="12.0" />
-            </font>
-        </Label>
-        <Slider fx:id="receiveFreqSlider" blockIncrement="1.0" layoutX="22.0" layoutY="130.0" majorTickUnit="7.0" max="7067.0" min="7000.0" minorTickCount="1" onMouseReleased="#changeReceivedFrequency" prefHeight="37.0" prefWidth="228.0" showTickLabels="true" showTickMarks="true" value="7000.0" />
-        <ScrollPane fx:id="chatLogScrollPane" layoutX="277.0" layoutY="50.0" prefHeight="295.0" prefWidth="345.0">
+        <Slider fx:id="receiveFreqSlider" blockIncrement="1.0" layoutX="22.0" layoutY="130.0" majorTickUnit="7.0" max="7067.0" min="7000.0" minorTickCount="1" onMouseReleased="#changeReceivedFrequency" prefHeight="37.0" prefWidth="237.0" showTickLabels="true" showTickMarks="true" style="-fx-background-color: #60866f;" value="7000.0" />
+        <ScrollPane fx:id="chatLogScrollPane" layoutX="277.0" layoutY="50.0" prefHeight="295.0" prefWidth="345.0" style="-fx-border-color: black; -fx-background-color: a6baad;">
             <content>
                 <VBox fx:id="chatLogVBox" prefHeight="24.0" prefWidth="337.0" spacing="10.0">
                     <padding>
@@ -52,26 +127,74 @@
                 </VBox>
             </content>
         </ScrollPane>
-        <TextArea fx:id="inputTextArea" layoutX="278.0" layoutY="353.0" prefHeight="99.0" prefWidth="345.0" promptText="Your input appears here: " text="&#10;" />
+        <TextArea fx:id="inputTextArea" layoutX="278.0" layoutY="353.0" prefHeight="65.0" prefWidth="345.0" promptText="Your input appears here: " style="-fx-border-color: black; -fx-background-color: a6baad;" text="&#10;" />
         <Label layoutX="661.0" layoutY="40.0" text="RADIO STATUS">
             <font>
                 <Font name="Leelawadee UI Bold" size="12.0" />
             </font>
+         <textFill>
+            <LinearGradient endX="0.9463722638151247" endY="1.0" startX="1.0" startY="0.3217665615141956">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.3245614171028137" green="0.4736842215061188" blue="0.37675437331199646" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.6281135082244873" green="0.8771929740905762" blue="0.7235939502716064" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
         </Label>
-        <ListView fx:id="botListView" layoutX="633.0" layoutY="280.0" prefHeight="171.0" prefWidth="143.0" />
-        <Label layoutX="660.0" layoutY="258.0" text="LIST OF PEOPLE">
-            <font>
-                <Font name="Leelawadee UI Bold" size="12.0" />
-            </font>
-        </Label>
-        <ComboBox fx:id="wpmComboBox" layoutX="160.0" layoutY="250.0" onAction="#selectWPMAction" prefHeight="26.0" prefWidth="73.0" promptText="10" />
-        <Slider fx:id="bandWitdhSlider" blockIncrement="1.0" layoutX="22.0" layoutY="184.0" majorTickUnit="5.0" max="35.0" minorTickCount="1" onMouseReleased="#bandWidthAction" prefHeight="37.0" prefWidth="228.0" showTickLabels="true" showTickMarks="true" value="3.0" />
+        <ComboBox fx:id="wpmComboBox" layoutX="667.0" layoutY="294.0" onAction="#selectWPMAction" prefHeight="26.0" prefWidth="73.0" promptText="10" style="-fx-background-color: #60866f;" />
+        <Slider fx:id="bandWitdhSlider" blockIncrement="1.0" layoutX="22.0" layoutY="198.0" majorTickUnit="5.0" max="35.0" minorTickCount="1" onMouseReleased="#bandWidthAction" prefHeight="37.0" prefWidth="237.0" showTickLabels="true" showTickMarks="true" style="-fx-background-color: #60866f;" value="3.0" />
         <!-- Top Label for Simulation Mode -->
-        <Label layoutX="335.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text=" NETWORKING MODE" textFill="#466854" />
-      <TextField fx:id="usernameTextField" layoutX="33.0" layoutY="366.0" />
-      <Label layoutX="54.0" layoutY="344.0" text="Type your username" />
-      <Label layoutX="25.0" layoutY="56.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="RADIO PROPERTIES" textFill="#466854" />
-      <Button fx:id="sendButton" layoutX="797.0" layoutY="366.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="74.0" style="-fx-background-color: #466854;" text="Send" textFill="WHITE" onAction="#sendAction" />
+        <Label layoutX="335.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text=" NETWORKING MODE">
+         <textFill>
+            <LinearGradient endX="0.8422712993922671" endY="0.8895898910727034" startX="1.0" startY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.3245614171028137" green="0.4736842215061188" blue="0.37675437331199646" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.6281135082244873" green="0.8771929740905762" blue="0.7235939502716064" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill></Label>
+      <TextField fx:id="usernameTextField" layoutX="25.0" layoutY="282.0" style="-fx-background-color: #60866f;" />
+      <Label layoutX="42.0" layoutY="258.0" text="Type your username" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="25.0" layoutY="56.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="RADIO PROPERTIES">
+         <textFill>
+            <LinearGradient endY="0.7823343788411715" startY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.3245614171028137" green="0.4736842215061188" blue="0.37675437331199646" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.6281135082244873" green="0.8771929740905762" blue="0.7235939502716064" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill></Label>
+      <Button fx:id="sendButton" layoutX="546.0" layoutY="421.0" mnemonicParsing="false" onAction="#sendAction" prefHeight="35.0" prefWidth="74.0" style="-fx-background-color: #60866f;" text="SEND" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
 
     </children>
 
