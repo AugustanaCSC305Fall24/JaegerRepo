@@ -23,7 +23,7 @@ public class ScriptedScenarioOptionController {
         scriptedSceneListener = "detective";
         RoomBuilder roomBuilder = new RoomBuilder(App.getCurrentPracticeScenerio(), App.getUserPrefs());
         roomBuilder.buildRoom();
-        System.out.println(App.getUserPrefs());
+        //System.out.println(App.getUserPrefs());
         App.setRoot("ScenarioSetScreen");
     }
 
@@ -34,7 +34,7 @@ public class ScriptedScenarioOptionController {
         scriptedSceneListener = "forrest";
         RoomBuilder roomBuilder = new RoomBuilder(App.getCurrentPracticeScenerio(), App.getUserPrefs());
         roomBuilder.buildRoom();
-        System.out.println(App.getUserPrefs());
+        //System.out.println(App.getUserPrefs());
         App.setRoot("ScenarioSetScreen");
 
     }

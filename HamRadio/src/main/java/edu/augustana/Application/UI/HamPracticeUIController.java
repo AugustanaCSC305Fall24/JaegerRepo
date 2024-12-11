@@ -280,7 +280,14 @@ public class HamPracticeUIController extends HamUIController {
         for (Bot bot: botList){
             //check if bot is in the frequency
             //System.out.println(bot.getBotType());
-            if(bot.getBotFrequency() < receivableMax && bot.getBotFrequency() > receivableMin){
+            if((bot.getBotFrequency() < receivableMax) &&
+                    (bot.getBotFrequency() > receivableMin)){
+                System.out.println("\nIn Giving Task:...." + (bot.getBotFrequency() < receivableMax &&
+                        bot.getBotFrequency() > receivableMax));
+                System.out.print("Bot Frequency:..." + bot.getBotFrequency());
+                System.out.println(" < Radio Allowed:... " + receivableMax);
+                System.out.print("Bot Frequency:..." + bot.getBotFrequency());
+                System.out.println(" > Radio Allowed: " + receivableMin);
                 bot.setDiscovered();
                 if(bot.isDiscovered()){
                     room.addBotToIdentifiedList(bot);
@@ -290,6 +297,7 @@ public class HamPracticeUIController extends HamUIController {
                 }
                 //player1.playMorse(botTaskTranslated);
                 addMessageToChatLogUI(bot.getTask());
+                bot.setInThread();
                 bot.play(radio);
             }
         }
@@ -344,11 +352,26 @@ public class HamPracticeUIController extends HamUIController {
 
     private void filterBotList() {
         for (Bot bot: botList) {
-            if (bot.getBotFrequency() < radio.getReceiveFrequency() + (radio.getBandWidth()/2) ||
+            if (bot.getBotFrequency() < radio.getReceiveFrequency() + (radio.getBandWidth()/2) &&
                     bot.getBotFrequency() > radio.getReceiveFrequency() - (radio.getBandWidth()/2)) {
-                bot.stopPlay();
+                System.out.println("In filter Bot: ...." + (bot.getBotFrequency() < radio.getReceiveFrequency() + (radio.getBandWidth()/2) &&
+                        bot.getBotFrequency() > radio.getReceiveFrequency() - (radio.getBandWidth()/2)));
+                if(bot.getIsInThread()){
+                    showAlertForInThread();
+                } else{
+                    addMessageToChatLogUI(bot.getTask());
+                    bot.play(radio);
+                }
             }
         }
+    }
+
+    private void showAlertForInThread(){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Action Required");
+        alert.setHeaderText("Please wait for the message to be transmitted.");
+        alert.setContentText("We don't assist to change the radio's configuration when the message is not completed yet.");
+        alert.showAndWait();
     }
 
     public String displayTextString() { //TextFieldController
@@ -395,7 +418,7 @@ public class HamPracticeUIController extends HamUIController {
         if(!isStartClicked){
             showAlert();
         } else {
-            radio.setBandWidth(radio.getBandWidth() + bandWitdhSlider.getValue());
+            radio.setBandWidth(bandWitdhSlider.getValue());
             statusTextArea.setText(displayTextString());
             if (isStartClicked && !alreadyGivingTask) {
                 givingTask();
@@ -405,8 +428,6 @@ public class HamPracticeUIController extends HamUIController {
                 System.out.println("Already given tasks");
             }
         }
-
-
     }
 
     @FXML
