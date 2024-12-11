@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="480.0" prefWidth="900.0" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.BasicTrainingController">
+<AnchorPane prefHeight="480.0" prefWidth="900.0" style="-fx-background-color: #D8E2DC;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.BasicTrainingController">
     <children>
         <!-- Title Label -->
         <Label layoutX="288.0" prefHeight="91.0" prefWidth="380.0" style="-fx-font-size: 36; -fx-font-weight: bold; -fx-text-fill: #466854;" text="CW Basic Trainer" textAlignment="CENTER">
@@ -23,7 +23,7 @@
          </font></Button>
 
         <!-- Text Input Label -->
-        <Label layoutX="28.0" layoutY="142.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold'; -fx-font-style: bold;" text="ENTER IN CW CODE">
+        <Label layoutX="28.0" layoutY="142.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="ENTER IN CW CODE">
          <font>
             <Font name="System Bold Italic" size="14.0" />
          </font></Label>
@@ -50,7 +50,7 @@
         <!-- Volume Control (Slider) -->
         <Label layoutX="805.0" layoutY="101.0" prefHeight="25.0" prefWidth="61.0" style="-fx-font-family: 'Leelawadee UI Bold'; -fx-font-size: 12px;" text="VOLUME" />
         <Slider fx:id="volumeSlider" layoutX="816.0" layoutY="136.0" max="100" min="0" onMouseReleased="#adjustVolume" orientation="VERTICAL" prefHeight="220.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="50.0" />
-      <Label layoutX="28.0" layoutY="231.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold'; -fx-font-style: Bold;" text="ENTER IN ENGLISH">
+      <Label layoutX="28.0" layoutY="231.0" style="-fx-font-size: 12px; -fx-font-family: 'Leelawadee UI Bold';" text="ENTER IN ENGLISH">
          <font>
             <Font size="14.0" />
          </font>

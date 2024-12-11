@@ -46,6 +46,9 @@ public class ScenarioSetScreenController {
 
     @FXML
     public void backAction() throws IOException {
+        if(!App.getCurrentPracticeScenerio().getBotList().isEmpty()){
+            App.getCurrentPracticeScenerio().getBotList().clear();
+        }
         App.setRoot("ScenarioOption");
     }
 
