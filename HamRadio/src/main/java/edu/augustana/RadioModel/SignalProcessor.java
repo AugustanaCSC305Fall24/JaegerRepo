@@ -112,4 +112,8 @@ public class SignalProcessor {
         System.out.println("Generate success");
         return sineWave;
     }
+
+    public void setWPM(int wpm) {
+        this.wpm = wpm;
+    }
 }

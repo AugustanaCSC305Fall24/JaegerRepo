@@ -10,7 +10,7 @@ public class SoundPlayer {
     private float whiteNoiseVolumePercentage = 40;
     private boolean isKeyReleased;
     private boolean isWhiteNoiseOn = true;
-    private int DOT_CONSTANT = calculateDotDuration(20);
+    private int DOT_CONSTANT = calculateDotDuration(18);
 
     public SoundPlayer(double volume) {
         this.isKeyReleased = true;

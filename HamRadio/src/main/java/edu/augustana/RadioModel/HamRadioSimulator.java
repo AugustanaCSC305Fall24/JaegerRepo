@@ -151,6 +151,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
     @Override
     public void setWPM(int WPM) {
         this.WPM = WPM;
+        signalProcessor.setWPM(WPM);
     }
 
     @Override
