@@ -66,12 +66,16 @@ public class MorseCodePlayer{
         }
     }
 
+    public void setWhiteNoiseVolumePercentage(float whiteNoiseVolumePercentage) {
+        soundPlayer.setWhiteNoiseVolumePercentage(whiteNoiseVolumePercentage);
+    }
+
     public void playMorse(String userOutput){
         soundPlayer.playMorse(userOutput, radio.getWPM(), radio.getReceiveFrequency(), radio.getTransmitFrequency());
     }
 
     public void playWhiteNoise() {
-        soundPlayer.generateWhiteNoise(40);
+        soundPlayer.generateWhiteNoise();
     }
 
     public void setIsWhiteNoiseOn(boolean isOn) {

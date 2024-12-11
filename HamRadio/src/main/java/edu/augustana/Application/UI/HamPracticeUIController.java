@@ -395,7 +395,7 @@ public class HamPracticeUIController extends HamUIController {
         if(!isStartClicked){
             showAlert();
         } else {
-            radio.setBandWidth(radio.getBandWidth() + bandWitdhSlider.getValue());
+            radio.setBandWidth(DEFAULT_MIN_FREQ + bandWitdhSlider.getValue());
             statusTextArea.setText(displayTextString());
             if (isStartClicked && !alreadyGivingTask) {
                 givingTask();

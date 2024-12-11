@@ -7,6 +7,7 @@ import java.util.Random;
 
 public class SoundPlayer {
     private double volume;
+    private float whiteNoiseVolumePercentage = 40;
     private boolean isKeyReleased;
     private boolean isWhiteNoiseOn = true;
     private int DOT_CONSTANT = calculateDotDuration(20);
@@ -18,6 +19,10 @@ public class SoundPlayer {
 
     public double getVolume(){
         return volume;
+    }
+
+    public void setWhiteNoiseVolumePercentage(float vol) {
+        this.whiteNoiseVolumePercentage = vol;
     }
 
     public void playSound(byte[] signal) throws LineUnavailableException, IOException {
@@ -267,7 +272,7 @@ public class SoundPlayer {
 
     private void generateNoiseWithPitch(int durationMs, AudioFormat format, ByteArrayOutputStream byteBuffer, double frequencyDifference) {
         int adjustedFrequency = (int) (frequencyDifference / 5);
-        generateTone( 600*adjustedFrequency, durationMs, format, byteBuffer);
+        generateTone( 600 + adjustedFrequency, durationMs, format, byteBuffer);
     }
 
     public void setIsKeyRelease(boolean isKeyReleased) {
@@ -310,8 +315,9 @@ public class SoundPlayer {
         }
     }
 
-    public void generateWhiteNoise(float volumePercentage) {
+    public void generateWhiteNoise() {
         Thread whiteNoiseThread = new Thread(() -> {
+            float volumePercentage = 40;
             float sampleRate = 44100.0f;
             int sampleSizeInBits = 16;
             int channels = 1;
@@ -327,16 +333,7 @@ public class SoundPlayer {
                 SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(info);
                 sourceLine.open(format);
 
-                // Adjust volume if support
-                if (sourceLine.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
-                    FloatControl volumeControl = (FloatControl) sourceLine.getControl(FloatControl.Type.MASTER_GAIN);
-                    float minVolume = volumeControl.getMinimum();
-                    float maxVolume = volumeControl.getMaximum();
-                    float volumeInDb = (volumePercentage / 100.0f) * (maxVolume - minVolume) + minVolume;
-                    volumeControl.setValue(volumeInDb);
-                } else {
-                    System.out.println("MASTER_GAIN control is not supported on this system.");
-                }
+
 
                 //Start the line
                 sourceLine.start();
@@ -346,6 +343,18 @@ public class SoundPlayer {
                 Random random = new Random();
 
                 while (isWhiteNoiseOn) {
+                    // Adjust volume if support
+                    if (sourceLine.isControlSupported(FloatControl.Type.MASTER_GAIN)) {
+                        FloatControl volumeControl = (FloatControl) sourceLine.getControl(FloatControl.Type.MASTER_GAIN);
+                        float minVolume = volumeControl.getMinimum();
+                        float maxVolume = volumeControl.getMaximum();
+                        float volumeInDb = (whiteNoiseVolumePercentage / 100.0f) * (maxVolume - minVolume) + minVolume;
+                        volumeControl.setValue(volumeInDb);
+                    } else {
+                        System.out.println("MASTER_GAIN control is not supported on this system.");
+                    }
+
+
                     for (int i = 0; i < buffer.length; i++) {
                         buffer[i] = (byte) (random.nextInt(256) - 128);
                     }
