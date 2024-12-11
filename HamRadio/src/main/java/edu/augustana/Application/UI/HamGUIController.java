@@ -22,8 +22,10 @@ public class HamGUIController {
     private WPMManager wpmManager;
     private boolean isStartClicked;
     private long timeOfLastPress;
+    private long timeOfLastRelease;
     User user;
     private boolean isPTT = false;
+    private String morseMessage = "";
 
 
     @FXML
@@ -46,6 +48,9 @@ public class HamGUIController {
 
     @FXML
     private TextField usernameTextField;
+
+    @FXML
+    private Button sendButton;
 
     @FXML
     public void initialize() throws IOException {
@@ -104,6 +109,13 @@ public class HamGUIController {
         App.setRoot("WelcomeScreen");
     }
 
+    @FXML
+    private void sendAction() {
+        CWMessage message = new CWMessage(morseMessage, usernameTextField.getText(),radio.getReceiveFrequency());
+        radio.broadcastCWSignal(message);
+        morseMessage = "";
+    }
+
     //API
     public void setVolume(double volume) {
         volumeSlider.setValue(volume);
@@ -159,18 +171,27 @@ public class HamGUIController {
         radio.setIsKeyReleased(false);
         System.out.println("onPress");
         timeOfLastPress = System.currentTimeMillis();
+        long timeSinceLastRelease = System.currentTimeMillis() - timeOfLastRelease;
+        if (timeSinceLastRelease <= 3 * HelperClass.unitOfTime(radio.getWPM())) {
+            morseMessage += "";
+        } else if (timeSinceLastRelease <= 7 * HelperClass.unitOfTime(radio.getWPM())) {
+            morseMessage += " ";
+        } else {
+            morseMessage += "/";
+        }
         radio.playTone(600);  // Starts playing tone in a separate thread
+
     }
 
     private void onRelease() {
         radio.setIsKeyReleased(true);// Signals playTone loop to end
         long timeSinceLastPress = System.currentTimeMillis() - timeOfLastPress;
+        timeOfLastRelease = System.currentTimeMillis();
         if (timeSinceLastPress <= 3 * HelperClass.unitOfTime(radio.getWPM())) {
-            radio.broadcastCWSignal(new CWMessage(".", user.getName(), radio.getTransmitFrequency()));
+            morseMessage += ".";
         } else {
-            radio.broadcastCWSignal(new CWMessage("-", user.getName(), radio.getTransmitFrequency()));
+            morseMessage += "-";
         }
-
 
     }
 
