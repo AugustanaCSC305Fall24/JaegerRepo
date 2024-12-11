@@ -103,7 +103,8 @@ public class HamUIController {
     }
 
     @FXML
-    private void changeReceivedFrequency(){
+    private void changeReceivedFrequency() {
+
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
         if(!isStartClicked){
             displayTextArea.setText("Your received frequency: " + radio.getReceiveFrequency() + "MHz \n" +

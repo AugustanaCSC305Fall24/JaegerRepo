@@ -1,5 +1,8 @@
 package edu.augustana.RadioModel.Practice.BotCollections;
 
+import edu.augustana.Application.UIHelper.MorseCodePlayer;
+import edu.augustana.Application.UIHelper.MorseCodeTranslator;
+import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.RadioModel.Practice.TaskCollection.TaskForPractice;
 
 import java.util.Random;
@@ -13,6 +16,8 @@ public abstract class Bot implements Bots{
     private boolean isAddedToIdentifiedList = false;
     private TaskForPractice task;
     private String botType;
+    boolean isThreadStop;
+    Thread thread;
 
     public static final String[] nameList = {"Andy", "Mason", "Hoang", "Hieu",
                                             "Minh", "Unknown", "Yike", "Beef", "Cow",
@@ -23,6 +28,7 @@ public abstract class Bot implements Bots{
         this.level = level;
         this.idCode = idCode;
         this.frequency = frequency;
+        isThreadStop = false;
     }
 
     public int getLevel(){
@@ -106,7 +112,28 @@ public abstract class Bot implements Bots{
     }
 
     public void requestMessage(){
-        System.out.println("Just a normal bot requesting message");
     }
 
+    public void stopPlay() {
+        isThreadStop = true;
+        System.out.println("thread is stopped: " + isThreadStop);
+    }
+
+    private boolean getIsThreadStop() {
+        return isThreadStop;
+    }
+
+    public void play(HamRadioSimulatorInterface radio) {
+        new Thread(() -> {
+            MorseCodePlayer player1 = new MorseCodePlayer(radio.getWPM(), radio);
+
+            //play the morse code of that bot
+            System.out.println("Bot info: " + this + "Task: " + this.getTask());
+            String botTaskTranslated = MorseCodeTranslator.textToMorse(this.getTask().getDescription());
+            while (!getIsThreadStop()) {
+                System.out.println("isThreadStop: " + getIsThreadStop());
+                player1.playMorseForBot(botTaskTranslated, this);
+            }
+        }).start();
+    }
 }
