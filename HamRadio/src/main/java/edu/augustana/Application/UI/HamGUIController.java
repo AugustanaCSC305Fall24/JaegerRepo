@@ -26,6 +26,7 @@ public class HamGUIController {
     User user;
     private boolean isPTT = false;
     private String morseMessage = "";
+    private boolean isFirstPress = true;
 
 
     @FXML
@@ -68,6 +69,7 @@ public class HamGUIController {
         user = new User("Hello world");
         System.out.println(radio.getReceiveFrequency());
         System.out.println(radio.getTransmitFrequency());
+        timeOfLastRelease = System.currentTimeMillis();
 
 
     }
@@ -114,6 +116,7 @@ public class HamGUIController {
         CWMessage message = new CWMessage(morseMessage, usernameTextField.getText(),radio.getReceiveFrequency());
         radio.broadcastCWSignal(message);
         morseMessage = "";
+        isFirstPress = true;
     }
 
     //API
@@ -170,15 +173,21 @@ public class HamGUIController {
     private void onPress() {
         radio.setIsKeyReleased(false);
         System.out.println("onPress");
-        timeOfLastPress = System.currentTimeMillis();
-        long timeSinceLastRelease = System.currentTimeMillis() - timeOfLastRelease;
-        if (timeSinceLastRelease <= 3 * HelperClass.unitOfTime(radio.getWPM())) {
+        long currentTime = System.currentTimeMillis();
+        long timeSinceLastRelease = currentTime - timeOfLastRelease;
+        if (isFirstPress) {
+            isFirstPress = false;
+            timeSinceLastRelease = 0;
+        }
+
+        if (timeSinceLastRelease <= 13 * HelperClass.unitOfTime(radio.getWPM())) {
             morseMessage += "";
-        } else if (timeSinceLastRelease <= 7 * HelperClass.unitOfTime(radio.getWPM())) {
+        } else if (timeSinceLastRelease <= 23 * HelperClass.unitOfTime(radio.getWPM())) {
             morseMessage += " ";
         } else {
             morseMessage += "/";
         }
+        timeOfLastPress = currentTime;
         radio.playTone(600);  // Starts playing tone in a separate thread
 
     }
@@ -186,12 +195,13 @@ public class HamGUIController {
     private void onRelease() {
         radio.setIsKeyReleased(true);// Signals playTone loop to end
         long timeSinceLastPress = System.currentTimeMillis() - timeOfLastPress;
-        timeOfLastRelease = System.currentTimeMillis();
+        timeOfLastRelease = System.currentTimeMillis(); //Get the time of Releasing the key
         if (timeSinceLastPress <= 3 * HelperClass.unitOfTime(radio.getWPM())) {
             morseMessage += ".";
         } else {
             morseMessage += "-";
         }
+
 
     }
 
