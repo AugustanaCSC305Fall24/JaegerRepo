@@ -52,7 +52,7 @@ public class BasicTrainingController {
         radio =
                 new HamRadioSimulator(600.0, 500.0,
                 700.0, 600.0, 0.0, 0,
-                1, 20);
+                1, 10);
         radio.setVolume(50);
         System.out.println(volumeSlider.getValue());
         dictionary = new Dictionary();
@@ -68,8 +68,14 @@ public class BasicTrainingController {
         randomWord = dictionary.getRandomString();
         randomMorse = MorseCodeTranslator.textToMorse(randomWord);
         MorseCodePlayer player = new MorseCodePlayer(radio.getWPM(), radio);
-        player.playWhiteNoise();
-        player.playMorse(randomMorse);
+        new Thread(() -> {
+            player.playMorse(randomMorse);
+        }).start();
+        reset();
+        setResultLabel();
+//        updateScoreLabel();
+//        player.playWhiteNoise();
+
 
     }
 
@@ -110,6 +116,7 @@ public class BasicTrainingController {
 
     @FXML
     private void resetGame() {
+        score = 0;
         reset();
     }
 
@@ -121,7 +128,7 @@ public class BasicTrainingController {
     }
 
     private void updateScoreLabel() {
-        scoreLabel.setVisible(false);
+//        scoreLabel.setVisible(false);
         scoreLabel.setText("Score: " + score );
     }
 
@@ -130,7 +137,6 @@ public class BasicTrainingController {
     }
 
     private void reset() {
-        score = 0;
         englishInputField.clear();
         morseInputField.clear();
         updateScoreLabel();
