@@ -153,7 +153,7 @@ public class SoundPlayer {
     }
 
     public void playMorse(String morseString, int wordsPerMinute, double receivedFrequency, double transmitFrequency){
-        volume = 100.0;
+//        volume = 100.0;
         int dotDuration = calculateDotDuration(wordsPerMinute);
         System.out.println("I'm working... playMorse in SoundPlayer");
         System.out.println("I'm speaking..." + morseString);
