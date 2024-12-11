@@ -26,8 +26,6 @@ public class PracticeScenario {
         taskList = new ArrayList<>();
         identifiedBotList = new ArrayList<>();
         chatLogMessageList = new ArrayList<>();
-        chatLogMessageList.add(new ChatMessage(" Hello, welcome to HAM Practice!", "Radio", Color.BLACK, true));
-        chatLogMessageList.add(new ChatMessage(" Please Hit Start to Continue!", "Radio", Color.RED, true));
     }
 
     private void addBot(Bot botToAdd){
