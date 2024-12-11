@@ -68,8 +68,14 @@ public class BasicTrainingController {
         randomWord = dictionary.getRandomString();
         randomMorse = MorseCodeTranslator.textToMorse(randomWord);
         MorseCodePlayer player = new MorseCodePlayer(radio.getWPM(), radio);
-        player.playWhiteNoise();
-        player.playMorse(randomMorse);
+        new Thread(() -> {
+            player.playMorse(randomMorse);
+        }).start();
+        reset();
+        setResultLabel();
+//        updateScoreLabel();
+//        player.playWhiteNoise();
+
 
     }
 
@@ -130,7 +136,7 @@ public class BasicTrainingController {
     }
 
     private void reset() {
-        score = 0;
+//        score = 0;
         englishInputField.clear();
         morseInputField.clear();
         updateScoreLabel();
