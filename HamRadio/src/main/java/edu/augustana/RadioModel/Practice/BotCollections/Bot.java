@@ -16,7 +16,7 @@ public abstract class Bot implements Bots{
     private boolean isAddedToIdentifiedList = false;
     private TaskForPractice task;
     private String botType;
-    boolean isThreadStop;
+    private volatile boolean isThreadStop;
     Thread thread;
 
     public static final String[] nameList = {"Andy", "Mason", "Hoang", "Hieu",
@@ -94,9 +94,9 @@ public abstract class Bot implements Bots{
     public String getBotType(){
         return botType;
     }
-    public String toString(){
-        return "Name: " + idCode + ", Level: " + level;
-    }
+//    public String toString(){
+//        return "Name: " + idCode + ", Level: " + level;
+//    }
 
     public static String getRandomBotNameFromList() {
         String[] names = {"Alice", "Bubba", "Candy", "Doodles", "Egbert", "Fifi", "Gus", "Holly", "Iggy",
@@ -116,7 +116,7 @@ public abstract class Bot implements Bots{
 
     public void stopPlay() {
         isThreadStop = true;
-        System.out.println("thread is stopped: " + isThreadStop);
+        System.out.println("\n" + this + getIDCode() + "...." + " In Stop: thread is stopped: " + isThreadStop + "\n");
     }
 
     private boolean getIsThreadStop() {
@@ -131,9 +131,13 @@ public abstract class Bot implements Bots{
             System.out.println("Bot info: " + this + "Task: " + this.getTask());
             String botTaskTranslated = MorseCodeTranslator.textToMorse(this.getTask().getDescription());
             while (!getIsThreadStop()) {
-                System.out.println("isThreadStop: " + getIsThreadStop());
+                System.out.println("\nIN Play: isThreadStop: " + this + "..." + getIDCode() + "...." +getIsThreadStop() + "\n");
                 player1.playMorseForBot(botTaskTranslated, this);
             }
         }).start();
+    }
+
+    public void setPlayAgain(){
+        isThreadStop = !isThreadStop;
     }
 }
