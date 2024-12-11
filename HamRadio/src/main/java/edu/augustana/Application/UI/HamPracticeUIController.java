@@ -52,6 +52,8 @@ public class HamPracticeUIController extends HamUIController {
     User user= new User("Hello world");
     FileManager fileManager = App.getFileManager();
     boolean isRespondActive = false;
+    boolean alreadyGivingTask = false;
+    List<Bot> botList;
 
     @FXML
     private TextArea statusTextArea;
@@ -104,6 +106,7 @@ public class HamPracticeUIController extends HamUIController {
         player = new MorseCodePlayer(wpm, radio);
         System.out.println("Print botList from innitialize----------------" + room.getBotList());
         System.out.println("\n" + userPreferences);
+        botList = room.getBotList();
 
 //        //Debug AI Bot
 //        Bot aiBot = new GeminiBirdBot("TestBot", Color.BLACK, room, "You can only say what's up back to me");
@@ -244,17 +247,19 @@ public class HamPracticeUIController extends HamUIController {
     private void changeReceivedFrequency(){
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
         statusTextArea.setText(displayTextString());
-        if(isStartClicked){
+        if (isStartClicked && !alreadyGivingTask) {
             givingTask();
+        } else if (alreadyGivingTask) {
+            filterBotList();
         }
     }
 
     //method to give task
     private void givingTask() {
+        alreadyGivingTask = true;
         //setting up
         System.out.println("-----------------");
         System.out.println("Start Giving Task.");
-        List<Bot> botList = room.getBotList();
         double radioFreq = radio.getReceiveFrequency();
         double radioBandwidth = radio.getBandWidth();
         double receivableMin = radioFreq - radioBandwidth/2;
@@ -263,6 +268,7 @@ public class HamPracticeUIController extends HamUIController {
         //traverse the bot list
         for (Bot bot: botList){
             //check if bot is in the frequency
+            System.out.println(bot.getBotType());
             if(bot.getBotFrequency() < receivableMax && bot.getBotFrequency() > receivableMin){
                 bot.setDiscovered();
                 if(bot.isDiscovered()){
@@ -271,14 +277,10 @@ public class HamPracticeUIController extends HamUIController {
                 if (!bot.didAskForHelp()){
                     bot.setDidAskForHelp();
                 }
-                MorseCodePlayer player1 = new MorseCodePlayer(radio.getWPM(), radio);
-
-                //play the morse code of that bot
-                System.out.println("Bot info: " + bot + "Task: " + bot.getTask());
-                String botTaskTranslated = MorseCodeTranslator.textToMorse(bot.getTask().getDescription());
-                player1.playMorseForBot(botTaskTranslated, bot);
                 //player1.playMorse(botTaskTranslated);
                 addMessageToChatLogUI(bot.getTask());
+
+                bot.play(radio);
             }
         }
         System.out.println("No Loop");
@@ -330,6 +332,15 @@ public class HamPracticeUIController extends HamUIController {
         statusTextArea.setText(displayTextString());
     }
 
+    private void filterBotList() {
+        for (Bot bot: botList) {
+            if (bot.getBotFrequency() > radio.getReceiveFrequency() + (radio.getBandWidth()/2) ||
+                    bot.getBotFrequency() < radio.getReceiveFrequency() - (radio.getBandWidth()/2)) {
+                bot.stopPlay();
+            }
+        }
+    }
+
     public String displayTextString() { //TextFieldController
         String radioStatus = "Receive: " + radio.getReceiveFrequency() + "MHz \n" +
                 "Transmit: " + radio.getTransmitFrequency() + "MHz \n"+
@@ -373,8 +384,12 @@ public class HamPracticeUIController extends HamUIController {
     public void bandWidthAction(){
         radio.setBandWidth(radio.getBandWidth() + bandWitdhSlider.getValue());
         statusTextArea.setText(displayTextString());
-        if (isStartClicked){
+        if (isStartClicked && !alreadyGivingTask) {
             givingTask();
+            System.out.println("Not yet");
+        } else if (alreadyGivingTask) {
+            filterBotList();
+            System.out.println("Already given tasks");
         }
 
     }
