@@ -1,6 +1,7 @@
 package edu.augustana.RadioModel.Practice.TaskCollection;
 
 import edu.augustana.RadioModel.Practice.BotCollections.Bot;
+import edu.augustana.RadioModel.Practice.ChatMessage;
 import edu.augustana.RadioModel.Practice.SceneBuilderFactory.ForrestSceneType;
 import edu.augustana.RadioModel.Practice.SceneBuilderFactory.SceneType;
 import edu.augustana.RadioModel.Practice.TaskCollection.DetectiveScriptedGame.DetectiveTask;
@@ -29,8 +30,12 @@ public class TaskFactory {
                return new HintPoliceTask(bot);
            }
        } else {
-           return null; //Adjust Later!!!
+           return null; //For extending the app later!!!
        }
+   }
+
+   public TaskForPractice buildTaskForConvo(Bot bot, ChatMessage message){
+       return new ConvoTask(bot, message);
    }
 
 

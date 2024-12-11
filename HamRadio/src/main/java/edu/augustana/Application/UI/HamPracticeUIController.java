@@ -7,11 +7,13 @@ import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.RadioModel.Practice.*;
 import edu.augustana.RadioModel.Practice.BotCollections.Bot;
+import edu.augustana.RadioModel.Practice.BotCollections.GeminiBirdBot;
 import edu.augustana.RadioModel.Practice.PracticeScenario;
 import edu.augustana.RadioModel.Practice.SceneBuilderFactory.RoomBuilder;
 import edu.augustana.RadioModel.Practice.TaskCollection.TaskForPractice;
 import edu.augustana.RadioModel.Practice.TaskCollection.TransmittingTask;
 import edu.augustana.RadioModel.User;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -23,9 +25,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 //import com.google.gson.Gson;
@@ -81,6 +85,7 @@ public class HamPracticeUIController extends HamUIController {
         userPreferences = App.getUserPrefs();
         this.room = App.getCurrentPracticeScenerio();
         room.setNewMessageEventListener(msg -> handleNewMessage(msg));
+
         primaryUserName = userPreferences.getPrimaryUserName();
         serverAddress = userPreferences.getServerAddress();
         wpm = userPreferences.getWPM();
@@ -89,9 +94,6 @@ public class HamPracticeUIController extends HamUIController {
         morseCodeHandlerManager = new MorseCodeHandlerManager(inputTextArea, radio);
         radio.setVolume(volumeSlider.getValue());
         radio.setReceiveFrequency(receiveFreqSlider.getValue());
-
-        addMessageToChatLogUI("Radio", " Hello, welcome to HAM Practice!");
-        addMessageToChatLogUI("Radio", " Please first read our game's rules by hitting \"Rules \"");
         for (ChatMessage message : room.getChatLogMessageList()) {
             addMessageToChatLogUI(message);
         }
@@ -102,12 +104,17 @@ public class HamPracticeUIController extends HamUIController {
         player = new MorseCodePlayer(wpm, radio);
         System.out.println("Print botList from innitialize----------------" + room.getBotList());
         System.out.println("\n" + userPreferences);
+
+//        //Debug AI Bot
+//        Bot aiBot = new GeminiBirdBot("TestBot", Color.BLACK, room, "You can only say what's up back to me");
+//        room.getBotList().add(aiBot);
+//        aiBot.requestMessage();
+
     }
-
-
 
     @FXML
     private void startButton() throws IOException {
+
         statusConnect = " Connected";
         if(isStartClicked){
             room.getBotList().clear();
@@ -130,6 +137,18 @@ public class HamPracticeUIController extends HamUIController {
             isStartClickedTwice = true;
         }
         App.getKeyBindManager().registerKeybind(KeyCode.SHIFT, this::onPress, this::onRelease);
+
+        int BOT_SPEED_DELAY = 2; // speed 1 means 10 sec delay, speed 10 means 1 sec delay
+        PauseTransition pause = new PauseTransition(Duration.seconds(BOT_SPEED_DELAY));
+        pause.setOnFinished( e -> {
+            // STOP running if the scene switched roots, and thus this chatLogVBox is longer visible
+            if (chatLogVBox.getScene()!=null) {
+                System.out.println("\nI am calling RANDOM requestMessage!!!------------");
+                sendMessageFromRandomBot();
+                pause.playFromStart(); // make it loop
+            }
+        });
+        pause.play(); // start playing a 10-sec "do nothing" animation, & aferwards it triggers the 'onFinished' event
     }
 
     private void generateWhiteNoise() {
@@ -151,6 +170,7 @@ public class HamPracticeUIController extends HamUIController {
     }
 
     private void handleNewMessage(ChatMessage msg) {
+        System.out.println("I'm handling new message----------------");
         Platform.runLater(()->addMessageToChatLogUI(msg));
     }
 
@@ -429,6 +449,24 @@ public class HamPracticeUIController extends HamUIController {
 
     private void saveUserDataToFile(File chosenFile) {
         fileManager.saveUserDataToFile(chosenFile);
+    }
+
+    private void sendMessageFromRandomBot() {
+        ChatMessage lastMsg = App.getCurrentPracticeScenerio().getChatLogMessageList().getLast();
+        String lastSender = lastMsg.getSender();
+        List<Bot> bots =  new ArrayList<>(App.getCurrentPracticeScenerio().getBotList());
+        // choose a random bot that is NOT the most recent sender (so it doesn't reply to itself)
+        Collections.shuffle(bots);
+        Bot randomBot = null;
+        for (Bot bot : bots) {
+            if (!bot.getIDCode().equals(lastSender)) {
+                randomBot = bot;
+                break;
+            }
+        }
+        if (randomBot != null) {
+            randomBot.requestMessage();
+        }
     }
 
 }

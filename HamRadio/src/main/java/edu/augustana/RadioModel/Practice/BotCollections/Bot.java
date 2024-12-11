@@ -105,4 +105,8 @@ public abstract class Bot implements Bots{
         return  name + " the " + adjective;
     }
 
+    public void requestMessage(){
+        System.out.println("Just a normal bot requesting message");
+    }
+
 }

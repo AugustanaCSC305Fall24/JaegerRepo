@@ -4,6 +4,8 @@ import edu.augustana.AI.GeminiAPITest;
 import edu.augustana.Application.UI.App;
 import edu.augustana.RadioModel.Practice.ChatMessage;
 import edu.augustana.RadioModel.Practice.PracticeScenario;
+import edu.augustana.RadioModel.Practice.TaskCollection.ConvoTask;
+import edu.augustana.RadioModel.Practice.TaskCollection.TaskForPractice;
 import javafx.scene.paint.Color;
 import swiss.ameri.gemini.api.*;
 import swiss.ameri.gemini.gson.GsonJsonParser;
@@ -46,6 +48,7 @@ public class GeminiBirdBot extends Bot {
                 .thenAccept(gcr -> {
                     String geminiResponse = gcr.text();
                     System.out.println("Debug: GeminiBirdBot received response: " + geminiResponse);
+                    this.setTask(new ConvoTask(this, new ChatMessage(geminiResponse, this.getIDCode(), Color.PURPLE, true)));
                     getRoom().addChatMessage(new ChatMessage(geminiResponse, getIDCode(), Color.RED, false));
 
                 });
