@@ -1,6 +1,8 @@
 package edu.augustana.Application.UI;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.augustana.Application.UIHelper.*;
 
@@ -33,6 +35,7 @@ public class HamGUIController {
     private boolean isPTT = false;
     private String morseMessage = "";
     private boolean isFirstPress = true;
+    private List<CWMessage> chatLogMessageList;
 
 
     @FXML
@@ -89,7 +92,9 @@ public class HamGUIController {
         System.out.println(radio.getTransmitFrequency());
         timeOfLastRelease = System.currentTimeMillis();
         inputTextArea.clear();
-        for (CWMessage cwMessage: radio.getChatMessageList()) {
+        chatLogMessageList = new ArrayList<>();
+        chatLogMessageList.add(new CWMessage("Welcome to HAM Radio!", "System", receiveFreqSlider.getValue()));
+        for (CWMessage cwMessage: chatLogMessageList) {
             addMessageToChatLogUI(cwMessage);
         }
 
@@ -101,6 +106,7 @@ public class HamGUIController {
         isStartClicked = true;
         statusTextArea.setText(displayTextString());
         //start connecting to server
+
         radio.startRadio(usernameTextField.getText());
         setName(usernameTextField.getText());
     }
@@ -136,13 +142,13 @@ public class HamGUIController {
     private void sendAction() throws Exception {
         CWMessage message = new CWMessage(morseMessage, usernameTextField.getText(),radio.getReceiveFrequency());
         if (message != null) {
-            radio.addMessage(message);
+            chatLogMessageList.add(message);
+            System.out.println(chatLogMessageList);
+            addMessageToChatLogUI(message);
         }
         radio.broadcastCWSignal(message);
         morseMessage = "";
         isFirstPress = true;
-
-
         inputTextArea.clear();
     }
 
@@ -245,6 +251,8 @@ public class HamGUIController {
     }
 
     private void handleIncomingChatMessage(CWMessage chatMessage) {
+        System.out.println("CW Message is handled: " + chatMessage.getText());
+        chatLogMessageList.add(chatMessage);
         Platform.runLater(() -> addMessageToChatLogUI(chatMessage));
     }
 

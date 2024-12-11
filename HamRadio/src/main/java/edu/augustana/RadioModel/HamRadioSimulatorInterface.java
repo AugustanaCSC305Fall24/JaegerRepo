@@ -76,8 +76,6 @@ public interface HamRadioSimulatorInterface {
     //setlistener
     void setOnChatMessage(ServerSignalListener listener);
 
-    List<CWMessage> getChatMessageList();
 
-    void addMessage(CWMessage message) throws Exception;
 
 }

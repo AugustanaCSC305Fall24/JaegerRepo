@@ -41,8 +41,7 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
 
         this.soundPlayer = new SoundPlayer(volume);
         this.signalProcessor = new SignalProcessor(transmitFrequency, receiveFrequency, bandWidth, WPM, soundPlayer);
-        chatLogMessageList = new ArrayList<>();
-        chatLogMessageList.add(new CWMessage("Welcome to HAM Radio!", "System", transmitFrequency));
+
 
         //this.client.connectToServer("ws://localhost:8080/signal", this::processSignalFromServer);
     }
@@ -185,28 +184,19 @@ public class HamRadioSimulator implements HamRadioSimulatorInterface {
         listener.onSignalReceived(chatMessage);
     }
 
-    private void processSignalFromServerByMultithreading(CWMessage chatMessage) {
+    private void processSignalFromServerByMultithreading(CWMessage chatMessage) throws LineUnavailableException {
         new Thread(() -> {
             try {
                 signalProcessor.processMultithread(chatMessage);
-                chatLogMessageList.add(chatMessage);
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }).run();
+        listener.onSignalReceived(chatMessage);
     }
 
-    @Override
-    public List<CWMessage> getChatMessageList() { return chatLogMessageList;}
 
-    @Override
-    public void addMessage(CWMessage message) throws LineUnavailableException {
-        chatLogMessageList.add(message);
-        if (listener != null) {
-            listener.onSignalReceived(message);
-        }
-    }
 
 
 
