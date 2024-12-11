@@ -143,9 +143,9 @@ public class HamPracticeUIController extends HamUIController {
         pause.setOnFinished( e -> {
             // STOP running if the scene switched roots, and thus this chatLogVBox is longer visible
             if (chatLogVBox.getScene()!=null) {
-                System.out.println("\nI am calling RANDOM requestMessage!!!------------");
                 sendMessageFromRandomBot();
                 pause.playFromStart(); // make it loop
+
             }
         });
         pause.play(); // start playing a 10-sec "do nothing" animation, & aferwards it triggers the 'onFinished' event
@@ -204,7 +204,6 @@ public class HamPracticeUIController extends HamUIController {
                         App.getUserPrefs().getPrimaryUserName(),
                         Color.DARKGREEN, true);
                 App.getCurrentPracticeScenerio().addChatMessage(newMessageFromUser);
-                addMessageToChatLogUI(App.getUserPrefs().getPrimaryUserName(),msgText);
                 inputTextArea.clear();
             }
         } else {

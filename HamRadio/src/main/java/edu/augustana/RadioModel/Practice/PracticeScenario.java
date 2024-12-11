@@ -95,7 +95,6 @@ public class PracticeScenario {
         chatLogMessageList.clear();
     }
 
-
     public String toString(){
         return "\nPrinting The room....."+
                 "\nBotList: ..............." + botList+

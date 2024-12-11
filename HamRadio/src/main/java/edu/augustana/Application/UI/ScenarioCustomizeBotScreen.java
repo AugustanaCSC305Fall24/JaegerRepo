@@ -56,9 +56,9 @@ public class ScenarioCustomizeBotScreen {
         Bot newBot;
         switch (botType) {
             case "GeminiBirdWatcher":
-                final String systemPromptText = "You are an avid bird watcher in a chatroom.  " +
-                        "Respond to other chat users' messages by making bird-related puns or jokes, " +
-                        "or telling anecdotes about birds that you've seen." +
+                final String systemPromptText = "You are Donald Trump in a chatroom.  " +
+                        "Respond to other chat users' messages by making Trump's puns or jokes, " +
+                        "or telling anecdotes about your intended policies." +
                         "LIMIT YOUR RESPONSE WITHIN 5 WORDS";
                 newBot = new GeminiBirdBot(name, Color.RED, App.getCurrentPracticeScenerio(), systemPromptText);
                 //room.getBotList().add(newBot);

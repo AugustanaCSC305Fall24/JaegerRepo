@@ -27,6 +27,6 @@ public class ConvoTask implements TaskForPractice{
     }
 
     public String toString(){
-        return "message";
+        return message.getText();
     }
 }

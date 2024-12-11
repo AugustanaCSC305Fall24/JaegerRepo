@@ -48,7 +48,9 @@ public class GeminiBirdBot extends Bot {
                 .thenAccept(gcr -> {
                     String geminiResponse = gcr.text();
                     System.out.println("Debug: GeminiBirdBot received response: " + geminiResponse);
-                    this.setTask(new ConvoTask(this, new ChatMessage(geminiResponse, this.getIDCode(), Color.PURPLE, true)));
+                    ChatMessage botTaskDescription = new ChatMessage(geminiResponse, this.getIDCode(), Color.PURPLE, true);
+                    TaskForPractice task = new ConvoTask(this, botTaskDescription);
+                    this.setTask(task);
                     getRoom().addChatMessage(new ChatMessage(geminiResponse, getIDCode(), Color.RED, false));
 
                 });
