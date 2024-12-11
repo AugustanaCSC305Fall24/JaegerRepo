@@ -1,5 +1,7 @@
 package edu.augustana.RadioModel;
 
+import java.util.List;
+
 public interface HamRadioSimulatorInterface {
     //methods for sending and receiving
     //send a dot
@@ -73,5 +75,9 @@ public interface HamRadioSimulatorInterface {
 
     //setlistener
     void setOnChatMessage(ServerSignalListener listener);
+
+    List<CWMessage> getChatMessageList();
+
+    void addMessage(CWMessage message) throws Exception;
 
 }

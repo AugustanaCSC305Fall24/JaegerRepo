@@ -8,10 +8,16 @@ import edu.augustana.RadioModel.CWMessage;
 import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.RadioModel.User;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class HamGUIController {
     private HamRadioSimulatorInterface radio;
@@ -57,6 +63,15 @@ public class HamGUIController {
     private TextArea inputTextArea;
 
     @FXML
+    private ScrollPane chatLogScrollPane;
+
+    @FXML
+    private AnchorPane anchorPane;
+
+    @FXML
+    private VBox chatLogVBox;
+
+    @FXML
     public void initialize() throws IOException {
         System.out.println("\ninitialization started");
         this.radio = new HamRadioSimulator(0,0,0,0,
@@ -74,6 +89,9 @@ public class HamGUIController {
         System.out.println(radio.getTransmitFrequency());
         timeOfLastRelease = System.currentTimeMillis();
         inputTextArea.clear();
+        for (CWMessage cwMessage: radio.getChatMessageList()) {
+            addMessageToChatLogUI(cwMessage);
+        }
 
     }
 
@@ -115,11 +133,16 @@ public class HamGUIController {
     }
 
     @FXML
-    private void sendAction() {
+    private void sendAction() throws Exception {
         CWMessage message = new CWMessage(morseMessage, usernameTextField.getText(),radio.getReceiveFrequency());
+        if (message != null) {
+            radio.addMessage(message);
+        }
         radio.broadcastCWSignal(message);
         morseMessage = "";
         isFirstPress = true;
+
+
         inputTextArea.clear();
     }
 
@@ -206,8 +229,6 @@ public class HamGUIController {
             morseMessage += "-";
         }
 
-
-
         inputTextArea.setText(morseMessage);
 
 
@@ -224,7 +245,18 @@ public class HamGUIController {
     }
 
     private void handleIncomingChatMessage(CWMessage chatMessage) {
+        Platform.runLater(() -> addMessageToChatLogUI(chatMessage));
+    }
 
+    private void addMessageToChatLogUI(CWMessage message) {
+        System.out.println(message.getText());
+        Label label = new Label(message.getUser() + ": " + message.getText());
+        label.setWrapText(true);
+        label.setTextFill(Color.RED);
+        label.setFont(Font.font("System", FontWeight.NORMAL, 15));
+        chatLogVBox.getChildren().add(label);
+
+        Platform.runLater(() -> chatLogScrollPane.setVvalue(1.0));
     }
 
     public String displayTextString() { //TextFieldController
@@ -237,6 +269,8 @@ public class HamGUIController {
 
         return radioStatus;
     }
+
+
 }
 
 //implementation of User, ChatMessage, broadcastCWSignal(), processSignalFromServer() -> Networking for client side

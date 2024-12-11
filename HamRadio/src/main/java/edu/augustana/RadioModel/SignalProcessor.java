@@ -78,6 +78,7 @@ public class SignalProcessor {
         double minBand = receiveFrequency - (bandWidth/2);
         double maxBand = receiveFrequency + (bandWidth/2);
         if (signalFilter.filterCWMessageByMultithreading(cwMessage, minBand, maxBand)) {
+
             soundPlayer.playMorseWithDynamicVolume(cwMessage.getText(), receiveFrequency, cwMessage.getFrequency(), bandWidth, wpm);
         }
     }

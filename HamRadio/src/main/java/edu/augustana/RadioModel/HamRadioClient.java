@@ -33,12 +33,15 @@ public class HamRadioClient implements HamRadioClientInterface {
             try {
                 CWMessage chatMessage = new Gson().fromJson(message, CWMessage.class);
                 listener.onSignalReceived(chatMessage);
+
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Error processing signal: " + e.getMessage());
             }
         });
     }
+
+
 
     @OnError
     public void onError(Session session, Throwable throwable) {
