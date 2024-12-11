@@ -180,7 +180,7 @@ public class HamGUIController {
             timeSinceLastRelease = 0;
         }
 
-        if (timeSinceLastRelease <= 13 * HelperClass.unitOfTime(radio.getWPM())) {
+        if (timeSinceLastRelease <= 8 * HelperClass.unitOfTime(radio.getWPM())) {
             morseMessage += "";
         } else if (timeSinceLastRelease <= 23 * HelperClass.unitOfTime(radio.getWPM())) {
             morseMessage += " ";
