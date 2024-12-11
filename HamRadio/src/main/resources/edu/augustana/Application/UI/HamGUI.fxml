@@ -15,7 +15,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="480.0" prefWidth="900.0" style="-fx-background-color: #2c3f33;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.HamGUIController">
+<AnchorPane fx:id="anchorPane" prefHeight="480.0" prefWidth="900.0" style="-fx-background-color: #2c3f33;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.augustana.Application.UI.HamGUIController">
     <children>
         <TextArea fx:id="statusTextArea" layoutX="632.0" layoutY="57.0" prefHeight="200.0" prefWidth="143.0" style="-fx-border-color: black; -fx-background-color: a6baad;" />
 
@@ -153,11 +153,11 @@
          </textFill>
         </Label>
         <ComboBox fx:id="wpmComboBox" layoutX="667.0" layoutY="294.0" onAction="#selectWPMAction" prefHeight="26.0" prefWidth="73.0" promptText="10" style="-fx-background-color: #60866f;" />
-        <Slider fx:id="bandWitdhSlider" blockIncrement="1.0" layoutX="22.0" layoutY="198.0" majorTickUnit="5.0" max="35.0" minorTickCount="1" onMouseReleased="#bandWidthAction" prefHeight="37.0" prefWidth="237.0" showTickLabels="true" showTickMarks="true" style="-fx-background-color: #60866f;" value="3.0" />
+        <Slider fx:id="bandWitdhSlider" blockIncrement="1.0" layoutX="22.0" layoutY="198.0" majorTickUnit="5.0" max="35.0" minorTickCount="1" onMouseReleased="#bandWidthAction" prefHeight="37.0" prefWidth="237.0" showTickLabels="true" showTickMarks="true" style="-fx-background-color: #60866f;" value="30.0" />
         <!-- Top Label for Simulation Mode -->
         <Label layoutX="335.0" layoutY="14.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text=" NETWORKING MODE">
          <textFill>
-            <LinearGradient endX="0.8422712993922671" endY="0.8895898910727034" startX="1.0" startY="1.0">
+            <LinearGradient endX="0.3817034640146732" endY="0.8895898910727034" startX="0.182965275617052" startY="1.0">
                <stops>
                   <Stop>
                      <color>

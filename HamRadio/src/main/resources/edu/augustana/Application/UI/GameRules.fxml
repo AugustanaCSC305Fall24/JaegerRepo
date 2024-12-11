@@ -1,18 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TextArea layoutX="7.0" layoutY="43.0" prefHeight="437.0" prefWidth="380.0" text="Welcome to the Ham Radio Rescue Simulation! In this intense 10-minute mission, your goal is to rescue as many civilians as possible, each one in need of urgent help. Your task is to achieve the highest score within the time limit, and your performance will be recorded on the ranking board for everyone to see.&#10;&#10;As the game begins, you'll need to start by adjusting your filter and tuning into different frequencies. Each specific frequency brings you in contact with a civilian awaiting assistance. These civilians will each have a unique need – they may either require you to transmit critical information to a rescue team or receive a CW (Continuous Wave) code that they’re sending your way. Precision and speed are essential here; you'll need to understand the code or relay the information accurately to succeed in your mission.&#10;&#10;Your score varies depending on the level of difficulty associated with each civilian you encounter. Rescuing a Level 0 civilian earns you 1 point, while a Level 1 rescue grants you 2 points. The most challenging rescues, at Level 2, reward you with 3 points. Every point counts, so aim high and prioritize efficiently to maximize your score.&#10;&#10;Keep focused, work fast, and rise to the challenge. Your results and ranking await at the end of each session." wrapText="true" />
       <Label layoutX="126.0" layoutY="14.0" text="GAME RULES" textFill="#466854">
          <font>
             <Font name="System Bold" size="23.0" />
          </font>
       </Label>
+      <TabPane layoutX="-2.0" layoutY="59.0" prefHeight="443.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+            <Tab text="Your AI Agent">
+               <content>
+                  <TextArea prefHeight="200.0" prefWidth="200.0" text="COME AND CUSTOMIZE YOUR AI AGENTS!!!&#10;" />
+               </content>
+            </Tab>
+          <Tab text="Burning Forest">
+               <content>
+                  <TextArea prefHeight="200.0" prefWidth="200.0" text="&#10;&#10;WELCOME TO BURNING FOREST!!! &#10;&#10;YOU TASK IS SIMPLE: COLLECT INFORMATION AND REPORT TO&#10;THE POLLICE OFFICER. THERE WOULD BE TWO HINTS GIVING &#10;TO YOU THROUGH CW CODE!!! &#10;&#10;-----------------------SPOILER ALERTS!!!!!!---------------------------------&#10;HINT 1 - 7 PEOPLE &#10;&#10;&#10;HINT 2 - PALATINO ST&#10;&#10;&#10;REPORT THE ANSWER TO THE AI AGENT TO WIN!!!&#10;" />
+               </content>
+            </Tab>
+          <Tab text="Detective America">
+               <content>
+                  <TextArea prefHeight="200.0" prefWidth="200.0" text="&#10;&#10;WELCOME TO DETECTIVE!!! &#10;&#10;YOU TASK IS SIMPLE: COLLECT INFORMATION AND REPORT TO&#10;THE DETECTIVE. THERE WOULD BE 4 HINTS GIVING &#10;TO YOU THROUGH CW CODE!!! &#10;&#10;----------------------- ----SPOILER ALERTS!!!!!!----------------------------&#10;&#10;HINT 1 - HELEN IS A SURREALISM &#10;&#10;HINT 2 - IMPRESSIONALISM DOES NOT USE WATER COLOR&#10;&#10;HINT 3 - SURREALISM USES ACRYLIC &#10;&#10;HINT 4 - ANNA DOES NOT USE WATER COLOR &#10;&#10;QUESTION: THE KILLER USED WATER COLOR. WHO IS THE KILLER?&#10;&#10;ANSWER: CLARA!!!&#10;REPORT THE ANSWER TO THE AI AGENT TO WIN!!!&#10;" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
    </children>
 </AnchorPane>

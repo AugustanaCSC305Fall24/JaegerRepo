@@ -74,7 +74,7 @@
          <font>
             <Font name="System Bold" size="12.0" />
          </font></Button>
-      <ComboBox fx:id="wpmComboBox" layoutX="797.0" layoutY="374.0" onAction="#selectWPMAction" prefHeight="26.0" prefWidth="73.0" promptText="10" />
+      <ComboBox fx:id="wpmComboBox" layoutX="797.0" layoutY="374.0" onAction="#selectWPMAction" prefHeight="26.0" prefWidth="73.0" />
       <Button fx:id="rulesButton1" layoutX="86.0" layoutY="387.0" onAction="#switchToCustomizeScenario" prefHeight="25.0" prefWidth="100.0" style="-fx-background-color: #466854;" text="EXIT" textFill="WHITE">
          <font>
             <Font name="System Bold" size="12.0" />

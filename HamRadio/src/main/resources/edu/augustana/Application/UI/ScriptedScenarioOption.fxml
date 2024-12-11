@@ -12,7 +12,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </ToggleButton>
-      <ToggleButton layoutX="303.0" layoutY="240.0" mnemonicParsing="false" onAction="#forrestAction" prefHeight="63.0" prefWidth="293.0" style="-fx-background-color: #466854;" text="HELP THE BURNED FORREST" textFill="WHITE">
+      <ToggleButton layoutX="303.0" layoutY="240.0" mnemonicParsing="false" onAction="#forrestAction" prefHeight="63.0" prefWidth="293.0" style="-fx-background-color: #466854;" text="HELP THE BURNED FOREST" textFill="WHITE">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

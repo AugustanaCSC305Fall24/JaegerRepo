@@ -451,7 +451,6 @@ public class HamPracticeUIController extends HamUIController {
         room.getBotList().clear();
         room.clearChatLogMessageList();
         clearChatAction();
-        Platform.exit();
         App.setRoot("ScenarioSetScreen");
     }
 
