@@ -1,7 +1,7 @@
 package edu.augustana.Application.UI;
 import edu.augustana.Application.UIHelper.ScenarioSetSceneBuilder;
+import edu.augustana.RadioModel.Practice.BotCollections.AIBot;
 import edu.augustana.RadioModel.Practice.BotCollections.Bot;
-import edu.augustana.RadioModel.Practice.BotCollections.GeminiBirdBot;
 import edu.augustana.RadioModel.Practice.PracticeScenario;
 import edu.augustana.RadioModel.Practice.UserPreferences;
 import javafx.event.ActionEvent;
@@ -18,12 +18,16 @@ public class ScenarioCustomizeBotScreen {
     @FXML
     private TextField botNameTextField;
     @FXML
+    private TextField botRoleTextField;
+    @FXML
     private ComboBox<String> botTypeBox;
     @FXML
     private ListView<Bot> botListView;
+
     PracticeScenario room = App.getCurrentPracticeScenerio();
     UserPreferences prefs = App.getUserPrefs();
     private String listener;
+    private String userRoleInput;
 
     @FXML
     void initialize(){
@@ -35,7 +39,7 @@ public class ScenarioCustomizeBotScreen {
             botTypeBox.getSelectionModel().select(0);
         } else {
             listener = ScriptedScenarioOptionController.scriptedSceneListener;
-            botTypeBox.getItems().add("GeminiBirdWatcher");
+            botTypeBox.getItems().add("AIBot");
             botTypeBox.getSelectionModel().select(0);
             botNameTextField.setText(Bot.getRandomBotNameFromList());
 
@@ -53,14 +57,15 @@ public class ScenarioCustomizeBotScreen {
     private void addBotAction(ActionEvent event) {
         String name = botNameTextField.getText();
         String botType = botTypeBox.getValue();
+        String role = botRoleTextField.getText();
         Bot newBot;
         switch (botType) {
-            case "GeminiBirdWatcher":
-                final String systemPromptText = "You are Donald Trump in a chatroom.  " +
-                        "Respond to other chat users' messages by making Trump's puns or jokes, " +
-                        "or telling anecdotes about your intended policies." +
+            case "AIBot":
+                final String systemPromptText = "You are" + role + "in a chatroom.  " +
+                        "Respond to other chat users' messages by making" + role + "puns or jokes, " +
+                        "or telling anecdotes about." + role +
                         "LIMIT YOUR RESPONSE WITHIN 5 WORDS";
-                newBot = new GeminiBirdBot(name, Color.RED, App.getCurrentPracticeScenerio(), systemPromptText);
+                newBot = new AIBot(name, Color.RED, App.getCurrentPracticeScenerio(), systemPromptText);
                 //room.getBotList().add(newBot);
                 break;
             default:

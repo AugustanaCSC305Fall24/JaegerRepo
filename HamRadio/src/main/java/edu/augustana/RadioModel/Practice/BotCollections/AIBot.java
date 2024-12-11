@@ -2,6 +2,7 @@ package edu.augustana.RadioModel.Practice.BotCollections;
 
 import edu.augustana.AI.GeminiAPITest;
 import edu.augustana.Application.UI.App;
+import edu.augustana.Application.UIHelper.MorseCodeTranslator;
 import edu.augustana.RadioModel.Practice.ChatMessage;
 import edu.augustana.RadioModel.Practice.PracticeScenario;
 import edu.augustana.RadioModel.Practice.TaskCollection.ConvoTask;
@@ -11,21 +12,21 @@ import swiss.ameri.gemini.api.*;
 import swiss.ameri.gemini.gson.GsonJsonParser;
 import swiss.ameri.gemini.spi.JsonParser;
 
-public class GeminiBirdBot extends Bot {
+public class AIBot extends Bot {
 
     private String systemPromptText;
     private JsonParser parser;
     GenAi genAi;
 
 
-    public GeminiBirdBot(String name, Color textColor, PracticeScenario room, String systemPromptText) {
+    public AIBot(String name, Color textColor, PracticeScenario room, String systemPromptText) {
         super(0, name, Bot.getRandomFreq());
         this.systemPromptText = systemPromptText;
         this.parser = new GsonJsonParser();
         this.genAi = new GenAi(GeminiAPITest.getGeminiApiKey(), parser);
     }
     public String toString() {
-        return getIDCode() + " [Birdwatcher]";
+        return getIDCode() + " [Your AI Agent]";
     }
 
     private PracticeScenario getRoom(){
@@ -39,7 +40,7 @@ public class GeminiBirdBot extends Bot {
         }
         String fullPrompt = systemPromptText + "\n" +
                 "Your name is: " + getIDCode() + "\n" +
-                "Read the following past history/transcript, and reply by stating exactly what you would say next in this conversation.  (If the transcript is mostly empty, then just make a new comment about a funny bird.) \n" +
+                "Read the following past history/transcript, and reply by stating exactly what you would say next in this conversation.  (If the transcript is mostly empty, then just make a new comment about a Elon Musk.) \n" +
                 transcript.toString();
 
         var model = createBotModel(fullPrompt);
@@ -47,11 +48,12 @@ public class GeminiBirdBot extends Bot {
         genAi.generateContent(model)
                 .thenAccept(gcr -> {
                     String geminiResponse = gcr.text();
-                    System.out.println("Debug: GeminiBirdBot received response: " + geminiResponse);
+                    System.out.println("Debug: AIBot received response: " + geminiResponse);
                     ChatMessage botTaskDescription = new ChatMessage(geminiResponse, this.getIDCode(), Color.PURPLE, true);
                     TaskForPractice task = new ConvoTask(this, botTaskDescription);
                     this.setTask(task);
-                    getRoom().addChatMessage(new ChatMessage(geminiResponse, getIDCode(), Color.RED, false));
+                    getRoom().addChatMessage(new ChatMessage(geminiResponse, getIDCode(), Color.PURPLE, false));
+                    getRoom().addChatMessage(new ChatMessage(MorseCodeTranslator.textToMorse(geminiResponse), getIDCode(), Color.PURPLE, false));
 
                 });
         // Note: don't include the .get() because we DON'T want to wait/block until the task completes,

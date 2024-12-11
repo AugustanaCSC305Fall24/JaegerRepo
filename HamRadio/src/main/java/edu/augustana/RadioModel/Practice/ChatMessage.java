@@ -5,13 +5,13 @@ import javafx.scene.paint.Color;
 public class ChatMessage {
     private String text;
     private String sender;
-    private String colorCode;
+    private Color colorCode;
     private boolean isBold;
 
     public ChatMessage(String text, String sender, Color color, boolean isBold) {
         this.text = text;
         this.sender = sender;
-        this.colorCode = color.toString();
+        this.colorCode = color;
         this.isBold = isBold;
     }
 
@@ -22,6 +22,8 @@ public class ChatMessage {
     public String getSender() {
         return sender;
     }
+
+    public Color getColorCode(){return colorCode;}
 
     @Override
     public String toString() {

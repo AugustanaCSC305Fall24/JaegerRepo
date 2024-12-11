@@ -7,16 +7,12 @@ import edu.augustana.RadioModel.HamRadioSimulator;
 import edu.augustana.RadioModel.HamRadioSimulatorInterface;
 import edu.augustana.RadioModel.Practice.*;
 import edu.augustana.RadioModel.Practice.BotCollections.Bot;
-import edu.augustana.RadioModel.Practice.BotCollections.GeminiBirdBot;
 import edu.augustana.RadioModel.Practice.PracticeScenario;
-import edu.augustana.RadioModel.Practice.SceneBuilderFactory.RoomBuilder;
 import edu.augustana.RadioModel.Practice.TaskCollection.TaskForPractice;
-import edu.augustana.RadioModel.Practice.TaskCollection.TransmittingTask;
 import edu.augustana.RadioModel.User;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
@@ -24,7 +20,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.*;
@@ -110,7 +105,7 @@ public class HamPracticeUIController extends HamUIController {
         botList = room.getBotList();
 
 //        //Debug AI Bot
-//        Bot aiBot = new GeminiBirdBot("TestBot", Color.BLACK, room, "You can only say what's up back to me");
+//        Bot aiBot = new AIBot("TestBot", Color.BLACK, room, "You can only say what's up back to me");
 //        room.getBotList().add(aiBot);
 //        aiBot.requestMessage();
 
@@ -190,7 +185,7 @@ public class HamPracticeUIController extends HamUIController {
 
     private void addMessageToChatLogUI(ChatMessage radioMessage) {
         Label label = new Label( radioMessage.getSender() + ": "+ radioMessage.getText());
-        label.setTextFill(Color.RED);
+        label.setTextFill(radioMessage.getColorCode());
         label.setWrapText(true);
         FontWeight fontWeight = FontWeight.BOLD;
         label.setFont(Font.font("System",fontWeight, 11));
@@ -456,6 +451,7 @@ public class HamPracticeUIController extends HamUIController {
         room.getBotList().clear();
         room.clearChatLogMessageList();
         clearChatAction();
+        Platform.exit();
         App.setRoot("ScenarioSetScreen");
     }
 
