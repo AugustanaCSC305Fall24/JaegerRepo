@@ -280,14 +280,14 @@ public class HamPracticeUIController extends HamUIController {
         for (Bot bot: botList){
             //check if bot is in the frequency
             //System.out.println(bot.getBotType());
+            System.out.println("\nIn Giving Task:...." + (bot.getBotFrequency() < receivableMax &&
+                    bot.getBotFrequency() > receivableMax));
+            System.out.print("Bot Frequency:..." + bot.getBotFrequency());
+            System.out.println(" < Radio Allowed:... " + receivableMax);
+            System.out.print("Bot Frequency:..." + bot.getBotFrequency());
+            System.out.println(" > Radio Allowed: " + receivableMin);
             if((bot.getBotFrequency() < receivableMax) &&
                     (bot.getBotFrequency() > receivableMin)){
-                System.out.println("\nIn Giving Task:...." + (bot.getBotFrequency() < receivableMax &&
-                        bot.getBotFrequency() > receivableMax));
-                System.out.print("Bot Frequency:..." + bot.getBotFrequency());
-                System.out.println(" < Radio Allowed:... " + receivableMax);
-                System.out.print("Bot Frequency:..." + bot.getBotFrequency());
-                System.out.println(" > Radio Allowed: " + receivableMin);
                 bot.setDiscovered();
                 if(bot.isDiscovered()){
                     room.addBotToIdentifiedList(bot);
@@ -354,7 +354,7 @@ public class HamPracticeUIController extends HamUIController {
         for (Bot bot: botList) {
             if (bot.getBotFrequency() < radio.getReceiveFrequency() + (radio.getBandWidth()/2) &&
                     bot.getBotFrequency() > radio.getReceiveFrequency() - (radio.getBandWidth()/2)) {
-                System.out.println("In filter Bot: ...." + (bot.getBotFrequency() < radio.getReceiveFrequency() + (radio.getBandWidth()/2) &&
+                System.out.println("\nIn filter Bot: ...." + (bot.getBotFrequency() < radio.getReceiveFrequency() + (radio.getBandWidth()/2) &&
                         bot.getBotFrequency() > radio.getReceiveFrequency() - (radio.getBandWidth()/2)));
                 if(bot.getIsInThread()){
                     showAlertForInThread();
